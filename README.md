@@ -1,12 +1,17 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-概要: Description
------------------
+jpndistrict <img src="logo.png" align="right" />
+================================================
+
+[![Travis-CI Build Status](https://travis-ci.org/uribo/jpndistrict.svg?branch=master)](https://travis-ci.org/uribo/jpndistrict) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/jpndistrict)](http://cran.r-project.org/package=jpndistrict) [![codecov](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](https://codecov.io/gh/uribo/jpndistrict)
+
+Overview
+--------
 
 本パッケージが提供する行政区域データは国土交通省国土政策局「国土数値情報（行政区域データ 平成27年4月1日時点のデータ） <http://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03.html> 」をもとに瓜生真也が編集・加工を行ったものです。そのため、このデータを利用した二次著作物を作成する際は、国土数値情報の利用約款に準拠するものとします。
 
-インストール: Install
----------------------
+Installation
+------------
 
 CRANには未登録ですので、**`{devtool}`**パッケージを利用してGitHubのリポジトリ経由でインストールを実行してください。次のコードを実行することでインストールされます。
 
@@ -15,8 +20,8 @@ install.packages("devtools")
 devtools::install_github("uribo/jpndistrict")
 ```
 
-使い方: How to use
-------------------
+Usage
+-----
 
 基本的な使い方を説明します。
 
@@ -25,44 +30,24 @@ devtools::install_github("uribo/jpndistrict")
 library(jpndistrict)
 ```
 
-### 行政区画データの取得
+### 行政区域データの取得
 
--   `spdf_jpn_cities()`
+-   `spdf_jpn_pref()`... 都道府県全体の行政区域データ。引数district = FALSEで市区町村の区域のないデータを返します
+-   `spdf_jpn_city()`... `spdf_jpn_pref()`の都道府県行政区域データから、特定の市区町村のみを指定できます
+-   `spdf_jpn_cities()`... `spdf_jpn_city()`の複数指定版です
 
 ``` r
-spdf_jpn_cities(jis_code_pref = 33, admin_name = "倉敷市")
-#> class       : SpatialPolygonsDataFrame 
-#> features    : 84 
-#> extent      : 133.6024, 133.8822, 34.41736, 34.66935  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=longlat +ellps=GRS80 +no_defs 
-#> variables   : 5
-#> # A tibble: 84 × 5
-#>    pref_name city_name_ city_name city_name_full city_code
-#> *      <chr>      <chr>     <chr>          <chr>    <fctr>
-#> 1     岡山県       <NA>    倉敷市         倉敷市     33202
-#> 2     岡山県       <NA>    倉敷市         倉敷市     33202
-#> 3     岡山県       <NA>    倉敷市         倉敷市     33202
-#> 4     岡山県       <NA>    倉敷市         倉敷市     33202
-#> 5     岡山県       <NA>    倉敷市         倉敷市     33202
-#> 6     岡山県       <NA>    倉敷市         倉敷市     33202
-#> 7     岡山県       <NA>    倉敷市         倉敷市     33202
-#> 8     岡山県       <NA>    倉敷市         倉敷市     33202
-#> 9     岡山県       <NA>    倉敷市         倉敷市     33202
-#> 10    岡山県       <NA>    倉敷市         倉敷市     33202
-#> # ... with 74 more rows
+spdf_jpn_pref(14)
+spdf_jpn_pref(14, district = FALSE)
+spdf_jpn_city(spdf_jpn_pref(14), admin_name = "海老名市")
+spdf_jpn_cities(jis_code_pref = 33, admin_name = c("倉敷市", "笠岡市"))
 ```
 
 ### 特徴
 
--   SpatialPolygonDataframe
--   各種の描画システムに対応
--   都道府県コード、市区町村コードによる指定
-
-### 各種描画システムによる行政区画データのプロット
-
--   \[x\] `base::plot()`
--   \[x\] **`{ggplot2}`**
--   \[x\] **`{plotly}`**
+-   `spdf_jpn_*()`関数が返す行政区域データはSpatialPolygonDataframeクラスです
+-   base, ggplot2, leaflet, plotlyといった各種の地図描画システムに対応しています。詳細は[vignettes](vignettes/create_map.Rmd)に書いてあります。
+-   都道府県コード、市区町村コードによる指定が可能です
 
 今後の展望: Roadmap
 -------------------
@@ -76,8 +61,4 @@ spdf_jpn_cities(jis_code_pref = 33, admin_name = "倉敷市")
 ### 開発履歴: History
 
 -   `2016-10-22` 開発に着手。 `v0.0.9999`
-
-ref
----
-
-<https://github.com/hrbrmstr/albersusa>
+-   `2016-11-04` GitHubへのpush
