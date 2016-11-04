@@ -1,0 +1,12 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
+^README-.*\.png$
+^\.travis\.yml$
+^cran-comments\.md$
+^revdep$
+^data-raw$
+^docs$
+^logo\.png$
+^_pkgdown\.yml$
+^vignettes$

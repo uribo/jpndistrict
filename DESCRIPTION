@@ -1,0 +1,41 @@
+Package: jpndistrict
+Type: Package
+Title: Create Japansese Administration Area Maps
+Version: 0.0.0.9999
+Authors@R: c(person(given = "Shinya", family = "Uryu", 
+                                            email = "suika1127@gmail.com", 
+                                            role  = c("aut", "cre")))
+Maintainer: Shinya Uryu <suika1127@gmail.com>
+Description: Utilizing the data that Japanese administration area provided by the National Land Numerical Information download service.
+Depends:
+    R (>= 2.10)
+Imports:
+    dplyr,
+    ggghost,
+    ggplot2,
+    ggthemes,
+    magrittr,
+    readr,
+    spdplyr
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Suggests:
+    devtools,
+    foreach,
+    geojsonio,
+    kokudosuuchi,
+    knitr,
+    rgeos,
+    rmarkdown,
+    rvest,
+    purrr,
+    testthat,
+    tidyr
+Remotes:
+    uribo/jpmesh
+    yutannihilation/kokudosuuchi
+RoxygenNote: 5.0.1
+VignetteBuilder: knitr
+URL: https://github.com/uribo/jpndistrict
+BugReports: https://github.com/uribo/jpndistrict/issues
