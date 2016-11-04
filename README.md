@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-jpndistrict <img src="logo.png" align="right" />
-================================================
+jpndistrict <img src="logo.png" align="right" width="80px" />
+=============================================================
 
 [![Travis-CI Build Status](https://travis-ci.org/uribo/jpndistrict.svg?branch=master)](https://travis-ci.org/uribo/jpndistrict) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/jpndistrict)](http://cran.r-project.org/package=jpndistrict) [![codecov](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](https://codecov.io/gh/uribo/jpndistrict)
 
