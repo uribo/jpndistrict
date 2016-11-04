@@ -4,13 +4,15 @@
 \name{jpnprefs}
 \alias{jpnprefs}
 \title{Prefectural informations in Japan}
-\format{A data frame with X rows Y variables:
+\format{A data frame with 47 rows 7 variables:
 \itemize{
+  \item{jis_code: jis code}
   \item{prefecture: prefecture names}
   \item{capital: capital name for prefecture}
   \item{region: region}
-  \item{jis_code: jis code}
   \item{major_island: }
+  \item{capital_latitude: latitude for catital}
+  \item{capital_longitude: longitude for catital}
 }}
 \usage{
 jpnprefs

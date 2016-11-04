@@ -17,9 +17,7 @@ spdf_jpn_city(df, jis_code, admin_name = NULL)
 Spatial Data frame city single
 }
 \examples{
-\dontrun{
-spdf_jpn_pref(jis_code = 33, district = TRUE) \%>\%
-  spdf_jpn_city(33103)
-}
+spdf_jpn_city(spdf_jpn_pref(code = 33, district = TRUE), jis_code = 33103)
+spdf_jpn_city(spdf_jpn_pref(code = 33, district = TRUE), admin_name = "倉敷市")
 }
 

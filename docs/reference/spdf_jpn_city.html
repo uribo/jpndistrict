@@ -98,10 +98,43 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># spdf_jpn_pref(jis_code = 33, district = TRUE) %&gt;%</span>
-<span class='co'>#   spdf_jpn_city(33103)</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>spdf_jpn_city</span>(<span class='fu'><a href='spdf_jpn_pref.html'>spdf_jpn_pref</a></span>(<span class='kw'>code</span> <span class='kw'>=</span> <span class='fl'>33</span>, <span class='kw'>district</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>jis_code</span> <span class='kw'>=</span> <span class='fl'>33103</span>)</div><div class='output co'>#&gt; class       : SpatialPolygonsDataFrame 
+#&gt; features    : 52 
+#&gt; extent      : 133.9839, 134.123, 34.55702, 34.78304  (xmin, xmax, ymin, ymax)
+#&gt; coord. ref. : +proj=longlat +ellps=GRS80 +no_defs 
+#&gt; variables   : 5
+#&gt; # A tibble: 52 × 5
+#&gt;    pref_name city_name_ city_name city_name_full city_code
+#&gt; *      &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;          &lt;chr&gt;    &lt;fctr&gt;
+#&gt; 1     岡山県     岡山市      東区    岡山市 東区     33103
+#&gt; 2     岡山県     岡山市      東区    岡山市 東区     33103
+#&gt; 3     岡山県     岡山市      東区    岡山市 東区     33103
+#&gt; 4     岡山県     岡山市      東区    岡山市 東区     33103
+#&gt; 5     岡山県     岡山市      東区    岡山市 東区     33103
+#&gt; 6     岡山県     岡山市      東区    岡山市 東区     33103
+#&gt; 7     岡山県     岡山市      東区    岡山市 東区     33103
+#&gt; 8     岡山県     岡山市      東区    岡山市 東区     33103
+#&gt; 9     岡山県     岡山市      東区    岡山市 東区     33103
+#&gt; 10    岡山県     岡山市      東区    岡山市 東区     33103
+#&gt; # ... with 42 more rows</div><div class='input'><span class='fu'>spdf_jpn_city</span>(<span class='fu'><a href='spdf_jpn_pref.html'>spdf_jpn_pref</a></span>(<span class='kw'>code</span> <span class='kw'>=</span> <span class='fl'>33</span>, <span class='kw'>district</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>admin_name</span> <span class='kw'>=</span> <span class='st'>"倉敷市"</span>)</div><div class='output co'>#&gt; class       : SpatialPolygonsDataFrame 
+#&gt; features    : 84 
+#&gt; extent      : 133.6024, 133.8822, 34.41736, 34.66935  (xmin, xmax, ymin, ymax)
+#&gt; coord. ref. : +proj=longlat +ellps=GRS80 +no_defs 
+#&gt; variables   : 5
+#&gt; # A tibble: 84 × 5
+#&gt;    pref_name city_name_ city_name city_name_full city_code
+#&gt; *      &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;          &lt;chr&gt;    &lt;fctr&gt;
+#&gt; 1     岡山県       &lt;NA&gt;    倉敷市         倉敷市     33202
+#&gt; 2     岡山県       &lt;NA&gt;    倉敷市         倉敷市     33202
+#&gt; 3     岡山県       &lt;NA&gt;    倉敷市         倉敷市     33202
+#&gt; 4     岡山県       &lt;NA&gt;    倉敷市         倉敷市     33202
+#&gt; 5     岡山県       &lt;NA&gt;    倉敷市         倉敷市     33202
+#&gt; 6     岡山県       &lt;NA&gt;    倉敷市         倉敷市     33202
+#&gt; 7     岡山県       &lt;NA&gt;    倉敷市         倉敷市     33202
+#&gt; 8     岡山県       &lt;NA&gt;    倉敷市         倉敷市     33202
+#&gt; 9     岡山県       &lt;NA&gt;    倉敷市         倉敷市     33202
+#&gt; 10    岡山県       &lt;NA&gt;    倉敷市         倉敷市     33202
+#&gt; # ... with 74 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

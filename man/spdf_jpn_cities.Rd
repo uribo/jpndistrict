@@ -17,9 +17,7 @@ spdf_jpn_cities(jis_code_pref, jis_code = NULL, admin_name = NULL)
 Spatial Data frame cities
 }
 \examples{
-\dontrun{
 spdf_jpn_cities(jis_code_pref = 33, jis_code = 33103)
 spdf_jpn_cities(jis_code_pref = 33, jis_code = c(33103, 33104, 33205))
-}
 }
 

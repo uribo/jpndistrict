@@ -17,9 +17,7 @@ spdf_jpn_pref(code = NULL, admin_name = NULL, district = TRUE)
 Spatial Data frame
 }
 \examples{
-\dontrun{
 spdf_jpn_pref(admin_name = "岡山県", district = FALSE)
 spdf_jpn_pref(code = 33, district = FALSE)
-}
 }
 
