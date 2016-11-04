@@ -1,0 +1,32 @@
+templates:
+  params:
+    bootswatch: paper
+
+home:
+  strip_header: true
+  links:
+  - text: Similar projects
+    href: https://github.com/hrbrmstr/albersusa
+
+reference:
+
+  - title: Spatial Data frame
+    contents:
+    - spdf_jpn_pref
+    - spdf_jpn_city
+    - spdf_jpn_cities
+
+  - title: Create district area maps
+    contents:
+    - gg_jpn_district
+
+  - title: Data
+    desc: >
+      Simple displaed as rectangel for Japan (fortified).
+    contents:
+    - jpnprefs
+
+navbar:
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/uribo/jpndistrict
