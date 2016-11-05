@@ -6,12 +6,13 @@ home:
   strip_header: true
   links:
   - text: Similar projects
-    href: https://github.com/hrbrmstr/albersusa
+    href: https://github.com/hrbrmstr/albersusa, https://github.com/seankross/minimap
 
 reference:
 
-  - title: Spatial Data frame
+  - title: Spatial Data frame (polygon and point)
     contents:
+    - read_ksj_p33
     - spdf_jpn_pref
     - spdf_jpn_city
     - spdf_jpn_cities

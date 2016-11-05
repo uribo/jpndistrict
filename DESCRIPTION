@@ -11,24 +11,29 @@ Depends:
     R (>= 2.10)
 Imports:
     dplyr,
+    geojsonio,
     ggghost,
     ggplot2,
     ggthemes,
+    leaflet,
     magrittr,
+    miniUI,
     readr,
-    spdplyr
+    shiny (>= 0.13),
+    spdplyr,
+    stringi
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests:
     devtools,
     foreach,
-    geojsonio,
     kokudosuuchi,
     knitr,
     rgeos,
     rmarkdown,
     rvest,
+    plotly,
     purrr,
     testthat,
     tidyr
