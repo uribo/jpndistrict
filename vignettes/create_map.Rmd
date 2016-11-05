@@ -35,6 +35,7 @@ spdf.33 <- spdf_jpn_cities(jis_code_pref = 33, jis_code = c(33101, 33102, 33103,
 
 ```{r gg_jpn_district_pref33_capital_point}
 library(ggplot2)
+library(ggthemes)
 d33 <- jpnprefs %>% filter(prefecture == "岡山県") %>% 
                rename(lat = capital_latitude,
                       long = capital_longitude) %>% 
@@ -51,7 +52,7 @@ spdf_jpn_pref(code = "37", district = TRUE) %>% gg_jpn_district()
 
 ```{r gg_jpn_district_pref_feature_ggghost}
 p <- spdf_jpn_cities(jis_code_pref = 33, jis_code = c(33103)) %>% gg_jpn_district()
-p - ggthemes::theme_map()
+p - theme_map()
 ```
 
 ## leaflet
@@ -101,3 +102,44 @@ plot_geo(jpnprefs, lat = ~capital_latitude, lon = ~capital_longitude) %>%
   add_markers() %>%
   layout(geo = g)
 ```
+
+```{r}
+d <- read_ksj_p33(code = 33) %>%
+  dplyr::filter(!grepl("(支所|出張所|庁舎)$", name))
+
+g <- list(
+  scope = "asia",
+  showland = TRUE,
+  landcolor = toRGB("grey83"),
+  subunitcolor = toRGB("white"),
+  countrycolor = toRGB("white"),
+  showlakes = TRUE,
+  lakecolor = toRGB("white"),
+  showsubunits = TRUE,
+  showcountries = TRUE,
+  resolution = 50,
+  projection = list(
+    type = "conic conformal",
+    rotation = list(lon = 130)
+  ),
+  lonaxis = list(
+    showgrid = TRUE,
+    gridwidth = 0.5,
+    range = c(min(d$longitude) - 3, max(d$longitude) + 3),
+    dtick = 5
+  ),
+  lataxis = list(
+    showgrid = TRUE,
+    gridwidth = 0.5,
+    range = c(min(d$latitude) - 5, max(d$latitude) + 5),
+    dtick = 5
+  )
+)
+
+plot_geo(d@data, lat = ~latitude, lon = ~longitude) %>%
+  add_markers(
+    text = ~paste(d$name, "<br>", d$address), hoverinfo = "text"
+  ) %>%
+  layout(geo = g)
+```
+
