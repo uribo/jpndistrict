@@ -39,7 +39,6 @@ Suggests:
     tidyr
 Remotes:
     uribo/jpmesh
-    yutannihilation/kokudosuuchi
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr
 URL: https://github.com/uribo/jpndistrict
