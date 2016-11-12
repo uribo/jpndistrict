@@ -6,7 +6,7 @@
 #' @import leaflet
 #' @import miniUI
 #' @import shiny
-#' @import stringi stri_escape_unicode
+#' @importFrom stringi stri_unescape_unicode
 #' @examples
 #' \dontrun{
 #' district_viewer()
