@@ -1,5 +1,6 @@
 #' Prefectural informations in Japan
 #'
+#' @description Prefectures dataset.
 #' @format A data frame with 47 rows 7 variables:
 #' \itemize{
 #'   \item{jis_code: jis code}

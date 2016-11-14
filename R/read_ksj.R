@@ -1,14 +1,17 @@
 #' Read administration office point datasets.
 #'
+#' @description Name and geolocations for administration offices in prefecture.
 #' @param code prefecture code
 #' @param path shapefile path
 #' @importFrom readr read_rds
 #' @examples
 #' \dontrun{
-#' ddd(code = 17)
+#' read_ksj_p33(code = 17)
 #' }
 #' @export
 read_ksj_p33 <- function(code = NULL, path = NULL) {
+
+  download.file <- unzip <- NULL
 
   df.dl.url <- readr::read_rds(system.file("extdata/ksj_P33_index.rds", package = "jpndistrict"))
 

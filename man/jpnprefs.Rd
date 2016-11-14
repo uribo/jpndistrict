@@ -18,7 +18,7 @@
 jpnprefs
 }
 \description{
-Prefectural informations in Japan
+Prefectures dataset.
 }
 \keyword{datasets}
 

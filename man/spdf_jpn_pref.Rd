@@ -4,20 +4,26 @@
 \alias{spdf_jpn_pref}
 \title{Spatial Data frame}
 \usage{
-spdf_jpn_pref(code = NULL, admin_name = NULL, district = TRUE)
+spdf_jpn_pref(path, code = NULL, admin_name = NULL, district = TRUE)
 }
 \arguments{
-\item{code}{jis code}
+\item{path}{path to ksj N03 folder}
+
+\item{code}{jis code from 1 to 47}
 
 \item{admin_name}{string}
 
 \item{district}{logical (default TRUE)}
 }
 \description{
-Spatial Data frame
+Prefecture polygon data.
+}
+\details{
+Download administrative area data from the National Land Numeral Information Download Service. If there is already a downloaded file,
+it is read by giving the path to the file as the path argument. When path is not specified, it downloads to the temporary folder.
+In the case of the same prefecture in the session, we will not download twice.
 }
 \examples{
-spdf_jpn_pref(admin_name = "岡山県", district = FALSE)
 spdf_jpn_pref(code = 33, district = FALSE)
 }
 

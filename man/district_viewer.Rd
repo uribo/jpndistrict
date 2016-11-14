@@ -14,7 +14,7 @@ district_viewer(code = 33, color = "red", ...)
 \item{...}{other parameter to leaflet functions}
 }
 \description{
-District Viewer
+Interactive district map and information tool.
 }
 \examples{
 \dontrun{

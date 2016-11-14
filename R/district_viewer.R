@@ -1,5 +1,6 @@
 #' District Viewer
 #'
+#' @description Interactive district map and information tool.
 #' @param code prefecture code (default 33)
 #' @param color polygon line color for leaflet
 #' @param ... other parameter to leaflet functions
@@ -13,6 +14,9 @@
 #' }
 #' @export
 district_viewer <-  function(code = 33, color = "red", ...) {
+
+  jpnprefs <- city_name_full <- city_code <- jpnprefs <- NULL
+  prefecture <- jis_code <- NULL
 
   # UI ----------------------------------------------------------------------
   ui <- miniPage(

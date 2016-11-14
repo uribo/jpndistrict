@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_jpn.R
 \name{gg_jpn_district}
 \alias{gg_jpn_district}
-\title{Display city map based on ggplot2}
+\title{Display city map based on 'ggplot2'}
 \usage{
 gg_jpn_district(df)
 }
@@ -10,6 +10,11 @@ gg_jpn_district(df)
 \item{df}{data frame}
 }
 \description{
-Display city map based on ggplot2
+Rendering city map using 'ggplot2' and 'ggghost' system.
+}
+\examples{
+\dontrun{
+gg_jpn_district(spdf_jpn_pref(code = "37", district = TRUE))
+}
 }
 

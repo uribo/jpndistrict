@@ -12,11 +12,11 @@ read_ksj_p33(code = NULL, path = NULL)
 \item{path}{shapefile path}
 }
 \description{
-Read administration office point datasets.
+Name and geolocations for administration offices in prefecture.
 }
 \examples{
 \dontrun{
-ddd(code = 17)
+read_ksj_p33(code = 17)
 }
 }
 
