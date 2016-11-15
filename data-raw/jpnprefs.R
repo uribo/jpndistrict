@@ -41,7 +41,7 @@ library(tidyr)
 x <- read_html("https://ja.wikipedia.org/wiki/都道府県庁所在地")
 
 l <- x %>% html_nodes(css = 'table') %>%
-  extract(2) %>%
+  magrittr::extract(2) %>%
   html_nodes(css = 'tr > td > span.plainlinks > a') %>%
   html_attr("href") %>%
   map_chr(gsub, pattern = ".+params=", replacement = "") %>%
@@ -75,3 +75,4 @@ expect_equal(dim(jpnprefs), c(47, 7))
 jpnprefs$prefecture %<>% factor() %>% forcats::fct_relevel(jpnprefs$prefecture)
 
 devtools::use_data(jpnprefs, overwrite = TRUE)
+readr::write_rds(jpnprefs, "inst/extdata/jpnprefs.rds")
