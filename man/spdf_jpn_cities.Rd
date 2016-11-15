@@ -4,20 +4,23 @@
 \alias{spdf_jpn_cities}
 \title{Spatial Data frame cities}
 \usage{
-spdf_jpn_cities(jis_code_pref, jis_code = NULL, admin_name = NULL)
+spdf_jpn_cities(path, jis_code_pref, jis_code_city = NULL,
+  admin_name = NULL)
 }
 \arguments{
-\item{jis_code_pref}{numeric}
+\item{path}{path to ksj N03 folder}
 
-\item{jis_code}{jis code}
+\item{jis_code_pref}{jis code from 1 to 47}
 
-\item{admin_name}{string}
+\item{jis_code_city}{jis code for city as jis_code_pref + identifier number}
+
+\item{admin_name}{city name}
 }
 \description{
-Spatial Data frame cities
+City area polygon data.
 }
 \examples{
-spdf_jpn_cities(jis_code_pref = 33, jis_code = 33103)
-spdf_jpn_cities(jis_code_pref = 33, jis_code = c(33103, 33104, 33205))
+spdf_jpn_cities(jis_code_pref = 33, jis_code_city = 33103)
+spdf_jpn_cities(jis_code_pref = 33, jis_code_city = c(33103, 33104, 33205))
 }
 

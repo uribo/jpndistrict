@@ -24,6 +24,9 @@ it is read by giving the path to the file as the path argument. When path is not
 In the case of the same prefecture in the session, we will not download twice.
 }
 \examples{
+\dontrun{
 spdf_jpn_pref(code = 33, district = FALSE)
+}
+
 }
 
