@@ -1,12 +1,16 @@
 ---
-title: "Create maps using jpndistrict"
+title: ""
 author: "Shinya Uryu"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: readable
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Create maps using jpndistrict}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
 ---
 
 ```{r, echo = FALSE}
@@ -41,7 +45,7 @@ d33 <- jpnprefs %>% filter(prefecture == "岡山県") %>%
                       long = capital_longitude) %>% 
   mutate(id = 33101)
 
-p <- spdf.33 %>% fortify(.) %>% gg_jpn_district()
+p <- spdf.33 %>% fortify() %>% gg_jpn_district()
 p + geom_point(data = d33, aes(x = long, y = lat, fill = "#2196F3", size = 6)) +
   guides(fill = FALSE, size = FALSE)
 ```
@@ -66,7 +70,7 @@ leaflet() %>%
 
 ## plotly (test)
 
-```{r}
+```{r, eval = FALSE, echo = TRUE}
 library(plotly)
 
 g <- list(
@@ -103,7 +107,7 @@ plot_geo(jpnprefs, lat = ~capital_latitude, lon = ~capital_longitude) %>%
   layout(geo = g)
 ```
 
-```{r}
+```{r, eval = FALSE, echo = TRUE}
 d <- read_ksj_p33(code = 33) %>%
   dplyr::filter(!grepl("(支所|出張所|庁舎)$", name))
 

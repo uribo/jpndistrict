@@ -18,15 +18,13 @@ download.file(dl.url,
               destfile = "data-raw/shapefiles/N03-150101_GML.zip")
 
 # Generate geojson -------------------------------------------------------
-jpn_pref_shp <- geojsonio::geojson_read("data-raw/shapefiles/N03-20150101_GML/N03-15_150101.shp",
+jpn_pref_shp <- geojsonio::geojson_read("data-raw/shapefiles/N03-20150101_37_GML/N03-15_37_150101.shp",
                         method           = "local",
                         what             = "sp",
                         stringsAsFactors = TRUE)
 testthat::expect_s4_class(jpn_pref_shp, "SpatialPolygonsDataFrame")
 # 都道府県名, 支庁・振興局名(当該都道府県が「北海道」の場合、該当する支庁・振興局の名称), 郡・政令都市名, 市区町村名, 行政区域コード
 testthat::expect_named(jpn_pref_shp@data, c("N03_001", "N03_002", "N03_003", "N03_004", "N03_007"))
-
-m <- jpn_pref_shp %>% fortify()
 
 jppref <- unique(jpn_pref_shp@data$N03_001)
 
@@ -68,33 +66,3 @@ foreach(i = 1:length(jppref)) %do% {
   readr::write_rds(tmp,
                    path = paste0("inst/extdata/pref_", sprintf("%02s", as.numeric(jppref.new.order[jppref.new.order %in% dist_geo_0@polygons[[i]]@ID])), "_spdf.rds"))
 }
-
-# 日本全体 --------------------------------------------------------------------
-jpn_pref_shp@data %<>%
-  mutate(dummy_id = 0)
-
-# めちゃくしゃ時間がかかる...
-jpn_composite <- rgeos::gUnaryUnion(jpn_pref_shp, id = jpn_pref_shp@data$dummy_id)
-
-geojson_write(sp::SpatialPolygons(jpn_composite@polygons), lat = "lat", lon = "long", geometry = "polygon")
-
-tmp <- geojson_read("myfile.geojson", method = "local", what = "sp") %>%
-  mutate(pref_name = jpn_composite@polygons[[i]]@ID,
-         jiscode = as.numeric(jppref.new.order[jppref.new.order %in% dist_geo_0@polygons[[i]]@ID])) %>%
-  select(-dummy)
-
-
-jp_map <- geojsonio::geojson_read("myfile.geojson",
-                                  method = "local",
-                                  what = "sp"
-) %>% fortify()
-
-ggplot() +
-  geom_map(data = jp_map,
-           map  = jp_map,
-           aes(x = long, y = lat, map_id = id),
-           fill = "white", color = "black",
-           size = 0.5) +
-  coord_map() +
-  ggthemes::theme_map() %>%
-  roracle::notice_status()
