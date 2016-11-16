@@ -1,14 +1,14 @@
 Package: jpndistrict
 Type: Package
-Title: Create Japansese Administration Area Maps
+Title: Create Japanese Administration Area Maps
 Version: 0.0.0.9999
-Authors@R: c(person(given = "Shinya", family = "Uryu", 
-                                            email = "suika1127@gmail.com", 
+Authors@R: c(person(given = "Shinya", family = "Uryu",
+                                            email = "suika1127@gmail.com",
                                             role  = c("aut", "cre")))
 Maintainer: Shinya Uryu <suika1127@gmail.com>
-Description: Utilizing the data that Japanese administration area provided by the National Land Numerical Information download service.
+Description: Utilizing the data that Japanese administration area provided by the National Land Numerical Information download service (<http://nlftp.mlit.go.jp/ksj/index.html>).
 Depends:
-    R (>= 2.10)
+    R (>= 3.1.0)
 Imports:
     dplyr,
     geojsonio,
@@ -19,27 +19,25 @@ Imports:
     magrittr,
     miniUI,
     readr,
+    rgeos,
     shiny (>= 0.13),
+    sp,
     spdplyr,
     stringi
-License: MIT + file LICENSE
-Encoding: UTF-8
-LazyData: true
 Suggests:
     devtools,
-    foreach,
-    kokudosuuchi,
+    jpmesh,
     knitr,
-    rgeos,
     rmarkdown,
     rvest,
     plotly,
     purrr,
     testthat,
     tidyr
-Remotes:
-    uribo/jpmesh
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
 RoxygenNote: 5.0.1
-VignetteBuilder: knitr
+VignetteBuilder: knitr, rmarkdown
 URL: https://github.com/uribo/jpndistrict
 BugReports: https://github.com/uribo/jpndistrict/issues
