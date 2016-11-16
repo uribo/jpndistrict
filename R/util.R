@@ -8,8 +8,8 @@ pref_code <- function(jis_code) {
 
 #' Collect administration office point datasets.
 #'
-#' @param code prefecture code
-#' @param path shepfile directory
+#' @param code prefecture code (JIS X 0402)
+#' @param path path to N03 shapefile (if already exist)
 #' @import dplyr
 #' @import magrittr
 #' @importFrom geojsonio geojson_read
@@ -38,17 +38,11 @@ collect_ksj_p33 <- function(code = NULL, path = NULL) {
 
 #' Bind city area polygons to prefecture polygon
 #'
-#' @param path path to rds file
-#' @import dplyr
-#' @import spdplyr
+#' @param path path to N03 shapefile (if already exist)
 #' @importFrom geojsonio geojson_read
-#' @importFrom geojsonio geojson_write
-#' @importFrom readr read_rds
-#' @importFrom rgeos gUnaryUnion
-#' @importFrom sp SpatialPolygons
 bind_cityareas <- function(path = NULL) {
 
-  dummy <- NULL
+  pref.shp <- NULL
 
   pref.shp <- geojsonio::geojson_read(list.files(path, pattern = "shp$", full.names = TRUE),
                                       method           = "local",
@@ -59,6 +53,16 @@ bind_cityareas <- function(path = NULL) {
   return(res)
 }
 
+#' Intermediate function
+#'
+#' @param pref.shp geojsonio object (prefecture shapefile)
+#' @import spdplyr
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#' @importFrom geojsonio geojson_write
+#' @importFrom geojsonio geojson_read
+#' @importFrom rgeos gUnaryUnion
+#' @importFrom sp SpatialPolygons
 raw_bind_cityareas <- function(pref.shp) {
   dummy <- NULL
   tmp.geojson <- tempfile(fileext = ".geojson")
@@ -84,6 +88,10 @@ raw_bind_cityareas <- function(pref.shp) {
   return(res)
 }
 
+#' Intermediate function
+#'
+#' @param code prefecture code (JIS X 0402)
+#' @param path path to N03 shapefile (if already exist)
 read_ksj_cityarea <- function(code = NULL, path = NULL) {
 
   if (missing(path)) {
@@ -96,6 +104,10 @@ read_ksj_cityarea <- function(code = NULL, path = NULL) {
 
 }
 
+#' Download KSJ N03 zip files
+#'
+#' @param code prefecture code (JIS X 0402)
+#' @param path path to N03 shapefile (if already exist)
 #' @importFrom utils download.file
 #' @importFrom utils unzip
 path_ksj_cityarea <- function(code = NULL, path = NULL) {
@@ -104,8 +116,7 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
 
     pref.identifer <- sprintf("%02d", code)
     dest.path <- paste(tempdir(), paste0("N03-150101_", pref.identifer, "_GML.zip"), sep = "/")
-    # extract.path <- paste(tempdir(), pref.identifer,
-    #                       gsub(".zip$", "", paste0("N03-20150101_", pref.identifer, "_GML.zip")),  sep = "/")
+
     extract.path <- paste(tempdir(), pref.identifer,  sep = "/")
 
     # ksj zip file none
@@ -131,6 +142,12 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
 
 }
 
+#' Get prefecture code (JIS X 0402)
+#'
+#' @description Get prefecture code from prefecture of name or number.
+#' @param code numeric
+#' @param admin_name prefecture code for Japanese (character)
+#' @importFrom readr read_rds
 collect_prefcode <- function(code = NULL, admin_name = NULL) {
 
   jis_code <- NULL
@@ -146,14 +163,20 @@ collect_prefcode <- function(code = NULL, admin_name = NULL) {
 }
 
 
-
+#' Collect administration area
+#'
+#' @param path path to N03 shapefile (if already exist)
+#' @importFrom dplyr mutate
+#' @importFrom dplyr rename
+#' @importFrom dplyr select
+#' @importFrom geojsonio geojson_read
+#' @importFrom stringi stri_trim_both
 collect_cityarea <- function(path = NULL) {
 
   N03_001 <- N03_002 <- N03_003 <- N03_004 <- N03_007 <- tmp_var <- NULL
   pref_name <- city_name_ <- city_name <- city_name_full <- city_code <- NULL
 
-
-  geojsonio::geojson_read(list.files(path, pattern = "shp$", full.names = TRUE, recursive = TRUE),
+  res <- geojsonio::geojson_read(list.files(path, pattern = "shp$", full.names = TRUE, recursive = TRUE),
                           method           = "local",
                           what             = "sp",
                           stringsAsFactors = TRUE) %>%
@@ -166,4 +189,5 @@ collect_cityarea <- function(path = NULL) {
     rename(pref_name = N03_001, city_name_ = N03_003, city_name = N03_004, city_code = N03_007) %>%
     select(pref_name, city_name_, city_name, city_name_full, city_code)
 
+  return(res)
 }
