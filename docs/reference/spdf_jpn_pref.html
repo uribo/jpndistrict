@@ -81,46 +81,42 @@
     </div>
 
     
-    <p>Spatial Data frame</p>
+    <p>Prefecture polygon data.</p>
     
 
-    <pre><span class='fu'>spdf_jpn_pref</span>(<span class='kw'>code</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>admin_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>district</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre><span class='fu'>spdf_jpn_pref</span>(<span class='no'>path</span>, <span class='kw'>code</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>admin_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>district</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
+      <dt>path</dt>
+      <dd>path to ksj N03 folder</dd>
       <dt>code</dt>
-      <dd>jis code</dd>
+      <dd>jis code from 1 to 47</dd>
       <dt>admin_name</dt>
       <dd>string</dd>
       <dt>district</dt>
       <dd>logical (default TRUE)</dd>
     </dl>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Download administrative area data from the National Land Numeral Information Download Service. If there is already a downloaded file,
+it is read by giving the path to the file as the path argument. When path is not specified, it downloads to the temporary folder.
+In the case of the same prefecture in the session, we will not download twice.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>spdf_jpn_pref</span>(<span class='kw'>admin_name</span> <span class='kw'>=</span> <span class='st'>"岡山県"</span>, <span class='kw'>district</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; class       : SpatialPolygonsDataFrame 
-#&gt; features    : 1 
-#&gt; extent      : 133.2668, 134.4132, 34.29833, 35.3529  (xmin, xmax, ymin, ymax)
-#&gt; coord. ref. : +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 
-#&gt; variables   : 2
-#&gt; # A tibble: 1 × 2
-#&gt;   pref_name jiscode
-#&gt; *     &lt;chr&gt;   &lt;dbl&gt;
-#&gt; 1    岡山県      33</div><div class='input'><span class='fu'>spdf_jpn_pref</span>(<span class='kw'>code</span> <span class='kw'>=</span> <span class='fl'>33</span>, <span class='kw'>district</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; class       : SpatialPolygonsDataFrame 
-#&gt; features    : 1 
-#&gt; extent      : 133.2668, 134.4132, 34.29833, 35.3529  (xmin, xmax, ymin, ymax)
-#&gt; coord. ref. : +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 
-#&gt; variables   : 2
-#&gt; # A tibble: 1 × 2
-#&gt;   pref_name jiscode
-#&gt; *     &lt;chr&gt;   &lt;dbl&gt;
-#&gt; 1    岡山県      33</div></pre>
+    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
+<span class='co'># spdf_jpn_pref(code = 33, district = FALSE)</span>
+<span class='co'>## ---------------------------------------------</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#details">Details</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

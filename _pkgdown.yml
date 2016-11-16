@@ -14,7 +14,6 @@ reference:
     contents:
     - read_ksj_p33
     - spdf_jpn_pref
-    - spdf_jpn_city
     - spdf_jpn_cities
 
   - title: Create district area maps
