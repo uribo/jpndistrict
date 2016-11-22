@@ -8,22 +8,23 @@ pref_code <- function(jis_code) {
 
 #' Collect administration office point datasets.
 #'
-#' @param code prefecture code (JIS X 0402)
 #' @param path path to N03 shapefile (if already exist)
 #' @import dplyr
 #' @import magrittr
 #' @importFrom geojsonio geojson_read
 #' @importFrom stringi stri_trim_both
-collect_ksj_p33 <- function(code = NULL, path = NULL) {
+collect_ksj_p34 <- function(path = NULL) {
 
   address <- NULL
 
+  code <- gsub(".+P34-14_|_GML|/", "", path)
+
   d <- geojsonio::geojson_read(
     paste0(path, "/", list.files(path, pattern = paste0(code, ".shp$"))),
-    method = "local",
-    what = "sp",
+    method           = "local",
+    what             = "sp",
     stringsAsFactors = TRUE,
-    encoding = "cp932")
+    encoding         = "cp932")
 
   d@data <- d@data %>%
     bind_cols(as.data.frame(d@coords)) %>%
@@ -147,16 +148,18 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
 #' @description Get prefecture code from prefecture of name or number.
 #' @param code numeric
 #' @param admin_name prefecture code for Japanese (character)
+#' @import magrittr
+#' @importFrom dplyr filter
 #' @importFrom readr read_rds
 collect_prefcode <- function(code = NULL, admin_name = NULL) {
 
   jis_code <- NULL
-  jpnprefs <- readr::read_rds(system.file(paste0("extdata/jpnprefs.rds"), package = "jpndistrict"))
+  jpnprefs <- read_rds(system.file(paste0("extdata/jpnprefs.rds"), package = "jpndistrict"))
 
   if (missing(admin_name)) {
-    pref.code <- dplyr::filter_(jpnprefs, ~jis_code == pref_code(code)) %>% magrittr::use_series(jis_code)
+    pref.code <- filter_(jpnprefs, ~jis_code == pref_code(code)) %>% magrittr::use_series(jis_code)
   } else if (missing(code)) {
-    pref.code <- dplyr::filter_(jpnprefs, ~prefecture == admin_name) %>% magrittr::use_series(jis_code)
+    pref.code <- filter_(jpnprefs, ~prefecture == admin_name) %>% magrittr::use_series(jis_code)
   }
 
   return(pref.code)
@@ -188,6 +191,40 @@ collect_cityarea <- function(path = NULL) {
            city_name_full = stringi::stri_trim_both(gsub("NA", "", paste(tmp_var, N03_004)))) %>%
     rename(pref_name = N03_001, city_name_ = N03_003, city_name = N03_004, city_code = N03_007) %>%
     select(pref_name, city_name_, city_name, city_name_full, city_code)
+
+  return(res)
+}
+
+
+#' Intermediate function
+#'
+#' @param code prefecture code (JIS X 0402)
+#' @param path path to N03 shapefile (if already exist)
+#' @importFrom readr read_rds
+read_ksj_p34 <- function(code = NULL, path = NULL) {
+
+  if (missing(path)) {
+    download.file <- unzip <- NULL
+
+    df.dl.url <- read_rds(system.file("extdata/ksj_P34_index.rds", package = "jpndistrict"))
+
+    if (is.null(path) & file.exists(paste(tempdir(), df.dl.url$dest_file[code], sep = "/")) == FALSE) {
+
+      download.file(df.dl.url$zipFileUrl[code],
+                    destfile = paste(tempdir(), df.dl.url$dest_file[code], sep = "/"),
+                    method = "wget")
+      unzip(zipfile = paste(tempdir(), df.dl.url$dest_file[code], sep = "/"),
+            exdir   = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[code]),  sep = "/"))
+
+      path = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[code]),  sep = "/")
+    } else if (file.exists(paste(tempdir(), df.dl.url$dest_file[code], sep = "/")) == TRUE) {
+      path = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[code]),  sep = "/")
+    }
+
+    res <- collect_ksj_p34(path = path)
+  } else {
+    res <- collect_ksj_p34(path = path)
+  }
 
   return(res)
 }

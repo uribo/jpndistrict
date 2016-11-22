@@ -2,7 +2,7 @@
 
 export(district_viewer)
 export(gg_jpn_district)
-export(read_ksj_p33)
+export(spdf_jpn_admins)
 export(spdf_jpn_cities)
 export(spdf_jpn_pref)
 import(dplyr)

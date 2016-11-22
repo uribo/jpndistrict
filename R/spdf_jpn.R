@@ -1,12 +1,9 @@
-#' Spatial Data frame
+#' Spatial Data frame for prefecture area polygon
 #'
 #' @description Prefecture polygon data.
 #' @details Download administrative area data from the National Land Numeral Information Download Service. If there is already a downloaded file,
 #' it is read by giving the path to the file as the path argument. When path is not specified, it downloads to the temporary folder.
 #' In the case of the same prefecture in the session, we will not download twice.
-#' @import dplyr
-#' @import magrittr
-#' @importFrom readr read_rds
 #' @param path path to ksj N03 folder
 #' @param code jis code from 1 to 47
 #' @param admin_name string
@@ -40,7 +37,7 @@ spdf_jpn_pref <- function(path, code = NULL, admin_name = NULL, district = TRUE)
   return(res)
 }
 
-#' Spatial Data frame cities
+#' Spatial Data frame for city area polygons
 #'
 #' @description City area polygon data.
 #' @import spdplyr
@@ -70,4 +67,37 @@ spdf_jpn_cities <- function(path, jis_code_pref, jis_code_city = NULL, admin_nam
   }
 
   return(d)
+}
+
+#' Spatial Dataframe for administration office points
+#'
+#' @description Name and geolocations for administration offices in prefecture.
+#' @param code prefecture code
+#' @param path shapefile path
+#' @param jis_code_city jis code for city as jis_code_pref + identifier number
+#' @importFrom dplyr filter
+#' @return data.frame. contains follow columns jis_code, type, name, address, longitude and latitude.
+#' @examples
+#' \dontrun{
+#' spdf_jpn_admins(code = 17)
+#' }
+#' @export
+spdf_jpn_admins <- function(path, code = NULL, jis_code_city = NULL) {
+
+  jis_code <- NULL
+
+  if (missing(path)) {
+      pref.code <- collect_prefcode(code = code)
+      d <- read_ksj_p34(code = as.numeric(pref.code))
+  } else {
+    d <- read_ksj_p34(path = path)
+  }
+
+  if (is.null(jis_code_city)) {
+    res <- d
+  } else {
+    res <- filter(d, jis_code %in% jis_code_city)
+  }
+  return(res)
+
 }
