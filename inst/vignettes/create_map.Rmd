@@ -50,8 +50,8 @@ p + geom_point(data = d33, aes(x = long, y = lat, fill = "#2196F3", size = 6)) +
   guides(fill = FALSE, size = FALSE)
 ```
 
-```{r gg_jpn_district_pref37}
-spdf_jpn_pref(code = "37", district = TRUE) %>% gg_jpn_district()
+```{r gg_jpn_district_pref33}
+spdf_jpn_pref(code = "33", district = TRUE) %>% gg_jpn_district()
 ```
 
 ```{r gg_jpn_district_pref_feature_ggghost}
@@ -61,7 +61,7 @@ p - theme_map()
 
 ## leaflet
 
-```{r}
+```{r, eval = FALSE, echo = TRUE}
 library(leaflet)
 leaflet() %>%
   addTiles() %>%
