@@ -10,3 +10,12 @@ test_that("spdf_jpn_cities", {
   expect_equal(nrow(spdf_jpn_cities(jis_code_pref = 33, jis_code = c(33103, 33104, 33205))), 141L)
   expect_equal(nrow(spdf_jpn_cities(jis_code_pref = 33, jis_code = 33205)), 77L)
 })
+
+test_that("Collect administration offices data", {
+  expect_s4_class(spdf_jpn_admins(code = 47), "SpatialPointsDataFrame")
+  expect_equal(dim(spdf_jpn_admins(code = 47)@data), c(65, 6))
+  expect_named(spdf_jpn_admins(code = 47)@data,
+               c("jis_code", "type", "name", "address", "longitude", "latitude"))
+  expect_equal(dim(spdf_jpn_admins(code = 47, jis_code_city = c("47205", "47209"))@data), c(6, 6))
+})
+
