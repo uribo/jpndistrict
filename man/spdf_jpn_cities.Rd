@@ -2,7 +2,7 @@
 % Please edit documentation in R/spdf_jpn.R
 \name{spdf_jpn_cities}
 \alias{spdf_jpn_cities}
-\title{Spatial Data frame cities}
+\title{Spatial Data frame for city area polygons}
 \usage{
 spdf_jpn_cities(path, jis_code_pref, jis_code_city = NULL,
   admin_name = NULL)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/spdf_jpn.R
 \name{spdf_jpn_pref}
 \alias{spdf_jpn_pref}
-\title{Spatial Data frame}
+\title{Spatial Data frame for prefecture area polygon}
 \usage{
 spdf_jpn_pref(path, code = NULL, admin_name = NULL, district = TRUE)
 }

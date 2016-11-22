@@ -1,6 +1,6 @@
 Package: jpndistrict
 Type: Package
-Title: Create Japanese Administration Area Maps
+Title: Create Japanese Administration Area and Office Maps
 Version: 0.0.0.9999
 Authors@R: c(person(given = "Shinya", family = "Uryu",
                                             email = "suika1127@gmail.com",
