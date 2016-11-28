@@ -39,7 +39,9 @@ spdf_jpn_pref <- function(path, code = NULL, admin_name = NULL, district = TRUE)
 
 #' Spatial Data frame for city area polygons
 #'
-#' @description City area polygon data.
+#' @description City area polygon data. When an administrative name (jis_code_city) or code (jis_code_city)
+#' is specified as an argument, the target city data is extracted. If neither is given,
+#' it becomes the data of the target prefecture.
 #' @import spdplyr
 #' @importFrom dplyr filter
 #' @param path path to ksj N03 folder
@@ -60,7 +62,9 @@ spdf_jpn_cities <- function(path, jis_code_pref, jis_code_city = NULL, admin_nam
       d <- spdf_jpn_pref(path = path, district = TRUE)
     }
 
-  if (missing(admin_name)) {
+  if (missing(admin_name) & missing(jis_code_city)) {
+    d <- d
+  } else if (missing(admin_name)) {
     d <- dplyr::filter(d, city_code %in% jis_code_city)
   } else if (missing(jis_code_city)) {
     d <- dplyr::filter(d, grepl(admin_name, city_name_full))
