@@ -12,6 +12,6 @@ read_ksj_cityarea(code = NULL, path = NULL)
 \item{path}{path to N03 shapefile (if already exist)}
 }
 \description{
-Intermediate function
+Download N03 raw data files or loading if file exists.
 }
 

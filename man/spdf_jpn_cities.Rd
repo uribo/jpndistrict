@@ -17,7 +17,9 @@ spdf_jpn_cities(path, jis_code_pref, jis_code_city = NULL,
 \item{admin_name}{city name}
 }
 \description{
-City area polygon data.
+City area polygon data. When an administrative name (jis_code_city) or code (jis_code_city)
+is specified as an argument, the target city data is extracted. If neither is given,
+it becomes the data of the target prefecture.
 }
 \examples{
 spdf_jpn_cities(jis_code_pref = 33, jis_code_city = 33103)
