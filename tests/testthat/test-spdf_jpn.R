@@ -7,8 +7,8 @@ test_that("spdf_jpn_pref", {
 
 test_that("spdf_jpn_cities", {
   expect_s4_class(spdf_jpn_cities(jis_code_pref = 33, jis_code = 33103), "SpatialPolygonsDataFrame")
-  expect_equal(nrow(spdf_jpn_cities(jis_code_pref = 33, jis_code = c(33103, 33104, 33205))), 141L)
-  expect_equal(nrow(spdf_jpn_cities(jis_code_pref = 33, jis_code = 33205)), 77L)
+  expect_equal(nrow(spdf_jpn_cities(jis_code_pref = 33, jis_code = c(33103, 33104, 33205))), 20L)
+  expect_equal(nrow(spdf_jpn_cities(jis_code_pref = 33, jis_code = 33205)), 14L)
 })
 
 test_that("Collect administration offices data", {
