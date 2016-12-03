@@ -20,6 +20,7 @@ gg_jpn_district <- function(df) {
   p %g<% ggplot2::ggplot(data = df, ggplot2::aes(map_id = id, x = long, y = lat))
   p <- p + ggplot2::geom_map(map = df, color = "black", fill = "white")
   p <- p + ggplot2::coord_map()
+  p <- p + ggplot2::coord_equal()
   p <- p + ggthemes::theme_map()
   return(p)
 }
