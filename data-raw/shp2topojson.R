@@ -49,25 +49,3 @@ foreach(i = 1:47, .errorhandling = "pass") %do% {
     readr::write_rds(path = paste0("inst/extdata/pref_", sprintf("%02s", i), "_city_spdf.rds"), compress = "xz")
 }
 
-# # 都道府県ごとのrds(市区町村境界なし)
-# dist_geo_0 <- rgeos::gUnaryUnion(jpn_pref_shp, id = jpn_pref_shp@data$N03_001)
-#
-# # jppref[jppref %in% dist_geo_0@polygons[[37]]@ID] # 13
-# # jppref[jppref %in% dist_geo_0@polygons[[37]]@ID] %>% as.numeric()
-# jppref.new.order <- unique(jpn_pref_shp@data$N03_001) %>% forcats::fct_relevel(unique(jpn_pref_shp@data$N03_001) %>% as.character())
-# #
-# # jppref.new.order[jppref.new.order %in% dist_geo_0@polygons[[1]]@ID] %>% as.numeric()
-# #
-# # jppref[jppref %in% dist_geo_0@polygons[[1]]@ID]
-#
-# foreach(i = 1:length(jppref)) %do% {
-#   geojson_write(sp::SpatialPolygons(dist_geo_0@polygons[i]), lat = "lat", lon = "long", geometry = "polygon")
-#
-#   tmp <- geojson_read("myfile.geojson", method = "local", what = "sp") %>%
-#     mutate(pref_name = dist_geo_0@polygons[[i]]@ID,
-#            jiscode = as.numeric(jppref.new.order[jppref.new.order %in% dist_geo_0@polygons[[i]]@ID])) %>%
-#     select(-dummy)
-#
-#   readr::write_rds(tmp,
-#                    path = paste0("inst/extdata/pref_", sprintf("%02s", as.numeric(jppref.new.order[jppref.new.order %in% dist_geo_0@polygons[[i]]@ID])), "_spdf.rds"))
-# }
