@@ -37,7 +37,7 @@ foreach(i = 1:47, .errorhandling = "pass") %do% {
                           method           = "local",
                           what             = "sp",
                           stringsAsFactors = TRUE) %>%
-    ms_simplify() %>%
+    ms_simplify(keep = 0.030, method = "dp") %>%
     select(-N03_002) %>%
     mutate(N03_001 = as.character(N03_001),
            N03_003 = as.character(N03_003),
