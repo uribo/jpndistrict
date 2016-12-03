@@ -3,7 +3,7 @@
 jpndistrict <img src="logo.png" align="right" width="80px" />
 =============================================================
 
-[![Travis-CI Build Status](https://travis-ci.org/uribo/jpndistrict.svg?branch=master)](https://travis-ci.org/uribo/jpndistrict) [![codecov](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](https://codecov.io/gh/uribo/jpndistrict)
+[![Travis-CI Build Status](https://travis-ci.org/uribo/jpndistrict.svg?branch=master)](https://travis-ci.org/uribo/jpndistrict) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/jpndistrict)](https://cran.r-project.org/package=jpndistrict) [![codecov](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](https://codecov.io/gh/uribo/jpndistrict)
 
 *English version of README is [here](https://github.com/uribo/jpmesh/blob/master/README.en.md)*
 
@@ -15,7 +15,11 @@ Overview
 Installation
 ------------
 
-**`{jpndistrict}`**は**`{devtool}`**パッケージを利用して開発版をインストール可能です。
+**`{jpndistrict}`**はCRANからインストールが可能です。また**`{devtool}`**パッケージを利用して開発版をインストールすることもできます。
+
+``` r
+install.packages("jpndistrict")
+```
 
 ``` r
 install.packages("devtools")
@@ -65,10 +69,11 @@ spdf_jpn_admins(code = 33, jis_code_city = c("33101", "33212"))
 -   \[x\] テストコードの充実
 -   \[x\] CI環境の構築
 -   \[x\] Vignettes、ドキュメントの整備
--   \[ \] CRANへの登録
+-   \[x\] CRANへの登録
 -   \[ \] Shinyアプリケーション実装
 
 ### 開発履歴: History
 
 -   `2016-10-22` 開発に着手。 `v0.0.9999`
 -   `2016-11-04` GitHubへのpush
+-   `2016-12-03` CRANへの登録

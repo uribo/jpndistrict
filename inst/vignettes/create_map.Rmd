@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "Create maps using jpndistrict"
 author: "Shinya Uryu"
 date: "`r Sys.Date()`"
 output: 
@@ -13,21 +13,27 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
+
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(
+library(knitr)
+opts_chunk$set(
   fig.argin = "center",
+  fig.width = 7,
+  fig.height = 5,
   warning = FALSE,
   message = FALSE
 )
 ```
 
-パッケージと都道府県の県庁所在地のデータを読み込みます。
+Loading data
 
 ```{r}
 library(magrittr)
 library(dplyr)
 library(spdplyr)
 library(jpndistrict)
+library(ggplot2)
+library(ggthemes)
 data("jpnprefs")
 ```
 
@@ -37,21 +43,20 @@ spdf.33 <- spdf_jpn_cities(jis_code_pref = 33, jis_code = c(33101, 33102, 33103,
 
 ## ggplot2
 
+```{r gg_jpn_district_pref33}
+spdf_jpn_pref(code = 33, district = TRUE) %>% gg_jpn_district()
+```
+
+
 ```{r gg_jpn_district_pref33_capital_point}
-library(ggplot2)
-library(ggthemes)
 d33 <- jpnprefs %>% filter(prefecture == "岡山県") %>% 
                rename(lat = capital_latitude,
                       long = capital_longitude) %>% 
   mutate(id = 33101)
 
-p <- spdf.33 %>% fortify() %>% gg_jpn_district()
+p <- spdf.33 %>% gg_jpn_district()
 p + geom_point(data = d33, aes(x = long, y = lat, fill = "#2196F3", size = 6)) +
   guides(fill = FALSE, size = FALSE)
-```
-
-```{r gg_jpn_district_pref33}
-spdf_jpn_pref(code = "33", district = TRUE) %>% gg_jpn_district()
 ```
 
 ```{r gg_jpn_district_pref_feature_ggghost}

@@ -3,7 +3,7 @@
 jpndistrict <img src="logo.png" align="right" width="80px" />
 =============================================================
 
-[![Travis-CI Build Status](https://travis-ci.org/uribo/jpndistrict.svg?branch=master)](https://travis-ci.org/uribo/jpndistrict) [![codecov](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](https://codecov.io/gh/uribo/jpndistrict)
+[![Travis-CI Build Status](https://travis-ci.org/uribo/jpndistrict.svg?branch=master)](https://travis-ci.org/uribo/jpndistrict) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/jpndistrict)](https://cran.r-project.org/package=jpndistrict) [![codecov](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](https://codecov.io/gh/uribo/jpndistrict)
 
 Overview
 --------
@@ -13,7 +13,13 @@ In this package, the administrative area data to be provided uses the National L
 Installation
 ------------
 
-Please use the **`{devtool}`** package to install via the GitHub repository.
+Install from CRAN.
+
+``` r
+install.packages("jpndistrict")
+```
+
+For developers, please use the **`{devtool}`** package to install via the GitHub repository.
 
 ``` r
 install.packages("devtools")
