@@ -4,7 +4,8 @@
 \alias{spdf_jpn_pref}
 \title{Spatial Data frame for prefecture area polygon}
 \usage{
-spdf_jpn_pref(code = NULL, admin_name = NULL, district = TRUE)
+spdf_jpn_pref(code = NULL, admin_name = NULL, district = TRUE,
+  download = FALSE)
 }
 \arguments{
 \item{code}{jis code from 1 to 47}
@@ -12,14 +13,15 @@ spdf_jpn_pref(code = NULL, admin_name = NULL, district = TRUE)
 \item{admin_name}{string}
 
 \item{district}{logical (default TRUE)}
+
+\item{download}{logical (default FALSE).}
 }
 \description{
 Prefecture polygon data.
 }
 \details{
-Download administrative area data from the National Land Numeral Information Download Service. If there is already a downloaded file,
-it is read by giving the path to the file as the path argument. When path is not specified, it downloads to the temporary folder.
-In the case of the same prefecture in the session, we will not download twice.
+Collect unit of prefecture SpatialPolygonsDataFrame. If downalod argument is TRUE,
+download administrative area data from the National Land Numeral Information Download Service (for law data).
 }
 \examples{
 \dontrun{

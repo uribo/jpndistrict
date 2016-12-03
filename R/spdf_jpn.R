@@ -1,19 +1,19 @@
 #' Spatial Data frame for prefecture area polygon
 #'
 #' @description Prefecture polygon data.
-#' @details Download administrative area data from the National Land Numeral Information Download Service. If there is already a downloaded file,
-#' it is read by giving the path to the file as the path argument. When path is not specified, it downloads to the temporary folder.
-#' In the case of the same prefecture in the session, we will not download twice.
+#' @details Collect unit of prefecture SpatialPolygonsDataFrame. If downalod argument is TRUE,
+#' download administrative area data from the National Land Numeral Information Download Service (for law data).
 #' @param code jis code from 1 to 47
 #' @param admin_name string
 #' @param district logical (default TRUE)
+#' @param download logical (default FALSE).
 #' @examples
 #' \dontrun{
 #' spdf_jpn_pref(code = 33, district = FALSE)
 #' }
 #'
 #' @export
-spdf_jpn_pref <- function(code = NULL, admin_name = NULL, district = TRUE) {
+spdf_jpn_pref <- function(code = NULL, admin_name = NULL, district = TRUE, download = FALSE) {
 
     if (missing(admin_name)) {
       pref.code <- collect_prefcode(code = code)
@@ -21,7 +21,12 @@ spdf_jpn_pref <- function(code = NULL, admin_name = NULL, district = TRUE) {
       pref.code <- collect_prefcode(admin_name = admin_name)
     }
 
+  if (download == FALSE) {
     d <- readr::read_rds(system.file(paste0("extdata/pref_", pref.code, "_city_spdf.rds"), package = "jpndistrict"))
+  } else {
+    d <- read_ksj_cityarea(code = as.numeric(pref.code))
+  }
+
 
   if (district == TRUE) {
     res <- d
