@@ -46,11 +46,7 @@ foreach(i = 1:47, .errorhandling = "pass") %do% {
            city_name_full = stringr::str_trim(gsub("NA", "", paste(tmp_var, N03_004)))) %>%
     rename(pref_name = N03_001, city_name_ = N03_003, city_name = N03_004, city_code = N03_007) %>%
     select(pref_name, city_name_, city_name, city_name_full, city_code) %>%
-    # mutate(pref_name = as.character(pref_name),
-    #        city_name_ = as.character(city_name_),
-    #        city_name = as.character(city_name),
-    #        city_name_full = as.character(city_name_full)) %>%
-    readr::write_rds(path = paste0("inst/extdata/pref_", sprintf("%02s", i), "_city_spdf.rds"))
+    readr::write_rds(path = paste0("inst/extdata/pref_", sprintf("%02s", i), "_city_spdf.rds"), compress = "xz")
 }
 
 # # 都道府県ごとのrds(市区町村境界なし)
