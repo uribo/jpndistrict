@@ -52,9 +52,6 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
-</li>
-<li>
   <a href="../news/index.html">News</a>
 </li>
       </ul>
@@ -81,21 +78,25 @@
     </div>
 
     
-    <p>Rendering city map using &#39;ggplot2&#39; and &#39;ggghost&#39; system.</p>
+    <p>Rendering city map using &#39;ggplot2&#39; and &#39;ggghost&#39; systems.</p>
     
 
-    <pre><span class='fu'>gg_jpn_district</span>(<span class='no'>df</span>)</pre>
+    <pre><span class='fu'>gg_jpn_district</span>(<span class='no'>df</span>, <span class='kw'>ghost</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>df</dt>
       <dd>data frame</dd>
+      <dt>ghost</dt>
+      <dd>logical (default TRUE). If don&#39;t spirit of ggplot2 calls, specify FALSE.</dd>
+      <dt>...</dt>
+      <dd>Other arguments passed on to coord_map</dd>
     </dl>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># gg_jpn_district(spdf_jpn_pref(code = "37", district = TRUE))</span>
+<span class='co'># gg_jpn_district(spdf_jpn_pref(code = 33, district = TRUE))</span>
 <span class='co'>## ---------------------------------------------</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
