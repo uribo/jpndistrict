@@ -60,37 +60,23 @@ bind_cityareas <- function(path = NULL) {
 #' @import spdplyr
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
-#' @importFrom geojsonio geojson_write
-#' @importFrom geojsonio geojson_read
-#' @importFrom rgeos gUnaryUnion
-#' @importFrom sp SpatialPolygons
+#' @importFrom rmapshaper ms_dissolve
 raw_bind_cityareas <- function(pref.shp) {
-  dummy <- NULL
-  tmp.geojson <- tempfile(fileext = ".geojson")
+  rmapshaperid <- NULL
 
-  d.merge <- rgeos::gUnaryUnion(pref.shp,
-                                id = pref.shp@data$pref_name)
+  d.merge <- rmapshaper::ms_dissolve(pref.shp)
 
-  geojsonio::geojson_write(sp::SpatialPolygons(d.merge@polygons[1]),
-                           lat = "lat", lon = "long",
-                           geometry = "polygon",
-                           file = tmp.geojson,
-                           verbose = FALSE)
-  res <- geojsonio::geojson_read(tmp.geojson,
-                                 method = "local",
-                                 what = "sp",
-                                 stringsAsFactors = TRUE) %>%
+  res <- d.merge %>%
     mutate(pref_name = pref.shp$pref_name[1],
            jiscode  = as.numeric(substr(pref.shp$city_code[1], 1, 2))) %>%
-    select(-dummy)
-
-  file.remove(tmp.geojson)
+    select(-rmapshaperid)
 
   return(res)
 }
 
 #' Intermediate function
 #'
+#' @description Download N03 raw data files or loading if file exists.
 #' @param code prefecture code (JIS X 0402)
 #' @param path path to N03 shapefile (if already exist)
 read_ksj_cityarea <- function(code = NULL, path = NULL) {

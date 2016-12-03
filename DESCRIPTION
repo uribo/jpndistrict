@@ -20,6 +20,7 @@ Imports:
     miniUI,
     readr,
     rgeos,
+    rmapshaper,
     shiny (>= 0.13),
     sp,
     spdplyr,

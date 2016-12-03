@@ -4,11 +4,9 @@
 \alias{spdf_jpn_pref}
 \title{Spatial Data frame for prefecture area polygon}
 \usage{
-spdf_jpn_pref(path, code = NULL, admin_name = NULL, district = TRUE)
+spdf_jpn_pref(code = NULL, admin_name = NULL, district = TRUE)
 }
 \arguments{
-\item{path}{path to ksj N03 folder}
-
 \item{code}{jis code from 1 to 47}
 
 \item{admin_name}{string}
