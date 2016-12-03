@@ -4,7 +4,6 @@
 #' @import ggplot2
 #' @import ggghost
 #' @importFrom ggthemes theme_map
-#' @importFrom rmapshaper ms_simplify
 #' @param df data frame
 #' @aliases gg_jpn_district
 #' @examples
@@ -15,8 +14,8 @@
 gg_jpn_district <- function(df) {
   p <- long <- lat <- NULL
 
+  df <- ggplot2::fortify(df)
 
-  df <- ggplot2::fortify(rmapshaper::ms_simplify(df))
 
   p %g<% ggplot2::ggplot(data = df, ggplot2::aes(map_id = id, x = long, y = lat))
   p <- p + ggplot2::geom_map(map = df, color = "black", fill = "white")
