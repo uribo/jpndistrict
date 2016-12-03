@@ -4,17 +4,21 @@
 \alias{gg_jpn_district}
 \title{Display city map based on 'ggplot2'}
 \usage{
-gg_jpn_district(df)
+gg_jpn_district(df, ghost = TRUE, ...)
 }
 \arguments{
 \item{df}{data frame}
+
+\item{ghost}{logical (default TRUE). If don't spirit of ggplot2 calls, specify FALSE.}
+
+\item{...}{Other arguments passed on to coord_map}
 }
 \description{
-Rendering city map using 'ggplot2' and 'ggghost' system.
+Rendering city map using 'ggplot2' and 'ggghost' systems.
 }
 \examples{
 \dontrun{
-gg_jpn_district(spdf_jpn_pref(code = "37", district = TRUE))
+gg_jpn_district(spdf_jpn_pref(code = 33, district = TRUE))
 }
 }
 
