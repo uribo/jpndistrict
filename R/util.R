@@ -23,8 +23,7 @@ collect_ksj_p34 <- function(path = NULL) {
     paste0(path, "/", list.files(path, pattern = paste0(code, ".shp$"))),
     method           = "local",
     what             = "sp",
-    stringsAsFactors = TRUE,
-    encoding         = "cp932")
+    stringsAsFactors = TRUE)
 
   d@data <- d@data %>%
     bind_cols(as.data.frame(d@coords)) %>%
@@ -170,7 +169,6 @@ collect_cityarea <- function(path = NULL) {
   res <- geojsonio::geojson_read(list.files(path, pattern = "shp$", full.names = TRUE, recursive = TRUE),
                           method           = "local",
                           what             = "sp",
-                          encoding         = "cp932",
                           stringsAsFactors = TRUE) %>%
     select(-N03_002) %>%
     mutate(N03_001 = as.character(N03_001) %>% stringi::stri_conv(to = "UTF8"),
