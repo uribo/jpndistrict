@@ -48,6 +48,7 @@ bind_cityareas <- function(path = NULL) {
   pref.shp <- geojsonio::geojson_read(list.files(path, pattern = "shp$", full.names = TRUE),
                                       method           = "local",
                                       what             = "sp",
+                                      encoding         = "cp932",
                                       stringsAsFactors = TRUE)
   res <- raw_bind_cityareas(pref.shp)
 
@@ -160,6 +161,7 @@ collect_prefcode <- function(code = NULL, admin_name = NULL) {
 #' @importFrom dplyr select
 #' @importFrom geojsonio geojson_read
 #' @importFrom stringi stri_trim_both
+#' @importFrom stringi stri_conv
 collect_cityarea <- function(path = NULL) {
 
   N03_001 <- N03_002 <- N03_003 <- N03_004 <- N03_007 <- tmp_var <- NULL
@@ -168,13 +170,14 @@ collect_cityarea <- function(path = NULL) {
   res <- geojsonio::geojson_read(list.files(path, pattern = "shp$", full.names = TRUE, recursive = TRUE),
                           method           = "local",
                           what             = "sp",
+                          encoding         = "cp932",
                           stringsAsFactors = TRUE) %>%
     select(-N03_002) %>%
-    mutate(N03_001 = as.character(N03_001),
-           N03_003 = as.character(N03_003),
-           N03_004 = as.character(N03_004),
+    mutate(N03_001 = as.character(N03_001) %>% stringi::stri_conv(to = "UTF8"),
+           N03_003 = as.character(N03_003) %>% stringi::stri_conv(to = "UTF8"),
+           N03_004 = as.character(N03_004) %>% stringi::stri_conv(to = "UTF8"),
            tmp_var = ifelse(is.na(N03_003), "", N03_003),
-           city_name_full = stringi::stri_trim_both(gsub("NA", "", paste(tmp_var, N03_004)))) %>%
+           city_name_full = stringi::stri_trim_both(gsub("NA", "", paste(tmp_var, N03_004))) %>% stringi::stri_conv(to = "UTF8")) %>%
     rename(pref_name = N03_001, city_name_ = N03_003, city_name = N03_004, city_code = N03_007) %>%
     select(pref_name, city_name_, city_name, city_name_full, city_code)
 
