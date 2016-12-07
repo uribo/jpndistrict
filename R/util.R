@@ -111,7 +111,7 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
 
       utils::download.file(paste0("http://nlftp.mlit.go.jp/ksj/gml/data/N03/N03-15/N03-150101_", pref.identifer, "_GML.zip"),
                     destfile = dest.path,
-                    method   = "wget",
+                    method   = "auto",
                     quiet    = TRUE)
       utils::unzip(zipfile = dest.path,
                    exdir   = extract.path)
@@ -187,6 +187,8 @@ collect_cityarea <- function(path = NULL) {
 #' @param code prefecture code (JIS X 0402)
 #' @param path path to N03 shapefile (if already exist)
 #' @importFrom readr read_rds
+#' @importFrom utils download.file
+#' @importFrom utils unzip
 read_ksj_p34 <- function(code = NULL, path = NULL) {
 
   if (missing(path)) {
@@ -196,10 +198,10 @@ read_ksj_p34 <- function(code = NULL, path = NULL) {
 
     if (is.null(path) & file.exists(paste(tempdir(), df.dl.url$dest_file[code], sep = "/")) == FALSE) {
 
-      download.file(df.dl.url$zipFileUrl[code],
+      utils::download.file(df.dl.url$zipFileUrl[code],
                     destfile = paste(tempdir(), df.dl.url$dest_file[code], sep = "/"),
-                    method = "wget")
-      unzip(zipfile = paste(tempdir(), df.dl.url$dest_file[code], sep = "/"),
+                    method = "auto")
+      utils::unzip(zipfile = paste(tempdir(), df.dl.url$dest_file[code], sep = "/"),
             exdir   = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[code]),  sep = "/"))
 
       path = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[code]),  sep = "/")
