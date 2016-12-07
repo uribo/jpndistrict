@@ -36,14 +36,15 @@ foreach(i = 1:47, .errorhandling = "pass") %do% {
                                  "_GML/N03-15_", sprintf("%02d", i), "_150101.shp"),
                           method           = "local",
                           what             = "sp",
+                          encoding = "cp932",
                           stringsAsFactors = TRUE) %>%
     ms_simplify(keep = 0.030, method = "dp") %>%
     select(-N03_002) %>%
-    mutate(N03_001 = as.character(N03_001),
-           N03_003 = as.character(N03_003),
-           N03_004 = as.character(N03_004),
+    mutate(N03_001 = as.character(N03_001) %>% stringr::str_conv(encoding = "UTF8"),
+           N03_003 = as.character(N03_003) %>% stringr::str_conv(encoding = "UTF8"),
+           N03_004 = as.character(N03_004) %>% stringr::str_conv(encoding = "UTF8"),
            tmp_var = ifelse(is.na(N03_003), "", N03_003),
-           city_name_full = stringr::str_trim(gsub("NA", "", paste(tmp_var, N03_004)))) %>%
+           city_name_full = stringr::str_trim(gsub("NA", "", paste(tmp_var, N03_004))) %>% stringr::str_conv(encoding = "UTF8")) %>%
     rename(pref_name = N03_001, city_name_ = N03_003, city_name = N03_004, city_code = N03_007) %>%
     select(pref_name, city_name_, city_name, city_name_full, city_code) %>%
     readr::write_rds(path = paste0("inst/extdata/pref_", sprintf("%02s", i), "_city_spdf.rds"), compress = "xz")
