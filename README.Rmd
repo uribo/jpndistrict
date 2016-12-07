@@ -48,13 +48,13 @@ library(jpndistrict)
 ### 行政区域データの取得
 
 - `spdf_jpn_pref()`... 都道府県全体の行政区域データ。引数district = FALSEで市区町村の区域のないデータを返します
-- `spdf_jpn_cities()`... `spdf_jpn_pref()`の都道府県行政区域データから、特定の市区町村のみを指定できます
+- `spdf_jpn_cities()`... 対象の都道府県にふくまれる特定の市区町村を抽出します
 
 ```{r, eval = FALSE, echo = TRUE}
 spdf_jpn_pref(14)
 spdf_jpn_pref(14, district = FALSE)
-spdf_jpn_cities(spdf_jpn_pref(14), admin_name = "海老名市")
-spdf_jpn_cities(jis_code_pref = 33, admin_name = c("倉敷市", "笠岡市"))
+spdf_jpn_cities(14, admin_name = "海老名市")
+spdf_jpn_cities(33, admin_name = c("倉敷市", "笠岡市"))
 ```
 
 ### 市区町村役場データの取得

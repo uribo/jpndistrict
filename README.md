@@ -44,8 +44,8 @@ library(jpndistrict)
 ``` r
 spdf_jpn_pref(14)
 spdf_jpn_pref(14, district = FALSE)
-spdf_jpn_cities(spdf_jpn_pref(14), admin_name = "海老名市")
-spdf_jpn_cities(jis_code_pref = 33, admin_name = c("倉敷市", "笠岡市"))
+spdf_jpn_cities(14, admin_name = "海老名市")
+spdf_jpn_cities(33, admin_name = c("倉敷市", "笠岡市"))
 ```
 
 ### 市区町村役場データの取得
