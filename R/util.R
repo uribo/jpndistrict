@@ -23,7 +23,8 @@ collect_ksj_p34 <- function(path = NULL) {
     paste0(path, "/", list.files(path, pattern = paste0(code, ".shp$"))),
     method           = "local",
     what             = "sp",
-    stringsAsFactors = TRUE)
+    stringsAsFactors = TRUE,
+    encoding         = "UTF8")
 
   d@data <- d@data %>%
     bind_cols(as.data.frame(d@coords)) %>%
