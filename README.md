@@ -1,9 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-jpndistrict <img src="logo.png" align="right" width="80px" />
-=============================================================
+jpndistrict
+===========
 
-[![Travis-CI Build Status](https://travis-ci.org/uribo/jpndistrict.svg?branch=master)](https://travis-ci.org/uribo/jpndistrict) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/jpndistrict)](https://cran.r-project.org/package=jpndistrict) [![codecov](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](https://codecov.io/gh/uribo/jpndistrict)
+[![Travis-CI Build Status](https://travis-ci.org/uribo/jpndistrict.svg?branch=master)](https://travis-ci.org/uribo/jpndistrict) [![codecov](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](https://codecov.io/gh/uribo/jpndistrict)
 
 *English version of README is [here](https://github.com/uribo/jpmesh/blob/master/README.en.md)*
 
@@ -38,8 +38,8 @@ library(jpndistrict)
 
 ### 行政区域データの取得
 
--   `spdf_jpn_pref()`... 都道府県全体の行政区域データ。引数district = FALSEで市区町村の区域のないデータを返します
--   `spdf_jpn_cities()`... `spdf_jpn_pref()`の都道府県行政区域データから、特定の市区町村のみを指定できます
+-   `spdf_jpn_pref()`... 都道府県全体の行政区域データ。引数`district = FALSE`で市区町村の区域のないデータを返します
+-   `spdf_jpn_cities()`... 対象の都道府県にふくまれる特定の市区町村を抽出します
 
 ``` r
 spdf_jpn_pref(14)
@@ -59,8 +59,7 @@ spdf_jpn_admins(code = 33, jis_code_city = c("33101", "33212"))
 
 ### 特徴
 
--   `spdf_jpn_*()`関数が返す行政区域データはSpatialPolygonDataframeクラスです
--   base, ggplot2, leaflet, plotlyといった各種の地図描画システムに対応しています。詳細は[vignettes](inst/vignettes/create_map.Rmd)に書いてあります。
+-   `spdf_jpn_*()`関数が返す行政区域データはsfクラスです
 -   都道府県コード、市区町村コードによる指定が可能です
 
 今後の展望: Roadmap
@@ -77,3 +76,4 @@ spdf_jpn_admins(code = 33, jis_code_city = c("33101", "33212"))
 -   `2016-10-22` 開発に着手。 `v0.0.9999`
 -   `2016-11-04` GitHubへのpush
 -   `2016-12-03` CRANへの登録
+-   `2017-07-23` **sf**パッケージへの対応

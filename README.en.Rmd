@@ -13,9 +13,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-# jpndistrict <img src="logo.png" align="right" width="80px" />
+# jpndistrict
 
-[![Travis-CI Build Status](https://travis-ci.org/uribo/jpndistrict.svg?branch=master)](https://travis-ci.org/uribo/jpndistrict) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/jpndistrict)](https://cran.r-project.org/package=jpndistrict) [![codecov](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](https://codecov.io/gh/uribo/jpndistrict)
+[![Travis-CI Build Status](https://travis-ci.org/uribo/jpndistrict.svg?branch=master)](https://travis-ci.org/uribo/jpndistrict) [![codecov](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](https://codecov.io/gh/uribo/jpndistrict)
 
 ## Overview
 
@@ -58,5 +58,3 @@ spdf_jpn_cities(33, admin_name = c("倉敷市", "笠岡市"))
 spdf_jpn_admins(code = 33)
 spdf_jpn_admins(code = 33, jis_code_city = c("33101", "33212"))
 ```
-
-See [vignettes](inst/vignettes/create_map.Rmd) for details.
