@@ -30,7 +30,6 @@ Loading data
 ```{r}
 library(magrittr)
 library(dplyr)
-library(spdplyr)
 library(jpndistrict)
 library(ggplot2)
 library(ggthemes)

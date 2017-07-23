@@ -14,4 +14,3 @@ collect_prefcode(code = NULL, admin_name = NULL)
 \description{
 Get prefecture code from prefecture of name or number.
 }
-

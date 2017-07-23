@@ -1,7 +1,7 @@
 Package: jpndistrict
 Type: Package
 Title: Create Japanese Administration Area and Office Maps
-Version: 0.1.0.9999
+Version: 0.2.0
 Authors@R: c(person(given = "Shinya", family = "Uryu",
                                             email = "suika1127@gmail.com",
                                             role  = c("aut", "cre")))
@@ -12,33 +12,30 @@ Depends:
     R (>= 3.1.0)
 Imports:
     dplyr,
-    geojsonio,
-    ggghost,
-    ggplot2,
-    ggthemes,
     leaflet,
     magrittr,
     miniUI,
     readr,
-    rgeos,
-    rmapshaper,
+    sf,
     shiny (>= 0.13),
-    sp,
-    spdplyr,
-    stringi
+    stringi,
+    tibble
 Suggests:
     devtools,
+    ggplot2,
+    kokudosuuchi,
     jpmesh,
     knitr,
-    rmarkdown,
-    rvest,
     plotly,
     purrr,
+    rmarkdown,
+    rvest,
     testthat,
     tidyr
+Remotes: tidyverse/ggplot2
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 URL: https://github.com/uribo/jpndistrict
 BugReports: https://github.com/uribo/jpndistrict/issues

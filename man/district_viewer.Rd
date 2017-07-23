@@ -4,14 +4,12 @@
 \alias{district_viewer}
 \title{District Viewer}
 \usage{
-district_viewer(code = 33, color = "red", ...)
+district_viewer(code = 33, color = "red")
 }
 \arguments{
 \item{code}{prefecture code (default 33)}
 
 \item{color}{polygon line color for leaflet}
-
-\item{...}{other parameter to leaflet functions}
 }
 \description{
 Interactive district map and information tool.
@@ -21,4 +19,3 @@ Interactive district map and information tool.
 district_viewer()
 }
 }
-

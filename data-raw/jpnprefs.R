@@ -5,19 +5,25 @@
 
 options(digits = 9)
 # Load Employed Packages --------------------------------------------------
-library(rvest)
-library(magrittr)
-library(dplyr)
+library(rvest) # 0.3.2
+library(magrittr) # 1.5
+library(testthat) # 1.0.2
+# forcats (0.2.0), devtools (1.13.2)
+library(tidyverse)
+# readr # 1.1.1
+# dplyr # 0.7.0
+# tidyr # 0.6.3
+# purrr # 0.2.2.9000
 
-x <- read_html("https://ja.wikipedia.org/wiki/都道府県")
+# 都道府県
+x <- read_html("https://ja.wikipedia.org/wiki/%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C")
 df <- x %>% html_table(fill = TRUE) %>%
   extract2(4)
 
 df <- df[, c(2, 4, 6, 11)] %>%
   set_colnames(c("prefecture", "capital", "region", "jis_code")) %>%
-  arrange(jis_code)
-
-df %<>% mutate(jis_code = sprintf("%02d", jis_code),
+  arrange(jis_code) %>%
+  mutate(jis_code = sprintf("%02d", jis_code),
               capital = recode(capital,
                                `東京（新宿区）` = "新宿区"))
 
@@ -36,17 +42,15 @@ df.en <- df.en[, c(2, 5)] %>%
 jpnprefs <- df %>% left_join(df.en, by = "prefecture")
 
 # get coordinates
-library(purrr)
-library(tidyr)
-x <- read_html("https://ja.wikipedia.org/wiki/都道府県庁所在地")
+# 都道府県庁所在地
+x <- read_html("https://ja.wikipedia.org/wiki/%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C%E5%BA%81%E6%89%80%E5%9C%A8%E5%9C%B0")
 
 l <- x %>% html_nodes(css = 'table') %>%
   magrittr::extract(2) %>%
   html_nodes(css = 'tr > td > span.plainlinks > a') %>%
   html_attr("href") %>%
-  map_chr(gsub, pattern = ".+params=", replacement = "") %>%
-  map_chr(gsub, pattern = "region.+", replacement = "") %>%
-  map_chr(gsub, pattern = "_E_", replacement = "")
+  map_chr(gsub, pattern = ".+params=|region.+|_E_", replacement = "")
+
 # data.frameに変換
 df.coords <- l %>% map(strsplit, split = "_N.") %>%
   flatten() %>%
@@ -54,25 +58,22 @@ df.coords <- l %>% map(strsplit, split = "_N.") %>%
   t() %>%
   set_rownames(NULL) %>%
   set_colnames(c("lat", "lon")) %>%
-  as.data.frame()
-
-df.coords %<>%
+  as.data.frame() %>%
   separate(col = lat, into = c(paste("lat", c("d", "m", "s"), sep = "_")), sep = "_") %>%
   separate(lon, c(paste("lon", c("d", "m", "s"), sep = "_")), "_") %>%
-  rowwise() %>%
   mutate(latitude  = as.numeric(lat_d) + (as.numeric(lat_m) + as.numeric(lat_s) / 60) / 60,
          longitude = as.numeric(lon_d) + (as.numeric(lon_m) + as.numeric(lon_s) / 60) / 60) %>%
-  ungroup() %>%
   select(latitude, longitude)
 
 jpnprefs %<>% bind_cols(df.coords) %>%
-  select(jis_code, prefecture, capital, region, major_island, capital_latitude = latitude, capital_longitude = longitude)
+  # jis codeの順で水準を作る
+  mutate(prefecture = prefecture %>% factor() %>% forcats::fct_relevel(prefecture)) %>%
+  select(jis_code, prefecture, capital, region, major_island, capital_latitude = latitude, capital_longitude = longitude) %>%
+  as_tibble()
 
 expect_named(jpnprefs, c("jis_code", "prefecture", "capital", "region", "major_island", "capital_latitude", "capital_longitude"))
 expect_equal(dim(jpnprefs), c(47, 7))
-
-# jis codeの順で水準を作る
-jpnprefs$prefecture %<>% factor() %>% forcats::fct_relevel(jpnprefs$prefecture)
+expect_s3_class(jpnprefs, c("data.frame", "tbl_df"))
 
 devtools::use_data(jpnprefs, overwrite = TRUE)
 readr::write_rds(jpnprefs, "inst/extdata/jpnprefs.rds")

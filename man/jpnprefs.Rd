@@ -21,4 +21,3 @@ jpnprefs
 Prefectures dataset.
 }
 \keyword{datasets}
-

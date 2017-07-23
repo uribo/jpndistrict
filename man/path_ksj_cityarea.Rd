@@ -14,4 +14,3 @@ path_ksj_cityarea(code = NULL, path = NULL)
 \description{
 Download KSJ N03 zip files
 }
-

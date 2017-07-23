@@ -12,4 +12,3 @@ raw_bind_cityareas(pref.shp)
 \description{
 Intermediate function
 }
-

@@ -9,9 +9,8 @@ read_ksj_p34(code = NULL, path = NULL)
 \arguments{
 \item{code}{prefecture code (JIS X 0402)}
 
-\item{path}{path to N03 shapefile (if already exist)}
+\item{path}{path to P34 shapefile (if already exist)}
 }
 \description{
 Intermediate function
 }
-

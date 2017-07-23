@@ -24,4 +24,3 @@ Name and geolocations for administration offices in prefecture.
 spdf_jpn_admins(code = 17)
 }
 }
-

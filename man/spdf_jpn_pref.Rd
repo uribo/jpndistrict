@@ -29,4 +29,3 @@ spdf_jpn_pref(code = 33, district = FALSE)
 }
 
 }
-
