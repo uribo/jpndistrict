@@ -68,10 +68,12 @@ df.coords <- l %>% map(strsplit, split = "_N.") %>%
 jpnprefs %<>% bind_cols(df.coords) %>%
   # jis codeの順で水準を作る
   mutate(prefecture = prefecture %>% factor() %>% forcats::fct_relevel(prefecture)) %>%
-  select(jis_code, prefecture, capital, region, major_island, capital_latitude = latitude, capital_longitude = longitude)
+  select(jis_code, prefecture, capital, region, major_island, capital_latitude = latitude, capital_longitude = longitude) %>%
+  as_tibble()
 
 expect_named(jpnprefs, c("jis_code", "prefecture", "capital", "region", "major_island", "capital_latitude", "capital_longitude"))
 expect_equal(dim(jpnprefs), c(47, 7))
+expect_s3_class(jpnprefs, c("data.frame", "tbl_df"))
 
 devtools::use_data(jpnprefs, overwrite = TRUE)
 readr::write_rds(jpnprefs, "inst/extdata/jpnprefs.rds")
