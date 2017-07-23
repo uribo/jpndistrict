@@ -12,4 +12,3 @@ bind_cityareas(path = NULL)
 \description{
 Bind city area polygons to prefecture polygon
 }
-

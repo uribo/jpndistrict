@@ -12,4 +12,3 @@ pref_code(jis_code)
 \description{
 Get prefecture code from jis code
 }
-

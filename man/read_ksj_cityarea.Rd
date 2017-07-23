@@ -14,4 +14,3 @@ read_ksj_cityarea(code = NULL, path = NULL)
 \description{
 Download N03 raw data files or loading if file exists.
 }
-

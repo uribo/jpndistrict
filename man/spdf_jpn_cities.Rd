@@ -22,4 +22,3 @@ it becomes the data of the target prefecture.
 spdf_jpn_cities(jis_code_pref = 33, jis_code_city = 33103)
 spdf_jpn_cities(jis_code_pref = 33, jis_code_city = c(33103, 33104, 33205))
 }
-

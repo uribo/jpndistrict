@@ -7,9 +7,8 @@
 collect_ksj_p34(path = NULL)
 }
 \arguments{
-\item{path}{path to N03 shapefile (if already exist)}
+\item{path}{path to P34 shapefile (if already exist)}
 }
 \description{
 Collect administration office point datasets.
 }
-

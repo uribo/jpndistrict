@@ -12,4 +12,3 @@ collect_cityarea(path = NULL)
 \description{
 Collect administration area
 }
-
