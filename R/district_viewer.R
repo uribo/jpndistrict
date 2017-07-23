@@ -3,20 +3,21 @@
 #' @description Interactive district map and information tool.
 #' @param code prefecture code (default 33)
 #' @param color polygon line color for leaflet
-#' @param ... other parameter to leaflet functions
 #' @import leaflet
 #' @import miniUI
 #' @import shiny
+#' @importFrom dplyr filter
+#' @importFrom sf st_transform
 #' @importFrom stringi stri_unescape_unicode
 #' @examples
 #' \dontrun{
 #' district_viewer()
 #' }
 #' @export
-district_viewer <-  function(code = 33, color = "red", ...) {
+district_viewer <- function(code = 33, color = "red") {
 
   jpnprefs <- city_name_full <- city_code <- jpnprefs <- NULL
-  prefecture <- jis_code <- NULL
+  prefecture <- jis_code <- geometry <- NULL
 
   # UI ----------------------------------------------------------------------
   ui <- miniPage(
@@ -24,9 +25,9 @@ district_viewer <-  function(code = 33, color = "red", ...) {
     miniTabstripPanel(
       miniTabPanel("Parameters", icon = icon("sliders"),
                    miniContentPanel(
-                     selectInput("pref",
-                                 stringi::stri_unescape_unicode("\\u90fd\\u9053\\u5e9c\\u770c\\u3092\\u9078\\u629e:"),
-                                 choices = c(levels(jpnprefs$prefecture)),
+                     selectInput(inputId = "pref",
+                                 label = stringi::stri_unescape_unicode("\\u90fd\\u9053\\u5e9c\\u770c\\u3092\\u9078\\u629e:"),
+                                 choices = as.character(jpnprefs$prefecture),
                                  selected = code,
                                  multiple = FALSE),
                      conditionalPanel("input.pref !== null",
@@ -62,8 +63,8 @@ district_viewer <-  function(code = 33, color = "red", ...) {
 
     output$my.table <- renderDataTable({
 
-      d <- spdf_jpn_pref(admin_name = input$pref)@data %>%
-        dplyr::select(city_name_full, city_code)
+      d <- spdf_jpn_pref(admin_name = input$pref) %>%
+        dplyr::select(city_name_full, city_code, geometry)
 
 
       if (!is.null(input$cities)) {
@@ -76,7 +77,7 @@ district_viewer <-  function(code = 33, color = "red", ...) {
 
     output$my.map <- renderLeaflet({
 
-      prefcode <- jpnprefs %>% filter(prefecture == as.character(input$pref)) %>% use_series(jis_code)
+      prefcode <- jpnprefs %>% dplyr::filter(prefecture == as.character(input$pref)) %>% use_series(jis_code)
 
       if (is.null(input$cities)) {
         map.data <- spdf_jpn_pref(admin_name = input$pref, district = FALSE)
@@ -85,9 +86,10 @@ district_viewer <-  function(code = 33, color = "red", ...) {
         map.data <- spdf_jpn_cities(jis_code_pref = prefcode, admin_name = c(input$cities))
       }
 
-      leaflet(...) %>%
-        addTiles(...) %>%
-        addPolylines(data = map.data, color = color, ...)
+      leaflet() %>%
+        addTiles() %>%
+        addPolylines(data = sf::st_transform(map.data, 4326), color = color,
+                     label = ~map.data$city_name_full)
 
 
     })
