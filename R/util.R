@@ -13,15 +13,17 @@ pref_code <- function(jis_code) {
 #' @importFrom sf read_sf
 collect_ksj_p34 <- function(path = NULL) {
 
+  jis_code <- NULL
   code <- gsub(".+P34-14_|_GML|/", "", path)
 
   d <- sf::read_sf(
     paste0(path, "/", list.files(path, pattern = paste0(code, ".shp$"))),
-    stringsAsFactors = TRUE, # change to FALSE.. city code TRUE
+    stringsAsFactors = FALSE,
     options = c(paste0("ENCODING=",
                        dplyr::if_else(tolower(Sys.info()[["sysname"]]) == "windows",
                                       "UTF8", "cp932")))
-  ) %>% set_colnames(c("jis_code", "type", "name", "address", "geometry"))
+  ) %>% set_colnames(c("jis_code", "type", "name", "address", "geometry")) %>%
+    dplyr::mutate(jis_code = as.factor(jis_code))
 
   return(d)
 
@@ -37,7 +39,7 @@ bind_cityareas <- function(path = NULL) {
 
   pref.shp <- sf::read_sf(
     list.files(path, pattern = "shp$", full.names = TRUE),
-    stringsAsFactors = TRUE, # chnage to FALSE
+    stringsAsFactors = FALSE,
     options = c(paste0("ENCODING=",
                        dplyr::if_else(tolower(Sys.info()[["sysname"]]) == "windows",
                                       "UTF8", "cp932"))))
@@ -157,7 +159,7 @@ collect_cityarea <- function(path = NULL) {
   pref_name <- city_name_ <- city_name <- city_name_full <- city_code <- NULL
 
   res <- sf::read_sf(list.files(path, pattern = "shp$", full.names = TRUE, recursive = TRUE),
-                     stringsAsFactors = TRUE,
+                     stringsAsFactors = FALSE,
                      options = c(paste0("ENCODING=",
                                         dplyr::if_else(tolower(Sys.info()[["sysname"]]) == "windows",
                                                        "UTF8", "cp932")))

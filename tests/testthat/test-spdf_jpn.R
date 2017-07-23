@@ -27,7 +27,7 @@ test_that("Collect administration offices data", {
   expect_equal(dim(df.admins), c(65, 5))
   expect_named(df.admins,
                c("jis_code", "type", "name", "address", "geometry"))
-  expect_is(df.admins$name[1], "factor")
+  expect_is(df.admins$jis_code[1], "factor")
   expect_equal(dim(spdf_jpn_admins(code = 47, jis_code_city = c("47205", "47209"))), c(6, 5))
 })
 
