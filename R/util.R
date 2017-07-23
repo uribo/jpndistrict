@@ -17,7 +17,7 @@ collect_ksj_p34 <- function(path = NULL) {
 
   d <- sf::read_sf(
     paste0(path, "/", list.files(path, pattern = paste0(code, ".shp$"))),
-    stringsAsFactors = TRUE, # change to FALSE.. city codeのみTRUE
+    stringsAsFactors = TRUE, # change to FALSE.. city code TRUE
     options = c(paste0("ENCODING=",
                        dplyr::if_else(tolower(Sys.info()[["sysname"]]) == "windows",
                                       "UTF8", "cp932")))
