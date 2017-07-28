@@ -1,3 +1,7 @@
+# jpndistrict 0.2.1
+
+- New function a find from coordinates to prefecture and city that `find_pref()` and `find_city()`.
+
 # jpndistrict 0.2.0
 
 - Added support for sf.

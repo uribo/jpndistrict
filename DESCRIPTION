@@ -12,9 +12,11 @@ Depends:
     R (>= 3.1.0)
 Imports:
     dplyr,
+    jpmesh,
     leaflet,
     magrittr,
     miniUI,
+    purrr,
     readr,
     sf,
     shiny (>= 0.13),
@@ -24,10 +26,8 @@ Suggests:
     devtools,
     ggplot2,
     kokudosuuchi,
-    jpmesh,
     knitr,
     plotly,
-    purrr,
     rmarkdown,
     rvest,
     testthat,
