@@ -51,19 +51,19 @@ bind_cityareas <- function(path = NULL) {
 
 #' Intermediate function
 #'
-#' @param pref.shp geojsonio object (prefecture shapefile)
-#' @import dplyr
-#' @import sf
-#' @importFrom tibble as_data_frame
-raw_bind_cityareas <- function(pref.shp) {
+#' @param pref sf object (prefecture)
+#' @importFrom dplyr mutate
+#' @importFrom sf st_buffer st_sf st_union
+raw_bind_cityareas <- function(pref) {
 
-  pref_name <- jiscode <- geometry <- NULL
+  prefecture <- city_code <- geometry <- NULL
 
-  res <- st_union(pref.shp) %>%
-    tibble::as_data_frame() %>%
-    mutate(pref_name = pref.shp$pref_name[1],
-           jiscode  = as.numeric(substr(pref.shp$city_code[1], 1, 2))) %>%
-    select(pref_name, jiscode, geometry)
+  res <- suppressMessages(suppressWarnings(sf::st_buffer(pref, 0) %>%
+                                              sf::st_union() %>%
+    sf::st_sf() %>%
+    dplyr::mutate(jis_code  = as.numeric(substr(pref$city_code[1], 1, 2)),
+                  prefecture = pref$prefecture[1]) %>%
+    sf::st_buffer(dist = 0.001)))
 
   return(res)
 }
@@ -128,21 +128,21 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
 #' @description Get prefecture code from prefecture of name or number.
 #' @param code numeric
 #' @param admin_name prefecture code for Japanese (character)
-#' @import magrittr
+#' @importFrom magrittr use_series
 #' @importFrom dplyr filter
 #' @importFrom readr read_rds
 collect_prefcode <- function(code = NULL, admin_name = NULL) {
 
   jis_code <- NULL
-  jpnprefs <- read_rds(system.file(paste0("extdata/jpnprefs.rds"), package = "jpndistrict"))
+  jpnprefs <- readr::read_rds(system.file(paste0("extdata/jpnprefs.rds"), package = "jpndistrict"))
 
   if (missing(admin_name)) {
-    pref.code <- filter_(jpnprefs, ~jis_code == pref_code(code)) %>% magrittr::use_series(jis_code)
+    pref_code <- dplyr::filter(jpnprefs, jis_code == pref_code(code)) %>% magrittr::use_series(jis_code)
   } else if (missing(code)) {
-    pref.code <- filter_(jpnprefs, ~prefecture == admin_name) %>% magrittr::use_series(jis_code)
+    pref_code <- dplyr::filter(jpnprefs, prefecture == admin_name) %>% magrittr::use_series(jis_code)
   }
 
-  return(pref.code)
+  return(pref_code)
 }
 
 
@@ -185,24 +185,24 @@ collect_cityarea <- function(path = NULL) {
 #' @importFrom readr read_rds
 #' @importFrom utils download.file
 #' @importFrom utils unzip
-read_ksj_p34 <- function(code = NULL, path = NULL) {
+read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
 
   if (missing(path)) {
     download.file <- unzip <- NULL
 
-    df.dl.url <- read_rds(system.file("extdata/ksj_P34_index.rds", package = "jpndistrict"))
+    df.dl.url <- readr::read_rds(system.file("extdata/ksj_P34_index.rds", package = "jpndistrict"))
 
-    if (is.null(path) & file.exists(paste(tempdir(), df.dl.url$dest_file[code], sep = "/")) == FALSE) {
+    if (is.null(path) & file.exists(paste(tempdir(), df.dl.url$dest_file[pref_code], sep = "/")) == FALSE) {
 
-      utils::download.file(df.dl.url$zipFileUrl[code],
-                    destfile = paste(tempdir(), df.dl.url$dest_file[code], sep = "/"),
+      utils::download.file(df.dl.url$zipFileUrl[pref_code],
+                    destfile = paste(tempdir(), df.dl.url$dest_file[pref_code], sep = "/"),
                     method = "auto")
-      utils::unzip(zipfile = paste(tempdir(), df.dl.url$dest_file[code], sep = "/"),
-            exdir   = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[code]),  sep = "/"))
+      utils::unzip(zipfile = paste(tempdir(), df.dl.url$dest_file[pref_code], sep = "/"),
+            exdir   = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[pref_code]),  sep = "/"))
 
-      path = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[code]),  sep = "/")
-    } else if (file.exists(paste(tempdir(), df.dl.url$dest_file[code], sep = "/")) == TRUE) {
-      path = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[code]),  sep = "/")
+      path = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[pref_code]),  sep = "/")
+    } else if (file.exists(paste(tempdir(), df.dl.url$dest_file[pref_code], sep = "/")) == TRUE) {
+      path = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[pref_code]),  sep = "/")
     }
 
     res <- collect_ksj_p34(path = path)
