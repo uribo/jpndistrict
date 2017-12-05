@@ -3,8 +3,9 @@
 #' @param longitude longitude
 #' @param latitude latitude
 #' @param ... export parameter to other functions
-#' @importFrom dplyr mutate select
-#' @importFrom tibble data_frame
+#' @importFrom dplyr mutate select right_join
+#' @importFrom stringi stri_pad
+#' @importFrom purrr set_names
 #' @note The \code{find_pref} function was added in version 0.3.0
 #' @examples
 #' \dontrun{
@@ -13,16 +14,25 @@
 #' @export
 find_pref <- function(longitude, latitude, ...) {
 
-  city_code <- NULL
+  prefecture <- city_code <- NULL
 
   res <- find_city(longitude, latitude, ...)
 
   if (nrow(res) >= 1) {
-    res <- res %>%
+    df_tmp <- res %>%
       dplyr::mutate(
         pref_code = substr(city_code, 1, 2)
       ) %>%
-      dplyr::select(4, 1)
+      as.data.frame() %>%
+    dplyr::select(pref_code, prefecture)
+
+    res <- df_tmp %>%
+      dplyr::right_join(jpn_pref(pref_code = df_tmp$pref_code, district = FALSE),
+                                by = c("pref_code" = "jis_code", "prefecture")) %>%
+      purrr::set_names(c("pref_code", "prefecture", "geometry")) %>%
+      dplyr::mutate(pref_code = stringi::stri_pad(pref_code, 2, pad = "0")) %>%
+      tweak_sf_output()
+
   }
 
   return(res)
@@ -67,7 +77,7 @@ find_prefs <- function(longitude, latitude) {
 #' @param longitude longitude
 #' @param latitude latitude
 #' @param ... export parameter to other functions
-#' @importFrom tibble data_frame
+#' @importFrom dplyr select
 #' @note The \code{find_city} function was added in version 0.3.0
 #' @examples
 #' \dontrun{
@@ -76,19 +86,16 @@ find_prefs <- function(longitude, latitude) {
 #' @export
 find_city <- function(longitude, latitude, ...) {
 
+  prefecture <- city_code <- city <- geometry <- NULL
+
   pol_min <- which_pol_min(longitude, latitude, ...)
 
   if (identical(pol_min$which, integer(0)) == TRUE) {
     # not found
     message(intToUtf8(c(25351, 23450, 12375, 12383, 24231, 27161, 12364, 12509, 12522, 12468, 12531, 12395, 21547, 12414, 12428, 12414, 12379, 12435)))
   } else {
-    geos <- pol_min$spdf[pol_min$which, ]
-
-    res <- tibble::data_frame(
-      prefecture = geos$prefecture,
-      city_code = geos$city_code,
-      city = geos$city
-    )
+    res <- pol_min$spdf[pol_min$which, ] %>%
+      dplyr::select(prefecture, city_code, city, geometry)
 
     return(res)
   }

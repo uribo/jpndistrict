@@ -19,6 +19,8 @@
 #' @export
 jpn_pref <- function(pref_code, admin_name, district = TRUE, download = FALSE, drop_sinkyokyoku = TRUE) {
 
+  jis_code <- NULL
+
     if (missing(admin_name)) {
       pref_code <- collect_prefcode(code = pref_code)
     } else if (missing(pref_code)) {
@@ -39,7 +41,8 @@ jpn_pref <- function(pref_code, admin_name, district = TRUE, download = FALSE, d
   if (district == TRUE) {
     res <- d
   } else {
-    res <- raw_bind_cityareas(d)
+    res <- raw_bind_cityareas(d) %>%
+      dplyr::mutate(jis_code = as.character(jis_code))
   }
 
   res <- res %>%
