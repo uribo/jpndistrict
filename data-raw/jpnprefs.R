@@ -76,4 +76,3 @@ expect_equal(dim(jpnprefs), c(47, 7))
 expect_s3_class(jpnprefs, c("data.frame", "tbl_df"))
 
 devtools::use_data(jpnprefs, overwrite = TRUE)
-readr::write_rds(jpnprefs, "inst/extdata/jpnprefs.rds")
