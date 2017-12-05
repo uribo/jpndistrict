@@ -217,18 +217,16 @@ read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
 #'
 #' @param longitude longitude
 #' @param latitude latitude
-#' @importFrom magrittr use_series
+#' @param ... export parameter to other functions
 #' @importFrom purrr map reduce
 #' @importFrom sf st_contains st_point
 #' @name which_pol_min
-which_pol_min <- function(longitude, latitude) {
-
-  prefcode <- NULL
+which_pol_min <- function(longitude, latitude, ...) {
 
   sp_polygon <- find_prefs(longitude = longitude, latitude = latitude) %>%
-    magrittr::use_series(prefcode) %>%
+    use_series(pref_code) %>%
     purrr::map(
-      jpn_pref
+     jpn_pref
     ) %>%
     purrr::reduce(rbind)
 

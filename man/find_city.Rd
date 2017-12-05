@@ -11,7 +11,7 @@ find_city(longitude, latitude, ...)
 
 \item{latitude}{latitude}
 
-\item{...}{path to arguments \code{spdf_jpn_pref}.}
+\item{...}{export parameter to other functions}
 }
 \description{
 Detect city by coordinates
@@ -21,6 +21,6 @@ The \code{find_city} function was added in version 0.3.0
 }
 \examples{
 \dontrun{
-find_city(longitude = 122.940625, latitude = 24.4520833334)
+find_city(longitude = 140.1137418, latitude = 36.0533957)
 }
 }
