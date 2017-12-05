@@ -4,12 +4,12 @@
 \alias{which_pol_min}
 \title{Internal function}
 \usage{
-which_pol_min(lon = lon, lat = lat)
+which_pol_min(longitude, latitude)
 }
 \arguments{
-\item{lon}{longitude}
+\item{longitude}{longitude}
 
-\item{lat}{latitude}
+\item{latitude}{latitude}
 }
 \description{
 Internal function

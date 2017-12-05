@@ -4,16 +4,21 @@
 \alias{find_pref}
 \title{Detect prefecture by coordinates}
 \usage{
-find_pref(lon = lon, lat = lat)
+find_pref(longitude, latitude)
 }
 \arguments{
-\item{lon}{longitude}
+\item{longitude}{longitude}
 
-\item{lat}{latitude}
+\item{latitude}{latitude}
 }
 \description{
 Detect prefecture by coordinates
 }
 \note{
 The \code{find_pref} function was added in version 0.2.1
+}
+\examples{
+\dontrun{
+find_pref(longitude = 122.940625, latitude = 24.4520833334)
+}
 }

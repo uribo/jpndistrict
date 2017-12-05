@@ -212,3 +212,49 @@ read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
 
   return(res)
 }
+
+#' Internal function
+#'
+#' @param longitude longitude
+#' @param latitude latitude
+#' @importFrom magrittr use_series
+#' @importFrom purrr map reduce
+#' @importFrom sf st_contains st_point
+#' @name which_pol_min
+which_pol_min <- function(longitude, latitude) {
+
+  prefcode <- NULL
+
+  sp_polygon <- find_prefs(longitude = longitude, latitude = latitude) %>%
+    magrittr::use_series(prefcode) %>%
+    purrr::map(
+      jpn_pref
+    ) %>%
+    purrr::reduce(rbind)
+
+  which_row <- suppressMessages(grep(TRUE, sf::st_intersects(sp_polygon,
+                                                           sf::st_point(c(longitude, latitude), dim = "XY"),
+                                                           sparse = FALSE)))
+
+  res <- list(spdf = sp_polygon, which = which_row)
+  return(res)
+}
+
+
+crs_4326 <- structure(
+  list(epsg = 4326L, proj4string = "+proj=longlat +datum=WGS84 +no_defs"),
+  class = "crs")
+
+tweak_sf_output <- function(target) {
+
+  target <- target %>% sf::st_sf()
+
+  if (identical(sf::st_crs(target)$proj4string, crs_4326) != TRUE) {
+    target <- target %>% sf::st_transform(crs = 4326)
+  }
+
+  res <- target %>%
+    tibble::as_tibble() %>% sf::st_sf()
+
+  return(res)
+}
