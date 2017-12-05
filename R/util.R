@@ -9,20 +9,21 @@ pref_code <- function(jis_code) {
 #' Collect administration office point datasets.
 #'
 #' @param path path to P34 shapefile (if already exist)
-#' @import magrittr
-#' @importFrom sf read_sf
+#' @importFrom magrittr extract
+#' @importFrom sf st_read
+#' @importFrom dplyr mutate if_else
 collect_ksj_p34 <- function(path = NULL) {
 
   jis_code <- NULL
   code <- gsub(".+P34-14_|_GML|/", "", path)
 
-  d <- sf::read_sf(
+  d <- sf::st_read(
     paste0(path, "/", list.files(path, pattern = paste0(code, ".shp$"))),
     stringsAsFactors = FALSE,
     options = c(paste0("ENCODING=",
                        dplyr::if_else(tolower(Sys.info()[["sysname"]]) == "windows",
                                       "UTF8", "cp932")))
-  ) %>% set_colnames(c("jis_code", "type", "name", "address", "geometry")) %>%
+  ) %>% magrittr::set_colnames(c("jis_code", "type", "name", "address", "geometry")) %>%
     dplyr::mutate(jis_code = as.factor(jis_code))
 
   return(d)
@@ -32,12 +33,12 @@ collect_ksj_p34 <- function(path = NULL) {
 #' Bind city area polygons to prefecture polygon
 #'
 #' @param path path to N03 shapefile (if already exist)
-#' @importFrom sf read_sf
+#' @importFrom sf st_read
 bind_cityareas <- function(path = NULL) {
 
   pref.shp <- NULL
 
-  pref.shp <- sf::read_sf(
+  pref.shp <- sf::st_read(
     list.files(path, pattern = "shp$", full.names = TRUE),
     stringsAsFactors = FALSE,
     options = c(paste0("ENCODING=",
@@ -130,11 +131,9 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
 #' @param admin_name prefecture code for Japanese (character)
 #' @importFrom magrittr use_series
 #' @importFrom dplyr filter
-#' @importFrom readr read_rds
 collect_prefcode <- function(code = NULL, admin_name = NULL) {
 
-  jis_code <- NULL
-  jpnprefs <- readr::read_rds(system.file(paste0("extdata/jpnprefs.rds"), package = "jpndistrict"))
+  jis_code <- prefecture <- NULL
 
   if (missing(admin_name)) {
     pref_code <- dplyr::filter(jpnprefs, jis_code == pref_code(code)) %>% magrittr::use_series(jis_code)
@@ -158,7 +157,7 @@ collect_cityarea <- function(path = NULL) {
   . <- N03_001 <- N03_002 <- N03_003 <- N03_004 <- N03_007 <- tmp_var <- NULL
   pref_name <- city_name_ <- city_name <- city_name_full <- city_code <- NULL
 
-  res <- sf::read_sf(list.files(path, pattern = "shp$", full.names = TRUE, recursive = TRUE),
+  res <- sf::st_read(list.files(path, pattern = "shp$", full.names = TRUE, recursive = TRUE),
                      stringsAsFactors = FALSE,
                      options = c(paste0("ENCODING=",
                                         dplyr::if_else(tolower(Sys.info()[["sysname"]]) == "windows",
@@ -180,7 +179,7 @@ collect_cityarea <- function(path = NULL) {
 
 #' Intermediate function
 #'
-#' @param code prefecture code (JIS X 0402)
+#' @param pref_code prefecture code (JIS X 0402)
 #' @param path path to P34 shapefile (if already exist)
 #' @importFrom readr read_rds
 #' @importFrom utils download.file

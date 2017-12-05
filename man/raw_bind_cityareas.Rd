@@ -4,10 +4,10 @@
 \alias{raw_bind_cityareas}
 \title{Intermediate function}
 \usage{
-raw_bind_cityareas(pref.shp)
+raw_bind_cityareas(pref)
 }
 \arguments{
-\item{pref.shp}{geojsonio object (prefecture shapefile)}
+\item{pref}{sf object (prefecture)}
 }
 \description{
 Intermediate function
