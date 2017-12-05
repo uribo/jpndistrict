@@ -4,10 +4,10 @@
 \alias{read_ksj_p34}
 \title{Intermediate function}
 \usage{
-read_ksj_p34(code = NULL, path = NULL)
+read_ksj_p34(pref_code = NULL, path = NULL)
 }
 \arguments{
-\item{code}{prefecture code (JIS X 0402)}
+\item{pref_code}{prefecture code (JIS X 0402)}
 
 \item{path}{path to P34 shapefile (if already exist)}
 }
