@@ -1,12 +1,13 @@
 #' District Viewer
 #'
 #' @description Interactive district map and information tool.
-#' @param code prefecture code (default 33)
+#' @param pref_code prefecture code (default 33)
 #' @param color polygon line color for leaflet
 #' @import leaflet
 #' @import miniUI
 #' @import shiny
 #' @importFrom dplyr filter
+#' @importFrom magrittr use_series
 #' @importFrom sf st_transform
 #' @importFrom stringi stri_unescape_unicode
 #' @examples
@@ -14,10 +15,9 @@
 #' district_viewer()
 #' }
 #' @export
-district_viewer <- function(code = 33, color = "red") {
+district_viewer <- function(pref_code = 33, color = "red") {
 
-  jpnprefs <- city_name_full <- city_code <- jpnprefs <- NULL
-  prefecture <- jis_code <- geometry <- NULL
+  prefecture <- city <- city_code <- jis_code <- geometry <- NULL
 
   # UI ----------------------------------------------------------------------
   ui <- miniPage(
@@ -28,7 +28,7 @@ district_viewer <- function(code = 33, color = "red") {
                      selectInput(inputId = "pref",
                                  label = stringi::stri_unescape_unicode("\\u90fd\\u9053\\u5e9c\\u770c\\u3092\\u9078\\u629e:"),
                                  choices = as.character(jpnprefs$prefecture),
-                                 selected = code,
+                                 selected = jpnprefs$prefecture[1],
                                  multiple = FALSE),
                      conditionalPanel("input.pref !== null",
                                       selectInput("cities", "select", choices = NULL,
@@ -56,19 +56,19 @@ district_viewer <- function(code = 33, color = "red") {
       input$pref
       updateSelectInput(session, "cities",
                         stringi::stri_unescape_unicode("\\u5e02\\u533a\\u753a\\u6751\\u3092\\u9078\\u629e"),
-                        choices = unique(use_series(spdf_jpn_pref(admin_name = input$pref), city_name_full))
+                        choices = unique(magrittr::use_series(jpn_pref(admin_name = input$pref), city))
       )
     })
 
 
     output$my.table <- renderDataTable({
 
-      d <- spdf_jpn_pref(admin_name = input$pref) %>%
-        dplyr::select(city_name_full, city_code, geometry)
+      d <- jpn_pref(admin_name = input$pref) %>%
+        dplyr::select(city_code, city, geometry)
 
 
       if (!is.null(input$cities)) {
-        d %>% dplyr::filter(city_name_full %in% c(input$cities))
+        d %>% dplyr::filter(city %in% c(input$cities))
       } else {
         d
       }
@@ -77,19 +77,19 @@ district_viewer <- function(code = 33, color = "red") {
 
     output$my.map <- renderLeaflet({
 
-      prefcode <- jpnprefs %>% dplyr::filter(prefecture == as.character(input$pref)) %>% use_series(jis_code)
+      prefcode <- jpnprefs %>% dplyr::filter(prefecture == as.character(input$pref)) %>% magrittr::use_series(jis_code)
 
       if (is.null(input$cities)) {
-        map.data <- spdf_jpn_pref(admin_name = input$pref, district = FALSE)
+        map.data <- jpn_pref(admin_name = input$pref, district = FALSE)
 
       } else {
-        map.data <- spdf_jpn_cities(jis_code_pref = prefcode, admin_name = c(input$cities))
+        map.data <- jpn_cities(jis_code = prefcode, admin_name = c(input$cities))
       }
 
       leaflet() %>%
         addTiles() %>%
-        addPolylines(data = sf::st_transform(map.data, 4326), color = color,
-                     label = ~map.data$city_name_full)
+        addPolylines(data = map.data, color = color,
+                     label = ~map.data$city)
 
 
     })

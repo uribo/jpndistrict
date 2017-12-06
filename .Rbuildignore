@@ -11,4 +11,5 @@
 ^docs$
 ^logo\.png$
 ^_pkgdown\.yml$
-^vignettes$
+^.*\.pdf$
+^.*\.zip$

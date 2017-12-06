@@ -1,34 +1,57 @@
-context("spdf_jpn")
+context("sf_jpn")
 
-df.pref <- spdf_jpn_pref(code = 33, district = TRUE)
-df.city <- spdf_jpn_cities(jis_code_pref = 33, jis_code = 33103)
-df.admins <- spdf_jpn_admins(code = 47)
+test_that("jpn_pref", {
 
-test_that("spdf_jpn_pref", {
-  expect_s3_class(df.pref, c("sf", "tbl", "data.frame"))
-  expect_equal(spdf_jpn_pref(code = 33, district = FALSE)$pref_name, stringi::stri_unescape_unicode("\\u5ca1\\u5c71\\u770c"))
-  expect_error(spdf_jpn_pref(admin_name = "\\u5ca1\\u5c71\\u770c", code = 12), info = "provide multiple arguments")
+  df_pref <- jpn_pref(pref_code = 33, district = TRUE, drop_sinkyokyoku = FALSE)
+  expect_s3_class(df_pref, c("sf"))
+  expect_s3_class(df_pref, c("tbl"))
+  expect_equal(df_pref$prefecture[1], stringi::stri_unescape_unicode("\\u5ca1\\u5c71\\u770c"))
+  # expect_error(jpn_pref(admin_name = stringi::stri_unescape_unicode("\\u5ca1\\u5c71\\u770c"), pref_code = 12),
+  #              info = "provide multiple arguments")
+  expect_named(df_pref,
+               c("pref_code", "prefecture", "sichyo_sinkyokyoku", "city_code", "city", "geometry"))
+  expect_identical(sf::st_crs(df_pref), crs_4326)
+  expect_named(jpn_pref(pref_code = 12, drop_sinkyokyoku = TRUE),
+               c("pref_code", "prefecture", "city_code", "city", "geometry"))
+
+  df_pref2 <- jpn_pref(pref_code = 14, district = FALSE)
+  expect_s3_class(df_pref2, c("sf"))
+  expect_s3_class(df_pref2, c("tbl"))
+  expect_named(df_pref2,
+               c("jis_code", "prefecture", "."))
+  expect_identical(sf::st_crs(df_pref2), crs_4326)
 })
 
-test_that("spdf_jpn_cities", {
-  expect_s3_class(df.city, c("sf", "tbl", "data.frame"))
-  expect_named(df.city,
-               c("pref_name", "city_name_", "city_name", "city_name_full", "city_code", "geometry"))
-  expect_equal(df.city$pref_name[1], stringi::stri_unescape_unicode("\\u5ca1\\u5c71\\u770c"))
-  expect_equal(df.city$city_name_[1], stringi::stri_unescape_unicode("\\u5ca1\\u5c71\\u5e02"))
-  expect_equal(df.city$city_name[1], stringi::stri_unescape_unicode("\\u6771\\u533a"))
-  expect_equal(df.city$city_name_full[1], stringi::stri_unescape_unicode("\\u5ca1\\u5c71\\u5e02 \\u6771\\u533a"))
-  expect_equal(nrow(spdf_jpn_cities(jis_code_pref = 33, jis_code = c(33103, 33104, 33205))), 24L)
-  expect_equal(nrow(spdf_jpn_cities(jis_code_pref = 33, jis_code = 33205)), 17L)
+test_that("jpn_cities", {
+
+  df_city <- jpn_cities(jis_code = 33103)
+  expect_s3_class(df_city, c("sf"))
+  expect_s3_class(df_city, c("tbl"))
+  expect_named(df_city,
+               c("city_code", "city", "geometry"))
+  expect_equal(df_city$city[1], stringi::stri_unescape_unicode("\\u5ca1\\u5c71\\u5e02 \\u6771\\u533a"))
+  expect_equal(nrow(jpn_cities(jis_code = c(33103, 33104, 33205))), 3L)
+  expect_equal(nrow(jpn_cities(jis_code = 33205)), 1L)
+  expect_identical(sf::st_crs(df_city), crs_4326)
+
+  expect_equal(dim(jpn_cities(jis_code = 33, admin_name = stringi::stri_unescape_unicode("\\u5ca1\\u5c71\\u5e02 \\u6771\\u533a"))),
+               c(1, 3))
+
 })
 
-test_that("Collect administration offices data", {
-  expect_s3_class(df.admins, c("sf", "tbl", "data.frame"))
-  expect_equal(dim(df.admins), c(65, 5))
-  expect_named(df.admins,
-               c("jis_code", "type", "name", "address", "geometry"))
-  expect_is(df.admins$jis_code[1], "factor")
-  expect_equal(dim(spdf_jpn_admins(code = 47, jis_code_city = c("47205", "47209"))), c(6, 5))
-})
-
-
+# test_that("Collect administration offices data", {
+#
+#   df_admins <- jpn_admins(jis_code = 47)
+#
+#   expect_s3_class(df_admins, c("sf"))
+#   expect_s3_class(df_admins, c("tbl"))
+#   expect_equal(dim(df_admins), c(65, 5))
+#   expect_named(df_admins,
+#                c("jis_code", "type", "name", "address", "geometry"))
+#   expect_is(df_admins$jis_code[1], "factor")
+#
+#   expect_equal(dim(jpn_admins(jis_code = c(33101, 34101))),
+#                c(5, 5))
+#   expect_equal(dim(jpn_admins(jis_code = c(33101, 34101))),
+#                c(5, 5))
+# })

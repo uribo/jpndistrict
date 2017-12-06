@@ -9,20 +9,21 @@ pref_code <- function(jis_code) {
 #' Collect administration office point datasets.
 #'
 #' @param path path to P34 shapefile (if already exist)
-#' @import magrittr
-#' @importFrom sf read_sf
+#' @importFrom magrittr extract
+#' @importFrom sf st_read
+#' @importFrom dplyr mutate if_else
 collect_ksj_p34 <- function(path = NULL) {
 
   jis_code <- NULL
   code <- gsub(".+P34-14_|_GML|/", "", path)
 
-  d <- sf::read_sf(
+  d <- sf::st_read(
     paste0(path, "/", list.files(path, pattern = paste0(code, ".shp$"))),
     stringsAsFactors = FALSE,
     options = c(paste0("ENCODING=",
                        dplyr::if_else(tolower(Sys.info()[["sysname"]]) == "windows",
                                       "UTF8", "cp932")))
-  ) %>% set_colnames(c("jis_code", "type", "name", "address", "geometry")) %>%
+  ) %>% magrittr::set_colnames(c("jis_code", "type", "name", "address", "geometry")) %>%
     dplyr::mutate(jis_code = as.factor(jis_code))
 
   return(d)
@@ -32,12 +33,12 @@ collect_ksj_p34 <- function(path = NULL) {
 #' Bind city area polygons to prefecture polygon
 #'
 #' @param path path to N03 shapefile (if already exist)
-#' @importFrom sf read_sf
+#' @importFrom sf st_read
 bind_cityareas <- function(path = NULL) {
 
   pref.shp <- NULL
 
-  pref.shp <- sf::read_sf(
+  pref.shp <- sf::st_read(
     list.files(path, pattern = "shp$", full.names = TRUE),
     stringsAsFactors = FALSE,
     options = c(paste0("ENCODING=",
@@ -51,19 +52,19 @@ bind_cityareas <- function(path = NULL) {
 
 #' Intermediate function
 #'
-#' @param pref.shp geojsonio object (prefecture shapefile)
-#' @import dplyr
-#' @import sf
-#' @importFrom tibble as_data_frame
-raw_bind_cityareas <- function(pref.shp) {
+#' @param pref sf object (prefecture)
+#' @importFrom dplyr mutate
+#' @importFrom sf st_buffer st_sf st_union
+raw_bind_cityareas <- function(pref) {
 
-  pref_name <- jiscode <- geometry <- NULL
+  prefecture <- city_code <- geometry <- NULL
 
-  res <- st_union(pref.shp) %>%
-    tibble::as_data_frame() %>%
-    mutate(pref_name = pref.shp$pref_name[1],
-           jiscode  = as.numeric(substr(pref.shp$city_code[1], 1, 2))) %>%
-    select(pref_name, jiscode, geometry)
+  res <- suppressMessages(suppressWarnings(sf::st_buffer(pref, 0) %>%
+                                              sf::st_union() %>%
+    sf::st_sf() %>%
+    dplyr::mutate(jis_code  = as.numeric(substr(pref$city_code[1], 1, 2)),
+                  prefecture = pref$prefecture[1]) %>%
+    sf::st_buffer(dist = 0.001)))
 
   return(res)
 }
@@ -128,21 +129,19 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
 #' @description Get prefecture code from prefecture of name or number.
 #' @param code numeric
 #' @param admin_name prefecture code for Japanese (character)
-#' @import magrittr
+#' @importFrom magrittr use_series
 #' @importFrom dplyr filter
-#' @importFrom readr read_rds
 collect_prefcode <- function(code = NULL, admin_name = NULL) {
 
-  jis_code <- NULL
-  jpnprefs <- read_rds(system.file(paste0("extdata/jpnprefs.rds"), package = "jpndistrict"))
+  jis_code <- prefecture <- NULL
 
   if (missing(admin_name)) {
-    pref.code <- filter_(jpnprefs, ~jis_code == pref_code(code)) %>% magrittr::use_series(jis_code)
+    pref_code <- dplyr::filter(jpnprefs, jis_code == pref_code(code)) %>% magrittr::use_series(jis_code)
   } else if (missing(code)) {
-    pref.code <- filter_(jpnprefs, ~prefecture == admin_name) %>% magrittr::use_series(jis_code)
+    pref_code <- dplyr::filter(jpnprefs, prefecture == admin_name) %>% magrittr::use_series(jis_code)
   }
 
-  return(pref.code)
+  return(pref_code)
 }
 
 
@@ -158,7 +157,7 @@ collect_cityarea <- function(path = NULL) {
   . <- N03_001 <- N03_002 <- N03_003 <- N03_004 <- N03_007 <- tmp_var <- NULL
   pref_name <- city_name_ <- city_name <- city_name_full <- city_code <- NULL
 
-  res <- sf::read_sf(list.files(path, pattern = "shp$", full.names = TRUE, recursive = TRUE),
+  res <- sf::st_read(list.files(path, pattern = "shp$", full.names = TRUE, recursive = TRUE),
                      stringsAsFactors = FALSE,
                      options = c(paste0("ENCODING=",
                                         dplyr::if_else(tolower(Sys.info()[["sysname"]]) == "windows",
@@ -180,35 +179,79 @@ collect_cityarea <- function(path = NULL) {
 
 #' Intermediate function
 #'
-#' @param code prefecture code (JIS X 0402)
+#' @param pref_code prefecture code (JIS X 0402)
 #' @param path path to P34 shapefile (if already exist)
 #' @importFrom readr read_rds
 #' @importFrom utils download.file
 #' @importFrom utils unzip
-read_ksj_p34 <- function(code = NULL, path = NULL) {
+read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
 
   if (missing(path)) {
     download.file <- unzip <- NULL
 
-    df.dl.url <- read_rds(system.file("extdata/ksj_P34_index.rds", package = "jpndistrict"))
+    df.dl.url <- readr::read_rds(system.file("extdata/ksj_P34_index.rds", package = "jpndistrict"))
 
-    if (is.null(path) & file.exists(paste(tempdir(), df.dl.url$dest_file[code], sep = "/")) == FALSE) {
+    if (is.null(path) & file.exists(paste(tempdir(), df.dl.url$dest_file[pref_code], sep = "/")) == FALSE) {
 
-      utils::download.file(df.dl.url$zipFileUrl[code],
-                    destfile = paste(tempdir(), df.dl.url$dest_file[code], sep = "/"),
+      utils::download.file(df.dl.url$zipFileUrl[pref_code],
+                    destfile = paste(tempdir(), df.dl.url$dest_file[pref_code], sep = "/"),
                     method = "auto")
-      utils::unzip(zipfile = paste(tempdir(), df.dl.url$dest_file[code], sep = "/"),
-            exdir   = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[code]),  sep = "/"))
+      utils::unzip(zipfile = paste(tempdir(), df.dl.url$dest_file[pref_code], sep = "/"),
+            exdir   = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[pref_code]),  sep = "/"))
 
-      path = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[code]),  sep = "/")
-    } else if (file.exists(paste(tempdir(), df.dl.url$dest_file[code], sep = "/")) == TRUE) {
-      path = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[code]),  sep = "/")
+      path = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[pref_code]),  sep = "/")
+    } else if (file.exists(paste(tempdir(), df.dl.url$dest_file[pref_code], sep = "/")) == TRUE) {
+      path = paste(tempdir(), gsub(".zip", "", df.dl.url$dest_file[pref_code]),  sep = "/")
     }
 
     res <- collect_ksj_p34(path = path)
   } else {
     res <- collect_ksj_p34(path = path)
   }
+
+  return(res)
+}
+
+#' Internal function
+#'
+#' @param longitude longitude
+#' @param latitude latitude
+#' @param ... export parameter to other functions
+#' @importFrom purrr map reduce
+#' @importFrom sf st_contains st_point
+#' @name which_pol_min
+which_pol_min <- function(longitude, latitude, ...) {
+
+  sp_polygon <- find_prefs(longitude = longitude, latitude = latitude) %>%
+    use_series(pref_code) %>%
+    purrr::map(
+     jpn_pref
+    ) %>%
+    purrr::reduce(rbind)
+
+  which_row <- suppressMessages(grep(TRUE, sf::st_intersects(sp_polygon,
+                                                           sf::st_point(c(longitude, latitude), dim = "XY"),
+                                                           sparse = FALSE)))
+
+  res <- list(spdf = sp_polygon, which = which_row)
+  return(res)
+}
+
+
+crs_4326 <- structure(
+  list(epsg = 4326L, proj4string = "+proj=longlat +datum=WGS84 +no_defs"),
+  class = "crs")
+
+tweak_sf_output <- function(target) {
+
+  target <- target %>% sf::st_sf()
+
+  if (identical(sf::st_crs(target)$proj4string, crs_4326) != TRUE) {
+    target <- target %>% sf::st_transform(crs = 4326)
+  }
+
+  res <- target %>%
+    tibble::as_tibble() %>% sf::st_sf()
 
   return(res)
 }

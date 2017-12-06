@@ -1,100 +1,135 @@
-#' Spatial Data frame for prefecture area polygon
+#' Simple features for prefecture area polygon
 #'
 #' @description Prefecture polygon data.
-#' @details Collect unit of prefecture SpatialPolygonsDataFrame. If downalod argument is TRUE,
+#' @details Collect unit of prefecture simple feature data.frame objects.. If downalod argument is TRUE,
 #' download administrative area data from the National Land Numeral Information Download Service (for law data).
-#' @param code jis code from 1 to 47
-#' @param admin_name string
+#' @param pref_code jis code from 1 to 47 (integer)
+#' @param admin_name prefecture names (string)
 #' @param district logical (default TRUE)
 #' @param download logical (default FALSE).
+#' @param drop_sinkyokyoku if TRUE, drop sichyo_sinkyokyoku variable (default TRUE)
+#' @importFrom dplyr select
+#' @importFrom readr read_rds
 #' @examples
 #' \dontrun{
-#' spdf_jpn_pref(code = 33, district = FALSE)
+#' jpn_pref(pref_code = 33, district = FALSE)
+#' jpn_pref(pref_code = 14, district = TRUE)
 #' }
 #'
 #' @export
-spdf_jpn_pref <- function(code = NULL, admin_name = NULL, district = TRUE, download = FALSE) {
+jpn_pref <- function(pref_code, admin_name, district = TRUE, download = FALSE, drop_sinkyokyoku = TRUE) {
+
+  jis_code <- NULL
 
     if (missing(admin_name)) {
-      pref.code <- collect_prefcode(code = code)
-    } else if (missing(code)) {
-      pref.code <- collect_prefcode(admin_name = admin_name)
+      pref_code <- collect_prefcode(code = pref_code)
+    } else if (missing(pref_code)) {
+      pref_code <- collect_prefcode(admin_name = admin_name)
     }
 
   if (download == FALSE) {
-    d <- readr::read_rds(system.file(paste0("extdata/pref_", pref.code, "_city_spdf.rds"), package = "jpndistrict"))
+    d <- readr::read_rds(system.file(paste0("extdata/ksj_n03/pref_", pref_code, ".rds"),
+                                     package = "jpndistrict"))
   } else {
-    d <- read_ksj_cityarea(code = as.numeric(pref.code))
+    d <- read_ksj_cityarea(code = as.numeric(pref_code))
   }
 
+  if (drop_sinkyokyoku == TRUE) {
+    d <- d %>% dplyr::select(-3)
+  }
 
   if (district == TRUE) {
     res <- d
   } else {
-    res <- raw_bind_cityareas(d)
+    res <- raw_bind_cityareas(d) %>%
+      dplyr::mutate(jis_code = as.character(jis_code))
   }
+
+  res <- res %>%
+    tweak_sf_output()
+
   return(res)
 }
 
-#' Spatial Data frame for city area polygons
+
+#' Simple features for city area polygons
 #'
 #' @description City area polygon data. When an administrative name (jis_code_city) or code (jis_code_city)
 #' is specified as an argument, the target city data is extracted. If neither is given,
 #' it becomes the data of the target prefecture.
 #' @importFrom dplyr filter
-#' @param jis_code_pref jis code from 1 to 47
-#' @param jis_code_city jis code for city as jis_code_pref + identifier number
-#' @param admin_name city name
+#' @param jis_code jis code for prefecture and city identifical number
+#' @param admin_name administration name
 #' @examples
-#' spdf_jpn_cities(jis_code_pref = 33, jis_code_city = 33103)
-#' spdf_jpn_cities(jis_code_pref = 33, jis_code_city = c(33103, 33104, 33205))
+#' jpn_cities(jis_code = 33103)
+#' jpn_cities(jis_code = c(33103, 33104, 33205))
+#' jpn_cities(jis_code = c(33103, 34107))
 #' @export
-spdf_jpn_cities <- function(jis_code_pref, jis_code_city = NULL, admin_name = NULL) {
+jpn_cities <- function(jis_code, admin_name) {
 
-  city_code <- city_name_full <- NULL
+  city_code <- city <- geometry <- NULL
 
-  d <- spdf_jpn_pref(code = jis_code_pref, district = TRUE)
+  jis_code_q <- rlang::enquo(jis_code)
+  admin_name_q <- rlang::enquo(admin_name)
 
-  if (missing(admin_name) & missing(jis_code_city)) {
-    d <- d
-  } else if (missing(admin_name)) {
-    d <- dplyr::filter(d, city_code %in% jis_code_city)
-  } else if (missing(jis_code_city)) {
-    d <- dplyr::filter(d, city_name_full %in% admin_name)
+  d <- jis_code %>%
+    purrr::map_chr(~ substr(.x, 1, 2)) %>%
+    unique() %>%
+    purrr::map(~ jpn_pref(pref_code = .x, district = TRUE)) %>%
+    purrr::reduce(rbind) %>%
+    dplyr::select(-1:-2) %>%
+    dplyr::select(city_code, city, geometry)
+
+  if (nchar(jis_code[1]) > 3) {
+    if (missing(admin_name)) {
+      d <- dplyr::filter(d, city_code %in% !!jis_code_q)
+    }
   }
+  if (!missing(admin_name)) {
+      d <- dplyr::filter(d, city %in% !!admin_name_q)
+    }
 
-  return(d)
+  res <- d %>% tweak_sf_output()
+
+  return(res)
 }
 
-#' Spatial Dataframe for administration office points
+#' Simple features for administration office points
 #'
 #' @description Name and geolocations for administration offices in prefecture.
-#' @param code prefecture code
 #' @param path shapefile path
-#' @param jis_code_city jis code for city as jis_code_pref + identifier number
+#' @inheritParams jpn_cities
+#' @import rlang
 #' @importFrom dplyr filter
+#' @importFrom purrr map reduce
 #' @return data.frame. contains follow columns jis_code, type, name, address, longitude and latitude.
 #' @examples
 #' \dontrun{
-#' spdf_jpn_admins(code = 17)
+#' jpn_admins(jis_code = 17)
 #' }
 #' @export
-spdf_jpn_admins <- function(path, code = NULL, jis_code_city = NULL) {
-
-  jis_code <- NULL
+jpn_admins <- function(path = NULL, jis_code) {
 
   if (missing(path)) {
-      pref.code <- collect_prefcode(code = code)
-      d <- read_ksj_p34(code = as.numeric(pref.code))
+
+    jis_code_q <- rlang::enquo(jis_code)
+
+    d <- jis_code %>%
+      purrr::map_chr(~ substr(.x, 1, 2)) %>%
+      unique() %>%
+      purrr::map(~ read_ksj_p34(pref_code = as.numeric(.x))) %>%
+      purrr::reduce(rbind)
+
+    if (nchar(jis_code[1]) > 2) {
+      res <- dplyr::filter(d, jis_code %in% !!jis_code_q)
+    } else {
+      res <- d
+    }
+
   } else {
-    d <- read_ksj_p34(path = path)
+    res <- d
   }
 
-  if (is.null(jis_code_city)) {
-    res <- d
-  } else {
-    res <- filter(d, jis_code %in% jis_code_city)
-  }
   return(res)
 
 }

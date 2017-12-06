@@ -4,18 +4,23 @@
 \alias{find_city}
 \title{Detect city by coordinates}
 \usage{
-find_city(lon = lon, lat = lat, ...)
+find_city(longitude, latitude, ...)
 }
 \arguments{
-\item{lon}{longitude}
+\item{longitude}{longitude}
 
-\item{lat}{latitude}
+\item{latitude}{latitude}
 
-\item{...}{path to arguments \code{spdf_jpn_pref}.}
+\item{...}{export parameter to other functions}
 }
 \description{
 Detect city by coordinates
 }
 \note{
-The \code{find_city} function was added in version 0.2.1
+The \code{find_city} function was added in version 0.3.0
+}
+\examples{
+\dontrun{
+find_city(longitude = 140.1137418, latitude = 36.0533957)
+}
 }

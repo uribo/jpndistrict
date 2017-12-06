@@ -2,12 +2,16 @@ Package: jpndistrict
 Type: Package
 Title: Create Japanese Administration Area and Office Maps
 Version: 0.2.0.9999
-Authors@R: c(person(given = "Shinya", family = "Uryu",
-                                            email = "suika1127@gmail.com",
+Authors@R: c(person(given = "Shinya", family = "Uryu", 
+                                      email = "suika1127@gmail.com", 
                                             role  = c("aut", "cre")))
 Maintainer: Shinya Uryu <suika1127@gmail.com>
 Description: Utilizing the data that Japanese administration area provided 
-    by the National Land Numerical Information download service (<http://nlftp.mlit.go.jp/ksj/index.html>).
+    by the National Land Numerical Information download service (<http://nlftp.mlit.go.jp/ksj/index.html>). 
+    This package provide map data is based on the Digital Map 25000(Map Image) published by Geospatial Information Authority 
+    of Japan (<http://www.gsi.go.jp>). In creating these datasets, National Land numerical information by the 
+    Geographical Survey Institute with the approval of Geographical Survey Institute Head 
+    (Approval No.603FY2017 information usage).
 Depends:
     R (>= 3.1.0)
 Imports:
