@@ -2,5 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+revdep/
 data-raw/KSJ_N03/*
-^README-.*\.png$
+*.pdf
+*.zip
