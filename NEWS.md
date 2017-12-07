@@ -5,7 +5,7 @@
 
 ## Issues
 
-- Fix some bugs ( [#6](https://github.com/uribo/jpndistrict/issues/6), [#7](https://github.com/uribo/jpndistrict/issues/7) ).
+- Fix some bugs ([#6](https://github.com/uribo/jpndistrict/issues/6), [#7](https://github.com/uribo/jpndistrict/issues/7)).
 
 ## API
 
@@ -23,7 +23,7 @@
 # jpndistrict 0.1.1
 
 - Modified raw data download method `wget` to `auto`.
-- Character encoding for administration area dataset to UTF8. ([#2]())
+- Character encoding for administration area dataset to UTF8. ([#2](https://github.com/uribo/jpndistrict/issues/2))
 
 # jpndistrict 0.1.0
 
