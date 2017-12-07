@@ -4,15 +4,15 @@ Title: Create Japanese Administration Area and Office Maps
 Version: 0.3.0
 Date: 2017-12-06
 Authors@R: c(
-    person(given = "Shinya", family = "Uryu", email = "suika1127@gmail.com", role  = c("aut", "cre"), comment = c(ORCID = "0000-0002-0493-6186"))
+    person(given = "Shinya", family = "Uryu", email = "suika1127@gmail.com", role  = c("aut", "cre"), comment = c(ORCID = "0000-0002-0493-6186")),
+    person("Geospatial Information Authority of Japan", role = "dtc", 
+    comment = "This package data sets, National Land numerical information by the Geographical Survey Institute with the approval of Geographical Survey Institute Head (Approval No.603FY2017 information usage)")
     )
 Maintainer: Shinya Uryu <suika1127@gmail.com>
 Description: Utilizing the data that Japanese administration area provided 
     by the National Land Numerical Information download service (<http://nlftp.mlit.go.jp/ksj/index.html>). 
-    This package provide map data is based on the Digital Map 25000(Map Image) published by Geospatial Information Authority 
-    of Japan (<http://www.gsi.go.jp>). In creating these datasets, National Land numerical information by the 
-    Geographical Survey Institute with the approval of Geographical Survey Institute Head 
-    (Approval No.603FY2017 information usage).
+    This package provide map data is based on the Digital Map 25000(Map Image) published 
+    by Geospatial Information Authority of Japan (Approval No.603FY2017 information usage <http://www.gsi.go.jp>).
 Depends:
     R (>= 3.1.2),
     jpmesh (>= 1.0.0)
