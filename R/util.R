@@ -64,7 +64,8 @@ raw_bind_cityareas <- function(pref) {
     sf::st_sf() %>%
     dplyr::mutate(jis_code  = as.numeric(substr(pref$city_code[1], 1, 2)),
                   prefecture = pref$prefecture[1]) %>%
-    sf::st_buffer(dist = 0.001)))
+    sf::st_buffer(dist = 0.001))) %>%
+    magrittr::set_names(c("jis_code", "prefecture", "geometry"))
 
   return(res)
 }

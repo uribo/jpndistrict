@@ -18,7 +18,7 @@ test_that("jpn_pref", {
   expect_s3_class(df_pref2, c("sf"))
   expect_s3_class(df_pref2, c("tbl"))
   expect_named(df_pref2,
-               c("jis_code", "prefecture", "."))
+               c("jis_code", "prefecture", "geometry"))
   expect_identical(sf::st_crs(df_pref2), crs_4326)
 })
 
