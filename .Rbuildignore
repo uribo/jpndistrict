@@ -13,3 +13,5 @@
 ^_pkgdown\.yml$
 ^.*\.pdf$
 ^.*\.zip$
+^Dockerfile$
+^docker-compose\.yml$
