@@ -6,7 +6,7 @@
 #' @importFrom dplyr mutate select right_join
 #' @importFrom stringi stri_pad
 #' @importFrom purrr set_names
-#' @note The \code{find_pref} function was added in version 0.3.0
+#' @note The `find_pref` function was added in version 0.3.0
 #' @examples
 #' \dontrun{
 #' find_pref(longitude = 130.4412895, latitude = 30.2984335)
@@ -78,7 +78,7 @@ find_prefs <- function(longitude, latitude) {
 #' @param latitude latitude
 #' @param ... export parameter to other functions
 #' @importFrom dplyr select
-#' @note The \code{find_city} function was added in version 0.3.0
+#' @note The `find_city` function was added in version 0.3.0
 #' @examples
 #' \dontrun{
 #' find_city(longitude = 140.1137418, latitude = 36.0533957)
