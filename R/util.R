@@ -56,18 +56,32 @@ bind_cityareas <- function(path = NULL) {
 #' @importFrom dplyr mutate
 #' @importFrom sf st_buffer st_sf st_union
 raw_bind_cityareas <- function(pref) {
-
   prefecture <- city_code <- geometry <- NULL
 
-  res <- suppressMessages(suppressWarnings(sf::st_buffer(pref, 0) %>%
-                                              sf::st_union() %>%
-    sf::st_sf() %>%
-    dplyr::mutate(jis_code  = as.numeric(substr(pref$city_code[1], 1, 2)),
-                  prefecture = pref$prefecture[1]) %>%
-    sf::st_buffer(dist = 0.001))) %>%
-    magrittr::set_names(c("jis_code", "prefecture", "geometry"))
+  tmp_union <-
+    suppressMessages(suppressWarnings(sf::st_buffer(pref, 0) %>%
+                                        sf::st_union() %>%
+                                        sf::st_sf()))
 
-  return(res)
+  df_res <- suppressMessages(
+    suppressWarnings(
+      tmp_union %>%
+        dplyr::mutate(
+          jis_code  = as.numeric(substr(pref$city_code[1], 1, 2)),
+          prefecture = pref$prefecture[1]
+        ) %>%
+        sf::st_sf() %>%
+        sf::st_buffer(dist = 0.001)
+    ) %>%
+      dplyr::select(
+        jis_code = 1,
+        prefecture = 2,
+        geometry = 3
+      )
+  )
+
+  return(df_res)
+
 }
 
 #' Intermediate function
