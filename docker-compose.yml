@@ -1,0 +1,8 @@
+version: "3"
+services:
+  rstudio:
+    build: "."
+    ports:
+      - "8787:8787"
+    volumes:
+      - ".:/home/rstudio/jpndistrict"

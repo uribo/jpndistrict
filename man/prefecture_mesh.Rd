@@ -6,11 +6,11 @@
 \title{Prefecture's meshcode}
 \format{A simple feature data frame with 314 rows 6 variables:
 \itemize{
-  \item{pref_code: prefecture code}
-  \item{prefecture: name}
-  \item{city_code: city code (JIS code)}
-  \item{city: name}
-  \item{geometry}
+\item{pref_code: prefecture code}
+\item{prefecture: name}
+\item{city_code: city code (JIS code)}
+\item{city: name}
+\item{geometry}
 }}
 \usage{
 prefecture_mesh
