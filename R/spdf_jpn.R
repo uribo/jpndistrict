@@ -40,7 +40,7 @@ jpn_pref <- function(pref_code,
   }
 
   if (drop_sinkyokyoku == TRUE) {
-    d <- d %>% dplyr::select(-3)
+    d <- dplyr::select(d, -3)
   }
 
   if (district == TRUE) {

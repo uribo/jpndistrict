@@ -303,10 +303,10 @@ crs_4326 <-
             class = "crs")
 
 tweak_sf_output <- function(target) {
-  target <- target %>% sf::st_sf()
+  target <- sf::st_sf(target)
 
   if (identical(sf::st_crs(target)$proj4string, crs_4326) != TRUE) {
-    target <- target %>% sf::st_transform(crs = 4326)
+    target <- sf::st_transform(target, crs = 4326)
   }
 
   res <- target %>%
