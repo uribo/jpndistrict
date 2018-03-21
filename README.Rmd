@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 
 # jpndistrict
 
-[![Travis-CI Build Status](https://travis-ci.org/uribo/jpndistrict.svg?branch=master)](https://travis-ci.org/uribo/jpndistrict) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/jpndistrict)](https://cran.r-project.org/package=jpndistrict) [![codecov](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](https://codecov.io/gh/uribo/jpndistrict)
+[![Travis-CI Build Status](https://travis-ci.org/uribo/jpndistrict.svg?branch=master)](https://travis-ci.org/uribo/jpndistrict) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/jpndistrict)](https://cran.r-project.org/package=jpndistrict) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/uribo/jpndistrict?branch=master&svg=true)](https://ci.appveyor.com/project/uribo/jpndistrict) [![Coverage status](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](https://codecov.io/github/uribo/jpndistrict?branch=master)
 
 ## Overview
 

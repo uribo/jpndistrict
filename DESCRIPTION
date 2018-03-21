@@ -37,7 +37,8 @@ Suggests:
     knitr,
     rmarkdown,
     rvest,
-    testthat (>= 1.0.2)
+    testthat (>= 1.0.2),
+    covr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
