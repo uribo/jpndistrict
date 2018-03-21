@@ -16,8 +16,8 @@ before_install:
 
 warnings_are_errors: true
 
-r_github_packages:
-  - jimhester/lintr
+r_packages:
+  - lintr
 
 after_success:
   - Rscript -e "covr::codecov(); lintr::lint_package()"
