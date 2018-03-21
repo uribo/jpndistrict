@@ -13,9 +13,9 @@
 #' mesh_district(jis_code = 33101)
 #' }
 #' @export
-mesh_district <- function(jis_code) {
+mesh_district <- function(jis_code = NULL) {
 
-  . <- data <- meshcode <- NULL
+  . <- meshcode <- NULL
 
   sf_pref <- jpn_cities(jis_code = jis_code)
 

@@ -17,7 +17,11 @@
 #' }
 #'
 #' @export
-jpn_pref <- function(pref_code, admin_name, district = TRUE, download = FALSE, drop_sinkyokyoku = TRUE) {
+jpn_pref <- function(pref_code,
+                     admin_name,
+                     district         = TRUE,
+                     download         = FALSE,
+                     drop_sinkyokyoku = TRUE) {
 
   jis_code <- NULL
 
@@ -28,7 +32,8 @@ jpn_pref <- function(pref_code, admin_name, district = TRUE, download = FALSE, d
     }
 
   if (download == FALSE) {
-    d <- readr::read_rds(system.file(paste0("extdata/ksj_n03/pref_", pref_code, ".rds"),
+    d <- readr::read_rds(
+      system.file(paste0("extdata/ksj_n03/pref_", pref_code, ".rds"),
                                      package = "jpndistrict"))
   } else {
     d <- read_ksj_cityarea(code = as.numeric(pref_code))
@@ -89,7 +94,7 @@ jpn_cities <- function(jis_code, admin_name) {
       d <- dplyr::filter(d, city %in% !!admin_name_q)
     }
 
-  res <- d %>% tweak_sf_output()
+  res <- tweak_sf_output(d)
 
   return(res)
 }

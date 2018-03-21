@@ -4,7 +4,7 @@
 \alias{mesh_district}
 \title{Export district's mesh polygon}
 \usage{
-mesh_district(jis_code)
+mesh_district(jis_code = NULL)
 }
 \arguments{
 \item{jis_code}{jis code for prefecture and city identifical number}
