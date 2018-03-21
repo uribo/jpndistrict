@@ -25,7 +25,6 @@ Imports:
     magrittr (>= 1.5),
     miniUI (>= 0.1.1),
     purrr (>= 0.2.4),
-    readr (>= 1.1.1),
     rlang (>= 0.1.4),
     sf (>= 0.5-5),
     shiny (>= 0.13),
@@ -35,7 +34,7 @@ Imports:
 Suggests: 
     knitr,
     rvest,
-    testthat (>= 1.0.2),
+    testthat,
     covr
 Encoding: UTF-8
 LazyData: true

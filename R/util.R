@@ -230,15 +230,14 @@ collect_cityarea <- function(path = NULL) {
 #'
 #' @param pref_code prefecture code (JIS X 0402)
 #' @param path path to P34 shapefile (if already exist)
-#' @importFrom readr read_rds
 #' @importFrom utils download.file
 #' @importFrom utils unzip
 read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
   # nolint start
   if (missing(path)) {
     df_df_url <-
-      readr::read_rds(system.file("extdata/ksj_P34_index.rds",
-                                  package = "jpndistrict"))
+      readRDS(system.file("extdata/ksj_P34_index.rds",
+                          package = "jpndistrict"))
 
     if (is.null(path) &
         file.exists(paste(tempdir(),

@@ -9,7 +9,6 @@
 #' @param download logical (default FALSE).
 #' @param drop_sinkyokyoku if TRUE, drop sichyo_sinkyokyoku variable (default TRUE)
 #' @importFrom dplyr select
-#' @importFrom readr read_rds
 #' @examples
 #' \dontrun{
 #' jpn_pref(pref_code = 33, district = FALSE)
@@ -32,9 +31,9 @@ jpn_pref <- function(pref_code,
     }
 
   if (download == FALSE) {
-    d <- readr::read_rds(
-      system.file(paste0("extdata/ksj_n03/pref_", pref_code, ".rds"),
-                                     package = "jpndistrict"))
+    d <- readRDS(system.file(paste0("extdata/ksj_n03/pref_", pref_code, ".rds"),
+                             package = "jpndistrict"))
+
   } else {
     d <- read_ksj_cityarea(code = as.numeric(pref_code))
   }
