@@ -33,9 +33,7 @@ Imports:
     tibble (>= 1.3.4),
     tidyr (>= 0.7.2)
 Suggests: 
-    devtools,
     knitr,
-    rmarkdown,
     rvest,
     testthat (>= 1.0.2),
     covr
