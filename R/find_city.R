@@ -4,7 +4,6 @@
 #' @param latitude latitude
 #' @param ... export parameter to other functions
 #' @importFrom dplyr mutate select right_join
-#' @importFrom stringi stri_pad
 #' @importFrom purrr set_names
 #' @note The `find_pref` function was added in version 0.3.0
 #' @examples
@@ -29,7 +28,7 @@ find_pref <- function(longitude, latitude, ...) {
         by = c("pref_code" = "jis_code", "prefecture")
       ) %>%
       purrr::set_names(c("pref_code", "prefecture", "geometry")) %>%
-      dplyr::mutate(pref_code = stringi::stri_pad(pref_code, 2, pad = "0")) %>%
+      dplyr::mutate(pref_code = sprintf("%02d", as.numeric(pref_code))) %>%
       tweak_sf_output()
 
   }

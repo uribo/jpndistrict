@@ -180,8 +180,6 @@ collect_prefcode <- function(code = NULL, admin_name = NULL) {
 #' @param path path to N03 shapefile (if already exist)
 #' @import dplyr
 #' @import sf
-#' @importFrom stringi stri_trim_both
-#' @importFrom stringi stri_conv
 collect_cityarea <- function(path = NULL) {
   . <-
     N03_001 <-
@@ -206,7 +204,7 @@ collect_cityarea <- function(path = NULL) {
     ) %>%
     mutate(
       tmp_var = if_else(is.na(N03_003), "", N03_003),
-      city_name_full = stringi::stri_trim_both(gsub("NA", "", paste(tmp_var, N03_004))) # nolint
+      city_name_full = gsub("[[:space:]]", "", gsub("NA", "", paste(tmp_var, N03_004))) # nolint
     ) %>%
     rename(
       pref_name = N03_001,
@@ -217,7 +215,7 @@ collect_cityarea <- function(path = NULL) {
     select(pref_name,
            city_name_, city_name, city_name_full, city_code) %>%
     mutate_at(.vars = vars(contains("name")),
-              stringi::stri_conv,
+              iconv,
               to = "UTF8") %>%
     sf::st_simplify(preserveTopology = FALSE, dTolerance = 0.001) %>%
     filter(!is.na(st_dimension(.)))

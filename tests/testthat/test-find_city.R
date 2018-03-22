@@ -12,7 +12,7 @@ test_that("prefecture", {
   expect_named(test, c("pref_code", "prefecture", "geometry"))
   expect_equal(test$pref_code, "08")
   expect_equal(test$prefecture,
-               stringi::stri_unescape_unicode("\\u8328\\u57ce\\u770c"))
+               paste(intToUtf8(c(33576, 22478, 30476), multiple = TRUE), collapse = ""))
 })
 
 test_that("city", {
@@ -26,5 +26,5 @@ test_that("city", {
   test <- find_city(longitude = 140.1137418, latitude = 36.0533957)
   expect_equal(test$city_code, "08220")
   expect_equal(test$city,
-               stringi::stri_unescape_unicode("\\u3064\\u304f\\u3070\\u5e02"))
+               paste(intToUtf8(c(12388, 12367, 12400, 24066), multiple = TRUE), collapse = ""))
 })
