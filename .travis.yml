@@ -1,7 +1,7 @@
 # ref) https://github.com/edzer/sf_dep/blob/master/.travis.yml
 dist: trusty
 language: r
-cache: packages
+# cache: packages
 sudo: required
 
 r:
