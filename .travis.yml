@@ -16,7 +16,7 @@ before_install:
 
 warnings_are_errors: true
 
-r_github_packages:
+r_packages:
   - lintr
 
 after_success:
