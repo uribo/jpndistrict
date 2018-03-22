@@ -10,7 +10,7 @@ test_that("jpn_pref", {
   expect_s3_class(df_pref, c("sf"))
   expect_s3_class(df_pref, c("tbl"))
   expect_equal(df_pref$prefecture[1],
-               stringi::stri_unescape_unicode("\\u5ca1\\u5c71\\u770c"))
+               paste(intToUtf8(c(23713, 23665, 30476), multiple = TRUE), collapse = ""))
 
   expect_named(
     df_pref,
@@ -45,7 +45,7 @@ test_that("jpn_cities", {
                c("city_code", "city", "geometry"))
   expect_equal(
     df_city$city[1],
-    stringi::stri_unescape_unicode("\\u5ca1\\u5c71\\u5e02 \\u6771\\u533a")
+    paste(intToUtf8(c(23713, 23665, 24066, 32, 26481, 21306), multiple = TRUE), collapse = "")
   )
   expect_equal(nrow(jpn_cities(jis_code = c(
     33103, 33104, 33205
@@ -56,7 +56,7 @@ test_that("jpn_cities", {
   expect_equal(dim(
     jpn_cities(
       jis_code = 33,
-      admin_name = stringi::stri_unescape_unicode("\\u5ca1\\u5c71\\u5e02 \\u6771\\u533a") # nolint
+      admin_name = paste(intToUtf8(c(23713, 23665, 24066, 32, 26481, 21306), multiple = TRUE), collapse = "") # nolint
     )
   ),
   c(1, 3))

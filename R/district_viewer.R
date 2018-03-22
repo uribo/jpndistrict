@@ -9,7 +9,6 @@
 #' @importFrom dplyr filter
 #' @importFrom magrittr use_series
 #' @importFrom sf st_transform
-#' @importFrom stringi stri_unescape_unicode
 #' @examples
 #' \dontrun{
 #' district_viewer()
@@ -29,7 +28,7 @@ district_viewer <- function(pref_code = 33, color = "red") {
         miniContentPanel(
           selectInput(
             inputId = "pref",
-            label = stringi::stri_unescape_unicode("\\u90fd\\u9053\\u5e9c\\u770c\\u3092\\u9078\\u629e:"),
+            label = paste(intToUtf8(c(37117, 36947, 24220, 30476, 12434, 36984, 25246, 58), multiple = TRUE), collapse = ""),
             choices = as.character(jpnprefs$prefecture),
             selected = jpnprefs$prefecture[1],
             multiple = FALSE
@@ -62,7 +61,7 @@ district_viewer <- function(pref_code = 33, color = "red") {
       updateSelectInput(
         session,
         "cities",
-        stringi::stri_unescape_unicode("\\u5e02\\u533a\\u753a\\u6751\\u3092\\u9078\\u629e"),
+        paste(intToUtf8(c(24066, 21306, 30010, 26449, 12434, 36984, 25246), multiple = TRUE), collapse = ""),
         choices = unique(magrittr::use_series(
           jpn_pref(admin_name = input$pref),
           city

@@ -17,3 +17,4 @@
 ^docker-compose\.yml$
 ^codecov\.yml$
 ^appveyor\.yml$
+^\.lintr$
