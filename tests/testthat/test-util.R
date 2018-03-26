@@ -23,6 +23,7 @@ test_that("return prefecture jis code as string", {
 test_that("available kjs data", {
 
   skip_on_os("linux")
+  skip_on_os("windows")
   skip_on_travis()
   skip_on_appveyor()
   skip_on_cran()
@@ -33,7 +34,7 @@ test_that("available kjs data", {
   )
   expect_equal(
     dim(test),
-    c(1745L, 6L)
+    c(40L, 6L)
   )
 })
 
