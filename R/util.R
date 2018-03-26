@@ -93,6 +93,7 @@ raw_bind_cityareas <- function(pref) {
 #' @param code prefecture code (JIS X 0402)
 #' @param path path to N03 shapefile (if already exist)
 read_ksj_cityarea <- function(code = NULL, path = NULL) {
+  # nocov start
   if (missing(path)) {
     path <- path_ksj_cityarea(code)
   }
@@ -100,7 +101,7 @@ read_ksj_cityarea <- function(code = NULL, path = NULL) {
   res <- collect_cityarea(path)
 
   return(res)
-
+  # nocov end
 }
 
 #' Download KSJ N03 zip files
@@ -110,6 +111,7 @@ read_ksj_cityarea <- function(code = NULL, path = NULL) {
 #' @importFrom utils download.file
 #' @importFrom utils unzip
 path_ksj_cityarea <- function(code = NULL, path = NULL) {
+  # nocov start
   if (missing(path)) {
     pref.identifer <- sprintf("%02d", code)
     dest.path <-
@@ -148,7 +150,7 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
   }
 
   return(path)
-
+  # nocov end
 }
 
 #' Get prefecture code (JIS X 0402)
@@ -181,6 +183,7 @@ collect_prefcode <- function(code = NULL, admin_name = NULL) {
 #' @import dplyr
 #' @import sf
 collect_cityarea <- function(path = NULL) {
+  # nocov start
   . <-
     N03_001 <-
     N03_002 <- N03_003 <- N03_004 <- N03_007 <- tmp_var <- NULL
@@ -221,6 +224,7 @@ collect_cityarea <- function(path = NULL) {
     filter(!is.na(st_dimension(.)))
 
   return(res)
+  # nocov end
 }
 
 
@@ -252,7 +256,7 @@ read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
 
       path <- paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]),  sep = "/")
     } else if (file.exists(paste(tempdir(), df_df_url$dest_file[pref_code], sep = "/")) == TRUE) {
-      path <- paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]),  sep = "/")
+      path <- paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]),  sep = "/") # nocov
     }
 
     res <- collect_ksj_p34(path = path)

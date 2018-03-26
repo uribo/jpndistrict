@@ -16,6 +16,7 @@
 #' @export
 district_viewer <- function(pref_code = 33, color = "red") {
   # nolint start
+  # nocov start
   prefecture <- city <- city_code <- jis_code <- geometry <- NULL
 
   # UI ----------------------------------------------------------------------
@@ -112,4 +113,5 @@ district_viewer <- function(pref_code = 33, color = "red") {
             server,
             viewer = dialogViewer("district_viewer", width = 650, height = 500))
   # nolint end
+  # nocov end
 }

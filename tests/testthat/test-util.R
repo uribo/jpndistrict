@@ -11,6 +11,30 @@ test_that("return prefecture jis code as string", {
   test <- collect_prefcode(33)
   expect_is(test, "character")
   expect_equal(test, "33")
+
+
+  char_okym <- paste(intToUtf8(c(23713, 23665, 30476), multiple = TRUE), collapse = "")
+  expect_identical(
+    collect_prefcode(33),
+    collect_prefcode(admin_name = char_okym)
+  )
+})
+
+test_that("available kjs data", {
+
+  skip_on_os("linux")
+  skip_on_travis()
+  skip_on_appveyor()
+  skip_on_cran()
+  test <- read_ksj_cityarea(code = 17)
+  expect_is(
+    test,
+    c("sf", "data.frame")
+  )
+  expect_equal(
+    dim(test),
+    c(1745L, 6L)
+  )
 })
 
 test_that("reverge-geo coding", {

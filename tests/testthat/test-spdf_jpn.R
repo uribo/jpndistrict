@@ -12,6 +12,17 @@ test_that("jpn_pref", {
   expect_equal(df_pref$prefecture[1],
                paste(intToUtf8(c(23713, 23665, 30476), multiple = TRUE), collapse = ""))
 
+  expect_equal(
+    unique(jpn_pref(pref_code = 33)$pref_code),
+    "33"
+  )
+
+  char_okym <- paste(intToUtf8(c(23713, 23665, 30476), multiple = TRUE), collapse = "")
+  expect_identical(
+    jpn_pref(pref_code = 33),
+    jpn_pref(admin_name = char_okym)
+  )
+
   expect_named(
     df_pref,
     c(

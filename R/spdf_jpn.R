@@ -35,7 +35,7 @@ jpn_pref <- function(pref_code,
                              package = "jpndistrict"))
 
   } else {
-    d <- read_ksj_cityarea(code = as.numeric(pref_code))
+    d <- read_ksj_cityarea(code = as.numeric(pref_code)) # nocov
   }
 
   if (drop_sinkyokyoku == TRUE) {
@@ -101,7 +101,6 @@ jpn_cities <- function(jis_code, admin_name) {
 #' Simple features for administration office points
 #'
 #' @description Name and geolocations for administration offices in prefecture.
-#' @param path shapefile path
 #' @inheritParams jpn_cities
 #' @import rlang
 #' @importFrom dplyr filter
@@ -112,9 +111,7 @@ jpn_cities <- function(jis_code, admin_name) {
 #' jpn_admins(jis_code = 17)
 #' }
 #' @export
-jpn_admins <- function(path = NULL, jis_code) {
-
-  if (missing(path)) {
+jpn_admins <- function(jis_code) {
 
     jis_code_q <- rlang::enquo(jis_code)
 
@@ -125,14 +122,10 @@ jpn_admins <- function(path = NULL, jis_code) {
       purrr::reduce(rbind)
 
     if (nchar(jis_code[1]) > 2) {
-      res <- dplyr::filter(d, jis_code %in% !!jis_code_q)
+      res <- dplyr::filter(d, jis_code %in% !!jis_code_q) # nocov
     } else {
       res <- d
     }
-
-  } else {
-    res <- d
-  }
 
   return(res)
 
