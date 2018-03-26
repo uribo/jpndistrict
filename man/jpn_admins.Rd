@@ -4,11 +4,9 @@
 \alias{jpn_admins}
 \title{Simple features for administration office points}
 \usage{
-jpn_admins(path = NULL, jis_code)
+jpn_admins(jis_code)
 }
 \arguments{
-\item{path}{shapefile path}
-
 \item{jis_code}{jis code for prefecture and city identifical number}
 }
 \value{
