@@ -33,28 +33,6 @@ collect_ksj_p34 <- function(path = NULL) {
 
 }
 
-#' Bind city area polygons to prefecture polygon
-#'
-#' @param path path to N03 shapefile (if already exist)
-#' @importFrom sf st_read
-bind_cityareas <- function(path = NULL) {
-  pref.shp <- NULL
-
-  pref.shp <- sf::st_read(
-    list.files(path, pattern = "shp$", full.names = TRUE),
-    stringsAsFactors = FALSE,
-    options = c(paste0(
-      "ENCODING=",
-      dplyr::if_else(tolower(Sys.info()[["sysname"]]) == "windows",
-                     "UTF8", "cp932")
-    ))
-  )
-
-  res <- raw_bind_cityareas(pref.shp)
-
-  return(res)
-}
-
 #' Intermediate function
 #'
 #' @param pref sf object (prefecture)
