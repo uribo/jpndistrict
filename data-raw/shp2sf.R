@@ -110,7 +110,7 @@ pref_modified <- function(prefcode) {
       filter(pref_code == !!pref) %>%
       mutate_at(vars(c("prefecture", "sichyo_sinkyokyoku", "city")), stringi::stri_conv, to = "UTF8") %>%
       st_simplify(preserveTopology = TRUE, dTolerance = 0.0015) %>%
-      filter(!is.na(st_dimension(.)))
+      filter(sf::st_is_empty(.) == FALSE)
   )
   return(res)
 }

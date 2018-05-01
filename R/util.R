@@ -166,40 +166,43 @@ collect_cityarea <- function(path = NULL) {
     N03_001 <-
     N03_002 <- N03_003 <- N03_004 <- N03_007 <- tmp_var <- NULL
   pref_name <-
-    city_name_ <- city_name <- city_name_full <- city_code <- NULL
+    city_name_ <- city_name <- city_name_full <- city_code <- geometry <- NULL
 
   res <-
-    sf::st_read(
-      list.files(
-        path,
-        pattern = "shp$",
-        full.names = TRUE,
-        recursive = TRUE
-      ),
-      stringsAsFactors = FALSE,
-      options = c(paste0(
-        "ENCODING=",
-        dplyr::if_else(tolower(Sys.info()[["sysname"]]) == "windows",
-                       "UTF8", "cp932")
-      ))
-    ) %>%
-    mutate(
-      tmp_var = if_else(is.na(N03_003), "", N03_003),
-      city_name_full = gsub("[[:space:]]", "", gsub("NA", "", paste(tmp_var, N03_004))) # nolint
-    ) %>%
-    rename(
-      pref_name = N03_001,
-      city_name_ = N03_003,
-      city_name = N03_004,
-      city_code = N03_007
-    ) %>%
-    select(pref_name,
-           city_name_, city_name, city_name_full, city_code) %>%
-    mutate_at(.vars = vars(contains("name")),
-              iconv,
-              to = "UTF8") %>%
-    sf::st_simplify(preserveTopology = FALSE, dTolerance = 0.001) %>%
-    filter(!is.na(st_dimension(.)))
+    suppressWarnings(
+      sf::st_read(
+        list.files(
+          path,
+          pattern = "shp$",
+          full.names = TRUE,
+          recursive = TRUE
+        ),
+        stringsAsFactors = FALSE,
+        options = c(paste0(
+          "ENCODING=",
+          dplyr::if_else(tolower(Sys.info()[["sysname"]]) == "windows",
+                         "UTF8", "cp932")
+        ))
+      ) %>%
+        sf::st_simplify(preserveTopology = FALSE, dTolerance = 0.001) %>%
+        dplyr::filter(sf::st_is_empty(.) == FALSE) %>%
+        dplyr::mutate(
+          tmp_var = dplyr::if_else(is.na(N03_003), "", N03_003),
+          city_name_full = gsub("[[:space:]]", "", gsub("NA", "", paste(tmp_var, N03_004))) # nolint
+        ) %>%
+        dplyr::rename(
+          pref_name  = N03_001,
+          city_name_ = N03_003,
+          city_name  = N03_004,
+          city_code  = N03_007
+        ) %>%
+        dplyr::mutate_at(.vars = dplyr::vars(dplyr::contains("name")),
+                  iconv,
+                  to = "UTF8") %>%
+        dplyr::select(pref_name,
+                      city_name_, city_name, city_name_full, city_code,
+                      geometry)
+    )
 
   return(res)
   # nocov end
@@ -255,24 +258,35 @@ read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
 #' @importFrom sf st_contains st_point
 #' @name which_pol_min
 which_pol_min <- function(longitude, latitude, ...) {
-  sp_polygon <-
+
+  pref_code_chr <-
     find_prefs(longitude = longitude, latitude = latitude) %>%
-    use_series(pref_code) %>%
-    purrr::map(jpn_pref) %>%
-    purrr::reduce(rbind)
+    magrittr::use_series(pref_code)
 
-  which_row <-
-    suppressMessages(grep(
-      TRUE,
-      sf::st_intersects(sp_polygon,
-                        sf::st_point(c(
-                          longitude, latitude
-                        ), dim = "XY"),
-                        sparse = FALSE)
-    ))
+  sp_polygon <- NULL
+  which_row  <- integer(0)
 
-  res <- list(spdf = sp_polygon, which = which_row)
-  return(res)
+  if (identical(pref_code_chr, character(0)) == TRUE) {
+    1
+  } else {
+    sp_polygon <-
+      pref_code_chr %>%
+      purrr::map(jpn_pref) %>%
+      purrr::reduce(rbind)
+
+    which_row <-
+      suppressMessages(grep(
+        TRUE,
+        sf::st_intersects(sp_polygon,
+                          sf::st_point(c(
+                            longitude, latitude
+                          ), dim = "XY"),
+                          sparse = FALSE)
+      ))
+  }
+
+
+  list(spdf = sp_polygon, which = which_row)
 }
 
 

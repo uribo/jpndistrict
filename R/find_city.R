@@ -16,8 +16,9 @@ find_pref <- function(longitude, latitude, ...) {
 
   res <- find_city(longitude, latitude, ...)
 
-  if (nrow(res) >= 1) {
-    df_tmp <- res %>%
+  if (!is.null(res)) {
+    df_tmp <-
+      res %>%
       dplyr::mutate(pref_code = substr(city_code, 1, 2)) %>%
       dplyr::select(pref_code, prefecture)
 
@@ -31,9 +32,8 @@ find_pref <- function(longitude, latitude, ...) {
       dplyr::mutate(pref_code = sprintf("%02d", as.numeric(pref_code))) %>%
       tweak_sf_output()
 
+    return(res)
   }
-
-  return(res)
 }
 
 #' Detect prefectures by coordinates

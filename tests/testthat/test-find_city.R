@@ -15,19 +15,32 @@ test_that("prefecture", {
                paste(intToUtf8(c(33576, 22478, 30476), multiple = TRUE), collapse = ""))
 })
 
-test_that("city", {
-  test <- find_city(longitude = 130.4412895, latitude = 30.2984335)
-  expect_s3_class(test, "tbl")
-  expect_equal(dim(test), c(1, 4))
-  expect_named(test, c("prefecture", "city_code", "city", "geometry"))
-  expect_equal(test$city_code, "46505")
-  expect_is(test$prefecture, "character")
-
-  test <- find_city(longitude = 140.1137418, latitude = 36.0533957)
-  expect_equal(test$city_code, "08220")
-  expect_equal(test$city,
-               paste(intToUtf8(c(12388, 12367, 12400, 24066), multiple = TRUE), collapse = ""))
-
+test_that("Failed", {
+  expect_message(
+    find_pref(125.2468750000, 24.7145833333),
+    intToUtf8(
+      c(
+        25351,
+        23450,
+        12375,
+        12383,
+        24231,
+        27161,
+        12364,
+        12509,
+        12522,
+        12468,
+        12531,
+        12395,
+        21547,
+        12414,
+        12428,
+        12414,
+        12379,
+        12435
+      )
+    )
+  )
   expect_message(
     find_city(longitude = 140.639815, latitude = 36.108976),
     intToUtf8(
@@ -51,5 +64,23 @@ test_that("city", {
         12379,
         12435
       )
-  ))
+    ))
+  test <-
+    find_pref(125.2468750000, 24.7145833333)
+  expect_identical(test, NULL)
+
+})
+
+test_that("city", {
+  test <- find_city(longitude = 130.4412895, latitude = 30.2984335)
+  expect_s3_class(test, "tbl")
+  expect_equal(dim(test), c(1, 4))
+  expect_named(test, c("prefecture", "city_code", "city", "geometry"))
+  expect_equal(test$city_code, "46505")
+  expect_is(test$prefecture, "character")
+
+  test <- find_city(longitude = 140.1137418, latitude = 36.0533957)
+  expect_equal(test$city_code, "08220")
+  expect_equal(test$city,
+               paste(intToUtf8(c(12388, 12367, 12400, 24066), multiple = TRUE), collapse = ""))
 })
