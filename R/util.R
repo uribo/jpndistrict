@@ -242,7 +242,7 @@ read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
 
     res <- collect_ksj_p34(path = path)
   } else {
-    res <- collect_ksj_p34(path = path)
+    res <- collect_ksj_p34(path = path) # nocov
   }
 
   return(res)
@@ -284,7 +284,6 @@ which_pol_min <- function(longitude, latitude, ...) {
                           sparse = FALSE)
       ))
   }
-
 
   list(spdf = sp_polygon, which = which_row)
 }
