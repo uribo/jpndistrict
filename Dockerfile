@@ -1,4 +1,4 @@
-FROM rocker/geospatial:3.4.3
+FROM rocker/geospatial:3.5.0
 RUN apt-get update
 
 RUN install2.r --error \

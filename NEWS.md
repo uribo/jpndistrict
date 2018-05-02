@@ -1,3 +1,13 @@
+# jpndistrict 0.3.1
+
+- Setup tidy development environment.
+
+## Issues
+
+- Fix some bugs.
+    - City administration data update [#4](https://github.com/uribo/jpndistrict/issues/4)
+    - Reverse geocoding failed behabior [#10](https://github.com/uribo/jpndistrict/issues/10)
+
 # jpndistrict 0.3.0
 
 - Updated citation and licence. 
