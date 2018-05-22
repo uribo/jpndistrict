@@ -46,6 +46,20 @@ test_that("jpn_pref", {
   expect_named(df_pref2,
                c("jis_code", "prefecture", "geometry"))
   expect_identical(sf::st_crs(df_pref2), crs_4326)
+
+  df_pref13 <-
+    jpn_pref(pref_code = 13, district = TRUE)
+  expect_equal(
+    df_pref13$city[1],
+    intToUtf8(c(21315, 20195, 30000, 21306))
+  )
+  expect_equal(
+    df_pref13$city %>%
+      unique() %>%
+      grepl("NA$", .) %>%
+      sum(),
+    0L
+  )
 })
 
 test_that("jpn_cities", {

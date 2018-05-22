@@ -22,19 +22,20 @@ if (file.exists("data-raw/KSJ_N03/N03-170101_GML.zip") == FALSE) {
   # add to Git Ignore
 }
 
-
 # Modified shapefile ----------------------------------------------------------
-sf_japan <- st_read("data-raw/KSJ_N03/N03-17_170101.shp") %>%
+sf_japan <-
+  st_read("data-raw/KSJ_N03/N03-17_170101.shp", stringsAsFactors = FALSE) %>%
   set_names(c("prefecture", "sichyo_sinkyokyoku", "gun_seireishitei", "city", "city_code", "geometry")) %>%
   mutate(city = if_else(!is.na(gun_seireishitei),
-                        paste(gun_seireishitei, city),
+                        if_else(is.na(city), gun_seireishitei, paste(gun_seireishitei, city)),
                         as.character(city)),
          pref_code = substr(city_code, 1, 2),
          city_code = as.character(city_code)) %>%
   select(pref_code, prefecture, sichyo_sinkyokyoku, city_code, city, geometry) %>%
   st_simplify(preserveTopology = TRUE, dTolerance = 0.0005) %>%
   st_transform(crs = 4326)
-expect_gte(pryr::object_size(sf_japan), 57.5) # MB
+
+expect_gte(pryr::object_size(sf_japan), 65) # MB
 
 # 市区町村で一つのPOLYGON、すなわちMULTIPOLYGONにする
 sf_japan_distinct <- rbind(
