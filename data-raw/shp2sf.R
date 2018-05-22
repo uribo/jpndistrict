@@ -2,7 +2,6 @@
 # 5MB以下
 library(dplyr)
 library(purrr)
-library(magrittr)
 library(testthat)
 library(sf)
 # Download raw data (47 prefectures, 2017) ----------------------------------------------------------------------
@@ -10,8 +9,8 @@ if (file.exists("data-raw/KSJ_N03/N03-170101_GML.zip") == FALSE) {
 
   dir.create("data-raw/KSJ_N03")
 
-  d <- kokudosuuchi::getKSJURL(identifier = "N03")
-  dl_url <- d %>%
+  dl_url <-
+    kokudosuuchi::getKSJURL(identifier = "N03") %>%
     arrange(desc(year), areaCode) %>%
     slice(1L) %>%
     use_series(zipFileUrl)
@@ -38,20 +37,21 @@ sf_japan <-
 expect_gte(pryr::object_size(sf_japan), 65) # MB
 
 # 市区町村で一つのPOLYGON、すなわちMULTIPOLYGONにする
-sf_japan_distinct <- rbind(
-  sf_japan %>%
-    filter(city_code != "46527") %>%
-    split(.$pref_code) %>%
-    map(~ .x %>% distinct(city_code, .keep_all = TRUE)) %>%
-    reduce(rbind),
-  sf_japan %>%
-    filter(city_code == "46527") %>%
-    split(.$pref_code) %>%
-    map(~ .x %>% distinct(city_code, .keep_all = TRUE)) %>%
-    reduce(rbind)
+sf_japan_distinct <-
+  rbind(
+    sf_japan %>%
+      filter(city_code != "46527") %>%
+      split(.$pref_code) %>%
+      map(~ .x %>% distinct(city_code, .keep_all = TRUE)) %>%
+      reduce(rbind),
+    sf_japan %>%
+      filter(city_code == "46527") %>%
+      split(.$pref_code) %>%
+      map(~ .x %>% distinct(city_code, .keep_all = TRUE)) %>%
+      reduce(rbind)
 )
 
-expect_lte(pryr::object_size(sf_japan_distinct), 4831968) # MB
+expect_lte(pryr::object_size(sf_japan_distinct), 5300000) # MB
 
 city_union <- function(df) {
   df %>%
@@ -61,30 +61,40 @@ city_union <- function(df) {
     st_sfc()
 }
 
-tmp_a <- sf_japan %>%
+tmp_a <-
+  sf_japan %>%
   filter(city_code == "46527") %>%
   group_by(city_code) %>%
-  do(out = st_buffer(st_union(st_buffer(., 0)), dist = 0.0001)) %>%
-  use_series(out) %>%
-  purrr::reduce(c) %>%
-  st_sfc()
+  tidyr::nest() %>%
+  transmute(out = purrr::map(data,
+                          function(df) {
+                            st_buffer(st_union(st_buffer(df, 0)), dist = 0.0001)
+                          }
+  ))
 
-tmp_b <- sf_japan %>%
+tmp_a <-
+  tmp_a$out[[1]] %>% st_sfc()
+
+tmp_b <-
+  sf_japan %>%
   filter(city_code == "46527") %>%
   city_union()
 expect_true(identical(tmp_a, tmp_b))
 
-# ちょい時間かかる (~15min.)
-sf_japan_distinct$geometry <- c(sf_japan %>%
-                                  filter(city_code != "46527") %>%
-                                  city_union(),
-                                sf_japan %>%
-                                  filter(city_code == "46527") %>%
-                                  city_union())
+# ちょい時間かかる (~10min.)
+sf_japan_distinct$geometry <-
+  c(sf_japan %>%
+      filter(city_code != "46527") %>%
+      city_union(),
+    sf_japan %>%
+      filter(city_code == "46527") %>%
+      city_union()
+  )
 
 # 元に戻す
 # 連鎖で実行しない (Errorになる)
-sf_japan_distinct %<>%
+sf_japan_distinct <-
+  sf_japan_distinct %>%
   arrange(city_code)
 
 sf_japan_distinct %>%
@@ -116,15 +126,17 @@ pref_modified <- function(prefcode) {
   return(res)
 }
 
-
 expect_equal(nrow(pref_modified(prefcode = 33)), 30L)
 expect_equal(nrow(pref_modified(prefcode = 13)), 62L)
 
 dir.create("inst/extdata/ksj_n03/")
 
 # 5MB以内に収める
-1:47 %>% purrr::walk(
-  ~ sprintf("%02d", .x) %>% pref_modified(prefcode = .) %>%
-    readr::write_rds(path = paste0("inst/extdata/ksj_n03/pref_", sprintf("%02s", .x), ".rds"),
+1:47 %>%
+  purrr::walk(
+  ~ sprintf("%02d", .x) %>%
+    pref_modified(prefcode = .) %>%
+    readr::write_rds(path = paste0("inst/extdata/ksj_n03/pref_",
+                                   sprintf("%02s", .x), ".rds"),
                      compress = "xz")
 )
