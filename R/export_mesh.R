@@ -29,12 +29,13 @@ mesh_district <- function(jis_code = NULL) {
 
   df_tmp <- tibble::tibble(
     res_contains = suppressMessages(sf::st_intersects(jpmesh::sf_jpmesh,
-                                                      sf_pref) %>% as.numeric()))
+                                                      sf_admins,
+                                                      sparse = FALSE) %>% rowSums()))
 
   df_tmp$id <- 1:nrow(df_tmp)
 
   df_pref10km_mesh <- jpmesh::sf_jpmesh[df_tmp %>%
-                                          dplyr::filter(!is.na(res_contains)) %>%
+                                          dplyr::filter(res_contains != 0) %>%
                                           tidyr::unnest() %>%
                                           magrittr::use_series(id) %>%
                                           unique(), ] %>%
@@ -52,12 +53,13 @@ mesh_district <- function(jis_code = NULL) {
 
   df_tmp <- tibble::tibble(
     res_contains = suppressMessages(sf::st_intersects(df_pref10km_mesh,
-                                                      sf_pref) %>% as.numeric()))
+                                                      sf_admins,
+                                                      sparse = FALSE) %>% rowSums()))
   df_tmp$id <- 1:nrow(df_tmp)
 
   df_pref1km_mesh <-
     df_pref10km_mesh[df_tmp %>%
-                dplyr::filter(!is.na(res_contains)) %>%
+                dplyr::filter(res_contains != 0) %>%
                        tidyr::unnest() %>%
                        magrittr::use_series(id) %>%
                        unique(), ] %>%
@@ -75,14 +77,14 @@ mesh_district <- function(jis_code = NULL) {
 
   df_tmp <- tibble::tibble(
     res_contains = suppressMessages(sf::st_intersects(df_pref1km_mesh,
-                                                      sf_pref) %>% as.numeric()))
+                                                      sf_admins,
+                                                      sparse = FALSE) %>% rowSums()))
   df_tmp$id <- 1:nrow(df_tmp)
 
   df_pref1km_mesh[df_tmp %>%
-                     dplyr::filter(!is.na(res_contains)) %>%
+                     dplyr::filter(res_contains != 0) %>%
                      tidyr::unnest() %>%
                      magrittr::use_series(id) %>%
                      unique(), ]
-
 
 }
