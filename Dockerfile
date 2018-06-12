@@ -1,11 +1,14 @@
 FROM rocker/geospatial:3.5.0
-RUN apt-get update
 
-RUN install2.r --error \
-  jpmesh \
-  pryr \
-  usethis
+RUN set -x && \
+  apt-get update && \
+  rm -rf /var/lib/apt/lists/*
 
-RUN installGithub.r \
-  r-lib/roxygen2md \
-  r-lib/devtools
+RUN set -x && \
+  install2.r --error \
+    jpmesh \
+    pryr \
+    usethis && \
+  installGithub.r \
+    "r-lib/roxygen2md" \
+    "r-lib/devtools"
