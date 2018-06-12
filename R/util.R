@@ -1,9 +1,28 @@
-#' Get prefecture code from jis code
+#' Administration code varidation
 #'
-#' @param jis_code jis code
-pref_code <- function(jis_code) {
-  res <- sprintf("%02d", as.numeric(substr(jis_code, 1, 2)))
-  return(res)
+#' @param jis_code jis code for prefecture and city identifical number.
+#' If prefecture, must be from 1 to 47. If city, range of 5 digits.
+admins_code_validate <- function(jis_code) {
+
+  x <- as.numeric(jis_code)
+
+  codes <-
+    sapply(1:47, sprintf, fmt = "%02d")
+
+  code <- codes[codes %in% substr(sprintf("%02d", x), 1, 2)]
+
+  if (identical(code, character(0)) == FALSE) {
+    if (nchar(x) >= 1 && nchar(x) <= 2) {
+      administration_type <- "prefecture"
+    } else if (nchar(x) == 5) {
+      administration_type <- "city"
+      code <- as.character(x)
+    }} else {
+      rlang::abort("x must be start a integer or as character from 1 to 47.")
+    }
+
+  list(administration_type = administration_type,
+       code = code)
 }
 
 #' Collect administration office point datasets.
