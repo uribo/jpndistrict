@@ -162,7 +162,7 @@ collect_prefcode <- function(code = NULL, admin_name = NULL) {
 
   if (missing(admin_name)) {
     pref_code <-
-      dplyr::filter(jpnprefs, jis_code == pref_code(code)) %>%
+      dplyr::filter(jpnprefs, jis_code == admins_code_validate(code)$code) %>%
       magrittr::use_series(jis_code)
   } else if (missing(code)) {
     pref_code <-
@@ -278,6 +278,8 @@ read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
 #' @name which_pol_min
 which_pol_min <- function(longitude, latitude, ...) {
 
+  pref_code <- NULL
+
   pref_code_chr <-
     find_prefs(longitude = longitude, latitude = latitude) %>%
     magrittr::use_series(pref_code)
@@ -306,7 +308,6 @@ which_pol_min <- function(longitude, latitude, ...) {
 
   list(spdf = sp_polygon, which = which_row)
 }
-
 
 crs_4326 <-
   structure(list(epsg = 4326L,

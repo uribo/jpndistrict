@@ -7,13 +7,15 @@
 mesh_district(jis_code = NULL)
 }
 \arguments{
-\item{jis_code}{jis code for prefecture and city identifical number}
+\item{jis_code}{jis code for prefecture and city identifical number.
+If prefecture, must be from 1 to 47. If city, range of 5 digits.}
 }
 \description{
 Export district's mesh polygon
 }
 \examples{
 \dontrun{
+mesh_district(jis_code = "05")
 mesh_district(jis_code = 33101)
 }
 }

@@ -12,7 +12,7 @@
 #' }
 #' @export
 find_pref <- function(longitude, latitude, ...) {
-  prefecture <- city_code <- NULL
+  pref_code <- prefecture <- city_code <- NULL
 
   res <- find_city(longitude, latitude, ...)
 

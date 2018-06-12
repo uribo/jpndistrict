@@ -63,7 +63,7 @@ test_that("jpn_pref", {
 })
 
 test_that("jpn_cities", {
-  df_city <- jpn_cities(jis_code = 33103)
+  df_city <- jpn_cities(city_code = 33103)
   expect_s3_class(df_city, c("sf"))
   expect_s3_class(df_city, c("tbl"))
   expect_named(df_city,
@@ -72,15 +72,15 @@ test_that("jpn_cities", {
     df_city$city[1],
     paste(intToUtf8(c(23713, 23665, 24066, 32, 26481, 21306), multiple = TRUE), collapse = "")
   )
-  expect_equal(nrow(jpn_cities(jis_code = c(
+  expect_equal(nrow(jpn_cities(city_code = c(
     33103, 33104, 33205
   ))), 3L)
-  expect_equal(nrow(jpn_cities(jis_code = 33205)), 1L)
+  expect_equal(nrow(jpn_cities(city_code = 33205)), 1L)
   expect_identical(sf::st_crs(df_city), crs_4326)
 
   expect_equal(dim(
     jpn_cities(
-      jis_code = 33,
+      city_code = 33,
       admin_name = paste(intToUtf8(c(23713, 23665, 24066, 32, 26481, 21306), multiple = TRUE), collapse = "") # nolint
     )
   ),

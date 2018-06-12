@@ -8,7 +8,7 @@ jpn_pref(pref_code, admin_name, district = TRUE, download = FALSE,
   drop_sinkyokyoku = TRUE)
 }
 \arguments{
-\item{pref_code}{jis code from 1 to 47 (integer)}
+\item{pref_code}{jis code from 1 to 47}
 
 \item{admin_name}{prefecture names (string)}
 

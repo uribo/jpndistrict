@@ -3,7 +3,7 @@
 #' @description Prefecture polygon data.
 #' @details Collect unit of prefecture simple feature data.frame objects.. If downalod argument is TRUE,
 #' download administrative area data from the National Land Numeral Information Download Service (for law data).
-#' @param pref_code jis code from 1 to 47 (integer)
+#' @param pref_code jis code from 1 to 47
 #' @param admin_name prefecture names (string)
 #' @param district logical (default TRUE)
 #' @param download logical (default FALSE).
@@ -62,21 +62,22 @@ jpn_pref <- function(pref_code,
 #' is specified as an argument, the target city data is extracted. If neither is given,
 #' it becomes the data of the target prefecture.
 #' @importFrom dplyr filter
-#' @param jis_code jis code for prefecture and city identifical number
+#' @param city_code jis code as city identified number
 #' @param admin_name administration name
 #' @examples
-#' jpn_cities(jis_code = 33103)
-#' jpn_cities(jis_code = c(33103, 33104, 33205))
-#' jpn_cities(jis_code = c(33103, 34107))
+#' jpn_cities(city_code = 33103)
+#' jpn_cities(city_code = "33103")
+#' jpn_cities(city_code = c(33103, 33104, 33205))
+#' jpn_cities(city_code = c(33103, 34107))
 #' @export
-jpn_cities <- function(jis_code, admin_name) {
+jpn_cities <- function(city_code, admin_name) {
 
-  city_code <- city <- geometry <- NULL
+  city <- geometry <- NULL
 
-  jis_code_q <- rlang::enquo(jis_code)
+  jis_code_q <- rlang::enquo(city_code)
   admin_name_q <- rlang::enquo(admin_name)
 
-  d <- jis_code %>%
+  d <- city_code %>%
     purrr::map_chr(~ substr(.x, 1, 2)) %>%
     unique() %>%
     purrr::map(~ jpn_pref(pref_code = .x, district = TRUE)) %>%
@@ -84,7 +85,7 @@ jpn_cities <- function(jis_code, admin_name) {
     dplyr::select(-1:-2) %>%
     dplyr::select(city_code, city, geometry)
 
-  if (nchar(jis_code[1]) > 3) {
+  if (nchar(city_code[1]) > 3) {
     if (missing(admin_name)) {
       d <- dplyr::filter(d, city_code %in% !!jis_code_q)
     }
@@ -101,7 +102,7 @@ jpn_cities <- function(jis_code, admin_name) {
 #' Simple features for administration office points
 #'
 #' @description Name and geolocations for administration offices in prefecture.
-#' @inheritParams jpn_cities
+#' @inheritParams admins_code_validate
 #' @import rlang
 #' @importFrom dplyr filter
 #' @importFrom purrr map reduce

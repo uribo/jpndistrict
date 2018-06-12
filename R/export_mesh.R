@@ -1,6 +1,6 @@
 #' Export district's mesh polygon
 #'
-#' @param jis_code jis code for prefecture and city identifical number
+#' @inheritParams admins_code_validate
 #' @importFrom dplyr filter mutate select everything
 #' @importFrom jpmesh fine_separate mesh_to_coords
 #' @importFrom magrittr use_series
@@ -10,14 +10,22 @@
 #' @importFrom tidyr unnest
 #' @examples
 #' \dontrun{
+#' mesh_district(jis_code = "05")
 #' mesh_district(jis_code = 33101)
 #' }
 #' @export
 mesh_district <- function(jis_code = NULL) {
 
-  . <- meshcode <- NULL
+  . <- res_contains <- meshcode <- NULL
 
-  sf_pref <- jpn_cities(jis_code = jis_code)
+  input_code <-
+    admins_code_validate(jis_code)
+
+  if (input_code$administration_type == "prefecture") {
+    sf_admins <- jpn_pref(pref_code = input_code$code)
+  } else if (input_code$administration_type == "city") {
+    sf_admins <- jpn_cities(city_code = input_code$code)
+  }
 
   df_tmp <- tibble::tibble(
     res_contains = suppressMessages(sf::st_intersects(jpmesh::sf_jpmesh,
