@@ -4,11 +4,9 @@
 \alias{district_viewer}
 \title{District Viewer}
 \usage{
-district_viewer(pref_code = 33, color = "red")
+district_viewer(color = "red")
 }
 \arguments{
-\item{pref_code}{prefecture code (default 33)}
-
 \item{color}{polygon line color for leaflet}
 }
 \description{

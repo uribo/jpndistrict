@@ -1,7 +1,6 @@
 #' District Viewer
 #'
 #' @description Interactive district map and information tool.
-#' @param pref_code prefecture code (default 33)
 #' @param color polygon line color for leaflet
 #' @import leaflet
 #' @import miniUI
@@ -14,7 +13,7 @@
 #' district_viewer()
 #' }
 #' @export
-district_viewer <- function(pref_code = 33, color = "red") {
+district_viewer <- function(color = "red") {
   # nolint start
   # nocov start
   prefecture <- city <- city_code <- jis_code <- geometry <- NULL
@@ -91,19 +90,19 @@ district_viewer <- function(pref_code = 33, color = "red") {
         magrittr::use_series(jis_code)
 
       if (is.null(input$cities)) {
-        map.data <- jpn_pref(admin_name = input$pref, district = FALSE)
+        map_data <- jpn_pref(pref_code = prefcode, district = TRUE)
 
       } else {
-        map.data <-
+        map_data <-
           jpn_cities(jis_code = prefcode,
                      admin_name = c(input$cities))
       }
 
       leaflet() %>%
         addTiles() %>%
-        addPolylines(data = map.data,
+        addPolylines(data = map_data,
                      color = color,
-                     label = ~ map.data$city)
+                     label = ~ map_data$city)
 
 
     })
