@@ -1,4 +1,14 @@
-# jpndistrict 0.3.1.9000
+# jpndistrict 0.3.2
+
+- Clarified the arguments that to select administration area. pref_code is jis code from 1 to 47. jis_code is an identifier for a city that range of 5 digits.
+- `find_city()` is support sf geometry.
+
+## Fixed Issues
+
+- Remove redundant character from prefecture code 13 data [#13](https://github.com/uribo/jpndistrict/issues/13)
+- `mesh_district()` now return only selected administation area [#15](https://github.com/uribo/jpndistrict/issues/15)
+- Broken `district_viewer()` [#16](https://github.com/uribo/jpndistrict/issues/16)
+
 
 # jpndistrict 0.3.1
 
