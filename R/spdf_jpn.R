@@ -1,13 +1,15 @@
 #' Simple features for prefecture area polygon
 #'
 #' @description Prefecture polygon data.
-#' @details Collect unit of prefecture simple feature data.frame objects.. If downalod argument is TRUE,
-#' download administrative area data from the National Land Numeral Information Download Service (for law data).
+#' @details Collect unit of prefecture simple feature data.frame objects..
+#' If downalod argument is *TRUE*, download administrative area data from
+#' the National Land Numeral Information Download Service (for law data).
 #' @param pref_code jis code from 1 to 47
 #' @param admin_name prefecture names (string)
-#' @param district logical (default TRUE)
-#' @param download logical (default FALSE).
-#' @param drop_sinkyokyoku if TRUE, drop sichyo_sinkyokyoku variable (default TRUE)
+#' @param district logical (default *TRUE*)
+#' @param download logical (default *FALSE*).
+#' @param drop_sinkyokyoku if *TRUE*, drop sichyo_sinkyokyoku variable
+#' (default *TRUE*)
 #' @importFrom dplyr select
 #' @examples
 #' \dontrun{

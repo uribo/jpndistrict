@@ -4,12 +4,14 @@
 \alias{find_prefs}
 \title{Detect prefectures by coordinates}
 \usage{
-find_prefs(longitude, latitude)
+find_prefs(longitude, latitude, geometry = NULL)
 }
 \arguments{
 \item{longitude}{longitude}
 
 \item{latitude}{latitude}
+
+\item{geometry}{XY sfg object}
 }
 \description{
 Detect prefectures by coordinates
@@ -18,5 +20,9 @@ Detect prefectures by coordinates
 \dontrun{
 find_prefs(longitude = 122.940625, latitude = 24.4520833334)
 find_prefs(longitude = 140.1137418, latitude = 36.0533957)
+
+# Refrenced by sf geometry
+library(sf)
+find_pref(geometry = st_point(c(136.6833, 35.05)))
 }
 }
