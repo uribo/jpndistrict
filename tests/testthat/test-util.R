@@ -76,3 +76,15 @@ test_that("reverge-geo coding", {
   expect_gte(nrow(test$spdf), 1L)
   expect_type(test$which, "integer")
 })
+
+test_that("input geometry", {
+
+  # expect_null(sfg_point_as_coords(geometry = NULL))
+
+  skip_if_not_installed("sf")
+  test <-
+    sfg_point_as_coords(sf::st_point(c(130.4412895, 30.2984335)))
+  expect_is(test, "list")
+  expect_named(test, c("longitude", "latitude"))
+
+})

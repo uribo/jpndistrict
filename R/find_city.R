@@ -1,45 +1,51 @@
 #' Detect prefecture by coordinates
 #'
-#' @param longitude longitude
-#' @param latitude latitude
-#' @param ... export parameter to other functions
+#' @inheritParams find_city
 #' @importFrom dplyr mutate select right_join
 #' @importFrom purrr set_names
+#' @importFrom sf st_is st_point
 #' @note The `find_pref` function was added in version 0.3.0
 #' @examples
 #' \dontrun{
 #' find_pref(longitude = 130.4412895, latitude = 30.2984335)
+#'
+#' # Refrenced by sf geometry
+#' library(sf)
+#' find_pref(geometry = st_point(c(136.6833, 35.05)))
 #' }
 #' @export
-find_pref <- function(longitude, latitude, ...) {
+find_pref <- function(longitude, latitude, geometry = NULL, ...) {
   pref_code <- prefecture <- city_code <- NULL
 
-  res <- find_city(longitude, latitude, ...)
+  if (!is.null(geometry)) {
+    if (sf::st_is(geometry, "POINT")) {
+      coords <-
+        sfg_point_as_coords(geometry = geometry)
+      longitude <- coords$longitude
+      latitude <- coords$latitude
+    }
+  }
 
+  res <- find_city(longitude, latitude, ...)
   if (!is.null(res)) {
-    df_tmp <-
-      res %>%
+    df_tmp <- res %>%
       dplyr::mutate(pref_code = substr(city_code, 1, 2)) %>%
       dplyr::select(pref_code, prefecture)
-
     res <- df_tmp %>%
-      dplyr::right_join(
-        jpn_pref(pref_code = df_tmp$pref_code, district = FALSE) %>%
-          sf::st_set_geometry(NULL),
-        by = c("pref_code" = "jis_code", "prefecture")
-      ) %>%
+      dplyr::right_join(jpn_pref(pref_code = df_tmp$pref_code,
+                                 district = FALSE) %>%
+                          sf::st_set_geometry(NULL),
+                        by = c(pref_code = "jis_code", "prefecture")) %>%
       purrr::set_names(c("pref_code", "prefecture", "geometry")) %>%
       dplyr::mutate(pref_code = sprintf("%02d", as.numeric(pref_code))) %>%
       tweak_sf_output()
-
     return(res)
   }
 }
 
 #' Detect prefectures by coordinates
 #'
-#' @param longitude longitude
-#' @param latitude latitude
+#' @inheritParams find_city
 #' @importFrom jpmesh coords_to_mesh
 #' @importFrom dplyr filter inner_join select
 #' @importFrom purrr set_names
@@ -48,11 +54,24 @@ find_pref <- function(longitude, latitude, ...) {
 #' \dontrun{
 #' find_prefs(longitude = 122.940625, latitude = 24.4520833334)
 #' find_prefs(longitude = 140.1137418, latitude = 36.0533957)
+#'
+#' # Refrenced by sf geometry
+#' library(sf)
+#' find_pref(geometry = st_point(c(136.6833, 35.05)))
 #' }
 #' @name find_prefs
 #' @export
-find_prefs <- function(longitude, latitude) {
+find_prefs <- function(longitude, latitude, geometry = NULL) {
   prefcode <- jis_code <- meshcode <- prefecture <- region <- NULL
+
+  if (!is.null(geometry)) {
+    if (sf::st_is(geometry, "POINT")) {
+      coords <-
+        sfg_point_as_coords(geometry = geometry)
+      longitude <- coords$longitude
+      latitude <- coords$latitude
+    }
+  }
 
   jpnprefs <- jpnprefs %>%
     dplyr::select(jis_code, prefecture, region)
@@ -77,16 +96,30 @@ find_prefs <- function(longitude, latitude) {
 #'
 #' @param longitude longitude
 #' @param latitude latitude
+#' @param geometry XY sfg object
 #' @param ... export parameter to other functions
 #' @importFrom dplyr select
 #' @note The `find_city` function was added in version 0.3.0
 #' @examples
 #' \dontrun{
 #' find_city(longitude = 140.1137418, latitude = 36.0533957)
+#'
+#' # Refrenced by sf geometry
+#' library(sf)
+#' find_city(geometry = st_point(c(136.6833, 35.05)))
 #' }
 #' @export
-find_city <- function(longitude, latitude, ...) {
-  prefecture <- city_code <- city <- geometry <- NULL
+find_city <- function(longitude, latitude, geometry = NULL, ...) {
+  prefecture <- city_code <- city <- NULL
+
+  if (!is.null(geometry)) {
+    if (sf::st_is(geometry, "POINT")) {
+      coords <-
+        sfg_point_as_coords(geometry = geometry)
+      longitude <- coords$longitude
+      latitude <- coords$latitude
+    }
+  }
 
   pol_min <- which_pol_min(longitude, latitude, ...)
 

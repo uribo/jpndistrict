@@ -326,3 +326,11 @@ tweak_sf_output <- function(target) {
 
   return(res)
 }
+
+sfg_point_as_coords <- function(geometry) {
+
+  if (sf::st_is(geometry, "POINT")) {
+      list(longitude = sf::st_coordinates(geometry)[1],
+           latitude =  sf::st_coordinates(geometry)[2])
+    }
+}

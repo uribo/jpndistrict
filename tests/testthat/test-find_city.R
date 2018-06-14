@@ -13,6 +13,12 @@ test_that("prefecture", {
   expect_equal(test$pref_code, "08")
   expect_equal(test$prefecture,
                paste(intToUtf8(c(33576, 22478, 30476), multiple = TRUE), collapse = ""))
+
+  skip_if_not_installed("sf")
+  test <- find_pref(geometry = sf::st_point(c(136.6833, 35.05)))
+  expect_equal(test$pref_code, "24")
+  test <- find_prefs(geometry = sf::st_point(c(136.6833, 35.05)))
+  expect_equal(dim(test), c(6, 4))
 })
 
 test_that("Failed", {
@@ -82,8 +88,13 @@ test_that("city", {
   expect_equal(test$city_code, "46505")
   expect_is(test$prefecture, "character")
 
-  test <- find_city(longitude = 140.1137418, latitude = 36.0533957)
+  test <- find_city(longitude = 140.1137418, latitude = 36.0533957, geometry = NULL)
   expect_equal(test$city_code, "08220")
   expect_equal(test$city,
                paste(intToUtf8(c(12388, 12367, 12400, 24066), multiple = TRUE), collapse = ""))
+
+  skip_if_not_installed("sf")
+  test <- find_city(geometry = sf::st_point(c(130.4412895, 30.2984335)))
+  expect_equal(test$city_code, "46505")
+
 })
