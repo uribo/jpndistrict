@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Intermediate function — raw_bind_cityareas • jpndistrict</title>
+<title>Simple features for administration office points — jpn_admins • jpndistrict</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Intermediate function — raw_bind_cityareas" />
+<meta property="og:title" content="Simple features for administration office points — jpn_admins" />
 
-<meta property="og:description" content="Intermediate function" />
+<meta property="og:description" content="Name and geolocations for administration offices in prefecture." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -102,35 +102,48 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Intermediate function</h1>
-    <small class="dont-index">Source: <a href='https://github.com/uribo/jpndistrict#readme/blob/master/R/util.R'><code>R/util.R</code></a></small>
-    <div class="hidden name"><code>raw_bind_cityareas.Rd</code></div>
+    <h1>Simple features for administration office points</h1>
+    <small class="dont-index">Source: <a href='https://github.com/uribo/jpndistrict#readme/blob/master/R/spdf_jpn.R'><code>R/spdf_jpn.R</code></a></small>
+    <div class="hidden name"><code>jpn_admins.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Intermediate function</p>
+    <p>Name and geolocations for administration offices in prefecture.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>raw_bind_cityareas</span>(<span class='no'>pref</span>)</pre>
+    <pre class="usage"><span class='fu'>jpn_admins</span>(<span class='no'>jis_code</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pref</th>
-      <td><p>sf object (prefecture)</p></td>
+      <th>jis_code</th>
+      <td><p>jis code for prefecture and city identifical number.
+If prefecture, must be from 1 to 47. If city, range of 5 digits.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>data.frame. contains follow columns jis_code, type, name, address, longitude and latitude.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>jpn_admins</span>(<span class='kw'>jis_code</span> <span class='kw'>=</span> <span class='fl'>17</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

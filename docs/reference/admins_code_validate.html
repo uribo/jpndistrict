@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Intermediate function — raw_bind_cityareas • jpndistrict</title>
+<title>Administration code varidation — admins_code_validate • jpndistrict</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Intermediate function — raw_bind_cityareas" />
+<meta property="og:title" content="Administration code varidation — admins_code_validate" />
 
-<meta property="og:description" content="Intermediate function" />
+<meta property="og:description" content="Administration code varidation" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -102,25 +102,26 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Intermediate function</h1>
+    <h1>Administration code varidation</h1>
     <small class="dont-index">Source: <a href='https://github.com/uribo/jpndistrict#readme/blob/master/R/util.R'><code>R/util.R</code></a></small>
-    <div class="hidden name"><code>raw_bind_cityareas.Rd</code></div>
+    <div class="hidden name"><code>admins_code_validate.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Intermediate function</p>
+    <p>Administration code varidation</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>raw_bind_cityareas</span>(<span class='no'>pref</span>)</pre>
+    <pre class="usage"><span class='fu'>admins_code_validate</span>(<span class='no'>jis_code</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pref</th>
-      <td><p>sf object (prefecture)</p></td>
+      <th>jis_code</th>
+      <td><p>jis code for prefecture and city identifical number.
+If prefecture, must be from 1 to 47. If city, range of 5 digits.</p></td>
     </tr>
     </table>
     
