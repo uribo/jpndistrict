@@ -48,7 +48,7 @@ jpn_pref <- function(pref_code,
     res <- d
   } else {
     res <- raw_bind_cityareas(d) %>%
-      dplyr::mutate(jis_code = as.character(jis_code))
+      dplyr::mutate(pref_code = as.character(pref_code))
   }
 
   res <- res %>%

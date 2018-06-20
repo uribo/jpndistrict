@@ -35,7 +35,7 @@ find_pref <- function(longitude, latitude, geometry = NULL, ...) {
       dplyr::right_join(jpn_pref(pref_code = df_tmp$pref_code,
                                  district = FALSE) %>%
                           sf::st_set_geometry(NULL),
-                        by = c(pref_code = "jis_code", "prefecture")) %>%
+                        by = c("pref_code", "prefecture")) %>%
       purrr::set_names(c("pref_code", "prefecture", "geometry")) %>%
       dplyr::mutate(pref_code = sprintf("%02d", as.numeric(pref_code))) %>%
       tweak_sf_output()

@@ -67,14 +67,14 @@ raw_bind_cityareas <- function(pref) {
     suppressWarnings(
       tmp_union %>%
         dplyr::mutate(
-          jis_code  = as.numeric(substr(pref$city_code[1], 1, 2)),
+          pref_code  = as.numeric(substr(pref$city_code[1], 1, 2)),
           prefecture = pref$prefecture[1]
         ) %>%
         sf::st_sf() %>%
         sf::st_buffer(dist = 0.001)
     ) %>%
       dplyr::select(
-        jis_code = 1,
+        pref_code = 1,
         prefecture = 2,
         geometry = 3
       )
