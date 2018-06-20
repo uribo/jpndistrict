@@ -7,10 +7,10 @@
 #' @param pref_code jis code from 1 to 47
 #' @param admin_name prefecture names (string)
 #' @param district logical (default *TRUE*)
-#' @param download logical (default *FALSE*).
+#' @param download logical (default *FALSE*). IF *TRUE*, return raw data.
 #' @param drop_sinkyokyoku if *TRUE*, drop sichyo_sinkyokyoku variable
 #' (default *TRUE*)
-#' @importFrom dplyr select
+#' @importFrom dplyr matches mutate select
 #' @examples
 #' \dontrun{
 #' jpn_pref(pref_code = 33, district = FALSE)
@@ -41,7 +41,7 @@ jpn_pref <- function(pref_code,
   }
 
   if (drop_sinkyokyoku == TRUE) {
-    d <- dplyr::select(d, -3)
+    d <- dplyr::select(d, -dplyr::matches("sichyo_sinkyokyoku"))
   }
 
   if (district == TRUE) {

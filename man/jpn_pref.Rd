@@ -14,7 +14,7 @@ jpn_pref(pref_code, admin_name, district = TRUE, download = FALSE,
 
 \item{district}{logical (default \emph{TRUE})}
 
-\item{download}{logical (default \emph{FALSE}).}
+\item{download}{logical (default \emph{FALSE}). IF \emph{TRUE}, return raw data.}
 
 \item{drop_sinkyokyoku}{if \emph{TRUE}, drop sichyo_sinkyokyoku variable
 (default \emph{TRUE})}
