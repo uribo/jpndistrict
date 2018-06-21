@@ -19,6 +19,12 @@ test_that("prefecture", {
   expect_equal(test$pref_code, "24")
   test <- find_prefs(geometry = sf::st_point(c(136.6833, 35.05)))
   expect_equal(dim(test), c(6, 4))
+
+  skip_if_not_installed("lwgeom")
+  test <-
+    find_pref(135.8167, 35.3)
+  expect_equal(dim(test), c(1, 3))
+
 })
 
 test_that("Failed", {
