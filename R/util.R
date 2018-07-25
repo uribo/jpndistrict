@@ -160,6 +160,10 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
 collect_prefcode <- function(code = NULL, admin_name = NULL) {
   jis_code <- prefecture <- NULL
 
+  jpnprefs <-
+    readRDS(system.file("extdata/jpnprefs.rds",
+                        package = "jpndistrict"))
+
   if (missing(admin_name)) {
     pref_code <-
       dplyr::filter(jpnprefs, jis_code == admins_code_validate(code)$code) %>%

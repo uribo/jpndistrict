@@ -24,8 +24,6 @@ jpn_pref <- function(pref_code,
                      download         = FALSE,
                      drop_sinkyokyoku = TRUE) {
 
-  jis_code <- NULL
-
     if (missing(admin_name)) {
       pref_code <- collect_prefcode(code = pref_code)
     } else if (missing(pref_code)) {
