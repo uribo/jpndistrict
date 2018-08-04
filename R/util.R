@@ -313,6 +313,65 @@ which_pol_min <- function(longitude, latitude, ...) {
   list(spdf = sp_polygon, which = which_row)
 }
 
+code_reform <- function(jis_code) {
+
+  . <- NULL
+
+  checked <-
+    jis_code %>%
+    purrr::map(nchar) %>%
+    purrr::keep(~ .x %in% c(1, 2, 5)) %>%
+    length()
+
+  if (length(jis_code) != checked)
+    rlang::abort("Input jis-code must to 2 or 5 digits.")
+
+  jis_code %>%
+    purrr::map(as.numeric) %>%
+    purrr::map_if(.p = nchar(.) %in% c(1, 2), ~ sprintf("%02d", .x)) %>%
+    purrr::map_if(.p = nchar(.) %in% c(4, 5), ~ sprintf("%05d", .x)) %>%
+    purrr::flatten_chr()
+
+}
+
+prefcode_validate <- function(pref_code) {
+
+  codes <-
+    sapply(seq(1, 47, 1), sprintf, fmt = "%02d")
+
+  if (identical(codes[codes %in% pref_code], character(0)))
+    rlang::abort("jis_code must be start a integer or as character from 1 to 47.")
+
+  pref_code
+}
+
+match_city_name <- function(jis_code) {
+
+  . <- city_code <- NULL
+
+  df <-
+    code_reform(jis_code) %>%
+    purrr::map_chr(~ substr(.x, 1, 2)) %>%
+    unique() %>%
+    purrr::map_dfr(
+      ~ jpn_pref(.x, district = TRUE) %>%
+        sf::st_set_geometry(NULL) %>%
+        .[c("city_code", "city")])
+
+  res <-
+    subset(df, city_code %in% jis_code)
+
+  n_mismatch <-
+    length(jis_code[!jis_code %in% res$city_code])
+
+  if (n_mismatch >= 1)
+    rlang::inform(
+      paste(n_mismatch, "matching code were not found."))
+
+  res
+
+}
+
 crs_4326 <-
   structure(list(epsg = 4326L,
                  proj4string = "+proj=longlat +datum=WGS84 +no_defs"),
