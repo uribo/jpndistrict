@@ -17,7 +17,8 @@ admins_code_validate <- function(jis_code) {
   res <-
     res %>%
     purrr::map_if(names(.) == "prefecture", ~ prefcode_validate(.x)) %>%
-    purrr::map_if(names(.) == "city", ~ match_city_name(.x)$city_code)
+    purrr::map_if(names(.) == "city", ~ match_city_name(.x)$city_code) %>%
+    purrr::keep(~ length(.x) == 1)
 
   list(administration_type = names(res),
        code = purrr::flatten_chr(res))
