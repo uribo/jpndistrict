@@ -3,12 +3,53 @@ context("utilities")
 test_that("Administration code varidation", {
 
   expect_equal(
+    code_reform(list("1", 2, 33, "01", 49, "02201", "33202")),
+    c("01", "02", "33", "01", "49", "02201", "33202")
+  )
+  expect_error(
+    code_reform(list("1", 1, 33, "01", 49, 111, "02201", "33202"))
+  )
+
+  res <-
+    match_city_name(jis_code = "33101")
+  expect_is(
+    res,
+    "data.frame")
+  expect_equal(
+    dim(res),
+    c(1, 2)
+  )
+  expect_named(
+    res,
+    c("city_code", "city")
+  )
+  expect_equal(
+    dim(match_city_name(c("08210", "08212", "33101"))),
+    c(3, 2)
+  )
+  expect_message(
+    expect_equal(
+      dim(match_city_name(c("01101", "01999"))),
+      c(1, 2)
+    ),
+    "1 matching code were not found."
+  )
+  expect_message(
+    match_city_name("01999"),
+    "1 matching code were not found."
+  )
+
+  expect_equal(
     admins_code_validate(1),
     list(administration_type = "prefecture", code = "01")
   )
   expect_identical(
     admins_code_validate(1),
     admins_code_validate("1")
+  )
+  expect_equal(
+    admins_code_validate("08201")$code,
+    "08201"
   )
   expect_error(
     admins_code_validate(48)
@@ -23,9 +64,8 @@ test_that("Administration code varidation", {
   )
   expect_error(
     admins_code_validate("49999"),
-    "x must be start a integer or as character from 1 to 47."
+    "jis_code must be start a integer or as character from 1 to 47"
   )
-
 })
 
 test_that("return prefecture jis code as string", {

@@ -4,25 +4,23 @@
 #' If prefecture, must be from 1 to 47. If city, range of 5 digits.
 admins_code_validate <- function(jis_code) {
 
-  x <- as.numeric(jis_code)
+  . <- NULL
 
-  codes <-
-    sapply(1:47, sprintf, fmt = "%02d")
+  res <-
+    code_reform(jis_code)
 
-  code <- codes[codes %in% substr(sprintf("%02d", x), 1, 2)]
+  names(res) <-
+    res %>%
+    purrr::map(nchar) %>%
+    purrr::map_chr(~ ifelse(.x == 2, "prefecture", "city"))
 
-  if (identical(code, character(0)) == FALSE) {
-    if (nchar(x) >= 1 && nchar(x) <= 2) {
-      administration_type <- "prefecture"
-    } else if (nchar(x) == 5) {
-      administration_type <- "city"
-      code <- as.character(x)
-    }} else {
-      rlang::abort("x must be start a integer or as character from 1 to 47.")
-    }
+  res <-
+    res %>%
+    purrr::map_if(names(.) == "prefecture", ~ prefcode_validate(.x)) %>%
+    purrr::map_if(names(.) == "city", ~ match_city_name(.x)$city_code)
 
-  list(administration_type = administration_type,
-       code = code)
+  list(administration_type = names(res),
+       code = purrr::flatten_chr(res))
 }
 
 #' Collect administration office point datasets.
