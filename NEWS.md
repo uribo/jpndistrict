@@ -1,5 +1,15 @@
 # jpndistrict 0.3.2.9000
 
+## API
+
+- Added new functions to validate jis code. (`code_validate()` and `code_reform()`)
+
+## Fixed Issues
+
+- Mismatching variable names in `jpn_pref()` [#17](https://github.com/uribo/jpndistrict/issues/17)
+- Always returns the nearest city or prefecture [#18](https://github.com/uribo/jpndistrict/issues/18)
+- Failed in `code_validate()` [#19](https://github.com/uribo/jpndistrict/issues/19)
+
 # jpndistrict 0.3.2
 
 - Clarified the arguments that to select administration area. pref_code is jis code from 1 to 47. jis_code is an identifier for a city that range of 5 digits.

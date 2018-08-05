@@ -15,6 +15,8 @@ RUN set -x && \
     pryr \
     usethis && \
   installGithub.r \
+    "r-lib/pkgload" \
+    "klutometis/roxygen" \
     "r-lib/roxygen2md" \
     "r-lib/devtools" \
     "r-lib/pkgdown"
