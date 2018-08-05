@@ -100,4 +100,8 @@ test_that("city", {
   test <- find_city(geometry = sf::st_point(c(130.4412895, 30.2984335)))
   expect_equal(test$city_code, "46505")
 
+  res <-
+    find_city(geometry = st_point(c(136.6833, 35.05)))
+  expect_equal(res$city_code, "24205")
+
 })
