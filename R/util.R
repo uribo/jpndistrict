@@ -1,29 +1,3 @@
-#' Administration code varidation
-#'
-#' @param jis_code jis code for prefecture and city identifical number.
-#' If prefecture, must be from 1 to 47. If city, range of 5 digits.
-admins_code_validate <- function(jis_code) {
-
-  . <- NULL
-
-  res <-
-    code_reform(jis_code)
-
-  names(res) <-
-    res %>%
-    purrr::map(nchar) %>%
-    purrr::map_chr(~ ifelse(.x == 2, "prefecture", "city"))
-
-  res <-
-    res %>%
-    purrr::map_if(names(.) == "prefecture", ~ prefcode_validate(.x)) %>%
-    purrr::map_if(names(.) == "city", ~ match_city_name(.x)$city_code) %>%
-    purrr::keep(~ length(.x) == 1)
-
-  list(administration_type = names(res),
-       code = purrr::flatten_chr(res))
-}
-
 #' Collect administration office point datasets.
 #'
 #' @param path path to P34 shapefile (if already exist)
@@ -165,7 +139,7 @@ collect_prefcode <- function(code = NULL, admin_name = NULL) {
 
   if (missing(admin_name)) {
     pref_code <-
-      dplyr::filter(jpnprefs, jis_code == admins_code_validate(code)$code) %>%
+      dplyr::filter(jpnprefs, jis_code == code_validate(code)$code) %>%
       magrittr::use_series(jis_code)
   } else if (missing(code)) {
     pref_code <-
@@ -298,77 +272,29 @@ which_pol_min <- function(longitude, latitude, ...) {
       purrr::map(jpn_pref) %>%
       purrr::reduce(rbind)
 
+    x <-
+      sf::st_point(c(longitude, latitude), dim = "XY")
+
     which_row <-
       suppressMessages(grep(
         TRUE,
         sf::st_intersects(sp_polygon,
-                          sf::st_point(c(
-                            longitude, latitude
-                          ), dim = "XY"),
+                          x,
                           sparse = FALSE)
       ))
+
+    if (length(which_row) > 1) {
+      which_row <-
+        which.min(sf::st_distance(st_sfc(x, crs = 4326),
+                                  sp_polygon,
+                                  by_element = TRUE))
+
+      sp_polygon <-
+        jpn_pref(pref_code = which_row)
+    }
   }
 
   list(spdf = sp_polygon, which = which_row)
-}
-
-code_reform <- function(jis_code) {
-
-  . <- NULL
-
-  checked <-
-    jis_code %>%
-    purrr::map(nchar) %>%
-    purrr::keep(~ .x %in% c(1, 2, 5)) %>%
-    length()
-
-  if (length(jis_code) != checked)
-    rlang::abort("Input jis-code must to 2 or 5 digits.")
-
-  jis_code %>%
-    purrr::map(as.numeric) %>%
-    purrr::map_if(.p = nchar(.) %in% c(1, 2), ~ sprintf("%02d", .x)) %>%
-    purrr::map_if(.p = nchar(.) %in% c(4, 5), ~ sprintf("%05d", .x)) %>%
-    purrr::flatten_chr()
-
-}
-
-prefcode_validate <- function(pref_code) {
-
-  codes <-
-    sapply(seq(1, 47, 1), sprintf, fmt = "%02d")
-
-  if (identical(codes[codes %in% pref_code], character(0)))
-    rlang::abort("jis_code must be start a integer or as character from 1 to 47.")
-
-  pref_code
-}
-
-match_city_name <- function(jis_code) {
-
-  . <- city_code <- NULL
-
-  df <-
-    code_reform(jis_code) %>%
-    purrr::map_chr(~ substr(.x, 1, 2)) %>%
-    unique() %>%
-    purrr::map_dfr(
-      ~ jpn_pref(.x, district = TRUE) %>%
-        sf::st_set_geometry(NULL) %>%
-        .[c("city_code", "city")])
-
-  res <-
-    subset(df, city_code %in% jis_code)
-
-  n_mismatch <-
-    length(jis_code[!jis_code %in% res$city_code])
-
-  if (n_mismatch >= 1)
-    rlang::inform(
-      paste(n_mismatch, "matching code were not found."))
-
-  res
-
 }
 
 crs_4326 <-

@@ -62,7 +62,7 @@ jpn_pref <- function(pref_code,
 #' is specified as an argument, the target city data is extracted. If neither is given,
 #' it becomes the data of the target prefecture.
 #' @importFrom dplyr filter
-#' @inheritParams admins_code_validate
+#' @inheritParams code_validate
 #' @param admin_name administration name
 #' @examples
 #' jpn_cities(jis_code = "08",
@@ -105,8 +105,8 @@ jpn_cities <- function(jis_code, admin_name) {
 #' Simple features for administration office points
 #'
 #' @description Name and geolocations for administration offices in prefecture.
-#' @inheritParams admins_code_validate
-#' @import rlang
+#' @inheritParams code_validate
+#' @importFrom rlang enquo
 #' @importFrom dplyr filter
 #' @importFrom purrr map reduce
 #' @return data.frame. contains follow columns jis_code, type, name, address, longitude and latitude.

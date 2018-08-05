@@ -1,6 +1,6 @@
 #' Export district's mesh polygon
 #'
-#' @inheritParams admins_code_validate
+#' @inheritParams code_validate
 #' @importFrom dplyr filter mutate select everything
 #' @importFrom jpmesh fine_separate mesh_to_coords
 #' @importFrom magrittr use_series
@@ -19,7 +19,7 @@ mesh_district <- function(jis_code = NULL) {
   . <- res_contains <- meshcode <- NULL
 
   input_code <-
-    admins_code_validate(jis_code)
+    code_validate(jis_code)
 
   if (input_code$administration_type == "prefecture") {
     sf_admins <- jpn_pref(pref_code = input_code$code)

@@ -40,30 +40,30 @@ test_that("Administration code varidation", {
   )
 
   expect_equal(
-    admins_code_validate(1),
+    code_validate(1),
     list(administration_type = "prefecture", code = "01")
   )
   expect_identical(
-    admins_code_validate(1),
-    admins_code_validate("1")
+    code_validate(1),
+    code_validate("1")
   )
   expect_equal(
-    admins_code_validate("08201")$code,
+    code_validate("08201")$code,
     "08201"
   )
   expect_error(
-    admins_code_validate(48)
+    code_validate(48)
   )
   expect_length(
-    sapply(1:47, admins_code_validate),
+    sapply(1:47, code_validate),
     94L
   )
   expect_equal(
-    admins_code_validate("33103"),
+    code_validate("33103"),
     list(administration_type = "city", code = "33103")
   )
   expect_error(
-    admins_code_validate("49999"),
+    code_validate("49999"),
     "jis_code must be start a integer or as character from 1 to 47"
   )
 })
