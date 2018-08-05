@@ -121,7 +121,6 @@ test_that("input geometry", {
 
   # expect_null(sfg_point_as_coords(geometry = NULL))
 
-  skip_if_not_installed("sf")
   test <-
     sfg_point_as_coords(sf::st_point(c(130.4412895, 30.2984335)))
   expect_is(test, "list")
