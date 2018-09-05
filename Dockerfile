@@ -9,6 +9,8 @@ RUN set -x && \
 
 RUN set -x && \
   install2.r --error \
+    assertr \
+    here \
     jpmesh \
     lwgeom \
     magick \
