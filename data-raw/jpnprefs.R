@@ -14,6 +14,10 @@ library(tidyverse)
 # dplyr # 0.7.6
 # tidyr # 0.8.1
 # purrr # 0.2.5
+# (stringr) # 1.3.1
+
+library(polite) # 0.0.0.9004
+
 
 
 # Japanese ----------------------------------------------------------------
@@ -22,7 +26,7 @@ x <-
 
 df <-
   x %>%
-  html_nodes(css = "#mw-content-text > div > table.wikitable.sortable") %>%
+  html_nodes(css = "table.wikitable:nth-child(104)") %>% # css to correct table as wiki page was edited
   html_table(fill = TRUE) %>%
   purrr::flatten_df() %>%
   select(2, 4, 6, 11) %>%
@@ -92,10 +96,54 @@ jpnprefs %<>%
   select(jis_code, prefecture, capital, region, major_island, capital_latitude = latitude, capital_longitude = longitude) %>%
   as_tibble()
 
+# ---- English region and island names
+url <- "https://en.wikipedia.org/wiki/Prefectures_of_Japan"
+
+session <- bow(url)
+
+jpn_pref_raw <- scrape(session) %>%
+  html_nodes("table.wikitable:nth-child(49)") %>%
+  #.[[1]] %>%
+  html_table() %>%
+  purrr::flatten_df()
+
+jpn_pref_df <- jpn_pref_raw %>%
+  janitor::clean_names() %>%
+  select(kanji, region_en = region, major_island_en = major_island) %>%
+  mutate(region_en = region_en %>% iconv(from = "UTF-8", to = "ASCII//TRANSLIT"))
+
+# ---- English prefecture and capital names
+url2 <- "https://en.wikipedia.org/wiki/List_of_Japanese_prefectures_by_population"
+
+session2 <- bow(url2)
+
+jpn_pref2_raw <- scrape(session2) %>%
+  html_nodes("table.wikitable:nth-child(7)") %>%
+  #.[[1]] %>%
+  html_table() %>%
+  purrr::flatten_df()
+
+jpn_pref2_df <- jpn_pref2_raw %>%
+  janitor::clean_names() %>%
+  select(kanji = japanese, prefecture_en = prefectures, capital_en = capital) %>%
+  mutate(prefecture_en = prefecture_en %>% iconv(from = "UTF-8", to = "ASCII//TRANSLIT"),
+         capital_en = capital_en %>% iconv(from = "UTF-8", to = "ASCII//TRANSLIT"))
+
+# ---- Join with jpnprefs
+jpnprefs <- jpnprefs %>%
+  left_join(jpn_pref_df, by = c("prefecture" = "kanji")) %>%
+  left_join(jpn_pref2_df, by = c("prefecture" = "kanji")) %>%
+  select(jis_code, prefecture, capital, region, major_island,
+         prefecture_en, capital_en, region_en, major_island_en,
+         capital_latitude, capital_longitude) %>%
+  as_tibble()
+
 expect_named(jpnprefs,
-             c("jis_code", "prefecture", "capital", "region", "major_island", "capital_latitude", "capital_longitude"))
+             c("jis_code", "prefecture", "capital", "region", "major_island",
+               "prefecture_en", "capital_en", "region_en", "major_island_en",
+               "capital_latitude", "capital_longitude"))
 expect_equal(dim(jpnprefs),
-             c(47, 7))
+             c(47, 11))
 expect_s3_class(jpnprefs,
                 c("data.frame", "tbl_df"))
 
