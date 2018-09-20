@@ -14,11 +14,6 @@ library(tidyverse)
 # dplyr # 0.7.6
 # tidyr # 0.8.1
 # purrr # 0.2.5
-# (stringr) # 1.3.1
-
-library(polite) # 0.0.0.9004
-
-
 
 # Japanese ----------------------------------------------------------------
 x <-
@@ -99,33 +94,27 @@ jpnprefs %<>%
 # ---- English region and island names
 url <- "https://en.wikipedia.org/wiki/Prefectures_of_Japan"
 
-session <- bow(url)
-
-jpn_pref_raw <- scrape(session) %>%
+jpn_pref_raw <- read_html(url) %>%
   html_nodes("table.wikitable:nth-child(49)") %>%
-  #.[[1]] %>%
   html_table() %>%
   purrr::flatten_df()
 
 jpn_pref_df <- jpn_pref_raw %>%
-  janitor::clean_names() %>%
-  select(kanji, region_en = region, major_island_en = major_island) %>%
+  select(2, 4, 5) %>%
+  set_colnames(c("kanji", "region_en", "major_island_en")) %>%
   mutate(region_en = region_en %>% iconv(from = "UTF-8", to = "ASCII//TRANSLIT"))
 
 # ---- English prefecture and capital names
 url2 <- "https://en.wikipedia.org/wiki/List_of_Japanese_prefectures_by_population"
 
-session2 <- bow(url2)
-
-jpn_pref2_raw <- scrape(session2) %>%
+jpn_pref2_raw <- read_html(url2) %>%
   html_nodes("table.wikitable:nth-child(7)") %>%
-  #.[[1]] %>%
   html_table() %>%
   purrr::flatten_df()
 
 jpn_pref2_df <- jpn_pref2_raw %>%
-  janitor::clean_names() %>%
-  select(kanji = japanese, prefecture_en = prefectures, capital_en = capital) %>%
+  select(3, 2, 4) %>%
+  set_colnames(c("kanji", "prefecture_en", "capital_en")) %>%
   mutate(prefecture_en = prefecture_en %>% iconv(from = "UTF-8", to = "ASCII//TRANSLIT"),
          capital_en = capital_en %>% iconv(from = "UTF-8", to = "ASCII//TRANSLIT"))
 
