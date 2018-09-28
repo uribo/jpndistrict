@@ -1,5 +1,23 @@
 context("utilities")
 
+test_that("Data", {
+  expect_length(export_pref_80km_mesh(1), 40L)
+
+  expect_named(jpnprefs,
+               c("jis_code", "prefecture", "capital", "region", "major_island",
+                 "prefecture_en", "capital_en", "region_en", "major_island_en",
+                 "capital_latitude", "capital_longitude"))
+  expect_equal(dim(jpnprefs),
+               c(47, 11))
+  expect_s3_class(jpnprefs,
+                  c("data.frame", "tbl_df"))
+
+  expect_s3_class(prefecture_mesh, c("tbl", "data.frame"))
+  expect_equal(dim(prefecture_mesh), c(314, 5))
+  expect_named(prefecture_mesh, c("prefcode", "meshcode", "name", "type", "geometry"))
+})
+
+
 test_that("Administration code varidation", {
 
   expect_equal(

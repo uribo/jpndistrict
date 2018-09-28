@@ -36,7 +36,7 @@ mesh_district <- function(jis_code = NULL) {
   df_pref10km_mesh <- jpmesh::sf_jpmesh[df_tmp %>%
                                           dplyr::filter(res_contains != 0) %>%
                                           tidyr::unnest() %>%
-                                          magrittr::use_series(id) %>%
+                                          dplyr::pull(id) %>%
                                           unique(), ] %>%
     .$meshcode %>%
     purrr::map(jpmesh::fine_separate) %>%
@@ -60,7 +60,7 @@ mesh_district <- function(jis_code = NULL) {
     df_pref10km_mesh[df_tmp %>%
                 dplyr::filter(res_contains != 0) %>%
                        tidyr::unnest() %>%
-                       magrittr::use_series(id) %>%
+                       dplyr::pull(id) %>%
                        unique(), ] %>%
     .$meshcode %>%
     purrr::map(jpmesh::fine_separate) %>%
@@ -83,7 +83,7 @@ mesh_district <- function(jis_code = NULL) {
   df_pref1km_mesh[df_tmp %>%
                      dplyr::filter(res_contains != 0) %>%
                      tidyr::unnest() %>%
-                     magrittr::use_series(id) %>%
+                     dplyr::pull(id) %>%
                      unique(), ]
 
 }
