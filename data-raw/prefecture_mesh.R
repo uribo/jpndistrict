@@ -1,23 +1,22 @@
-devtools::load_all(".")
+# devtools::load_all()
 library(tidyverse)
 library(sf)
-library(testthat)
+library(assertr)
 
 data("sf_jpmesh", package = "jpmesh")
 
-
-prefecture_mesh <- tibble::tibble(
-  prefcode = sprintf("%02d", 1:47),
-  meshcode = 1:47 %>%
-    purrr::map(export_pref_80km_mesh)
+prefecture_mesh <-
+  tibble(
+  prefcode = sprintf("%02d", seq_len(47)),
+  meshcode = seq_len(47) %>%
+    map(export_pref_80km_mesh)
 ) %>%
-  tidyr::unnest() %>%
-  left_join(sf_jpmesh %>% select(meshcode, starts_with("name"), type, geometry), by = "meshcode") %>%
-  sf::st_sf(crs = 4326)
-
-expect_s3_class(prefecture_mesh, c("tbl", "data.frame"))
-expect_equal(dim(prefecture_mesh), c(314, 6))
-expect_named(prefecture_mesh, c("prefcode", "meshcode", "name", "name_roman", "type", "geometry"))
+  unnest() %>%
+  left_join(sf_jpmesh %>% select(meshcode, name = name_roman, type, geometry), by = "meshcode") %>%
+  st_sf(crs = 4326) %>%
+  mutate(name = stringi::stri_trans_totitle(name)) %>%
+  verify(dim(.) == c(314, 5)) %>%
+  verify(has_all_names(c("prefcode", "meshcode", "name", "type", "geometry")))
 
 # prefecture_mesh %>% count(meshcode, sort = TRUE)
 # library(leaflet)
@@ -28,4 +27,4 @@ expect_named(prefecture_mesh, c("prefcode", "meshcode", "name", "name_roman", "t
 #               color = ~pal(prefcode),
 #               labelOptions = labelOptions(noHide = TRUE, textsize = "24px"))
 
-devtools::use_data(prefecture_mesh, overwrite = TRUE)
+usethis::use_data(prefecture_mesh, overwrite = TRUE)
