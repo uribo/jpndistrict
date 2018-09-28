@@ -13,7 +13,7 @@ if (file.exists("data-raw/KSJ_N03/N03-170101_GML.zip") == FALSE) {
     kokudosuuchi::getKSJURL(identifier = "N03") %>%
     arrange(desc(year), areaCode) %>%
     slice(1L) %>%
-    use_series(zipFileUrl)
+    dplyr::pull(zipFileUrl)
 
   download.file(dl_url,
                 paste0("data-raw/KSJ_N03/", basename(dl_url)))

@@ -322,3 +322,16 @@ sfg_point_as_coords <- function(geometry) {
            latitude =  sf::st_coordinates(geometry)[2])
     }
 }
+
+export_pref_80km_mesh <- function(code, ...) {
+
+  meshcode <- NULL
+
+  sf_pref <- jpn_pref(pref_code = code)
+
+  res <- suppressMessages(jpmesh::sf_jpmesh %>%
+                            sf::st_join(sf_pref, sf::st_overlaps, left = FALSE) %>%
+                            dplyr::pull(meshcode) %>%
+                            unique())
+
+  return(res)

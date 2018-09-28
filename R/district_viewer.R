@@ -5,8 +5,7 @@
 #' @import leaflet
 #' @import miniUI
 #' @import shiny
-#' @importFrom dplyr filter
-#' @importFrom magrittr use_series
+#' @importFrom dplyr filter mutate pull
 #' @importFrom sf st_transform
 #' @examples
 #' \dontrun{
@@ -62,7 +61,7 @@ district_viewer <- function(color = "red") {
         session,
         "cities",
         paste(intToUtf8(c(24066, 21306, 30010, 26449, 12434, 36984, 25246), multiple = TRUE), collapse = ""),
-        choices = unique(magrittr::use_series(
+        choices = unique(dplyr::pull(
           jpn_pref(admin_name = input$pref),
           city
         ))
@@ -87,7 +86,7 @@ district_viewer <- function(color = "red") {
       prefcode <-
         jpnprefs %>%
         dplyr::filter(prefecture == as.character(input$pref)) %>%
-        magrittr::use_series(jis_code)
+        dplyr::pull(jis_code)
 
       if (is.null(input$cities)) {
         map_data <- jpn_pref(pref_code = prefcode, district = TRUE)

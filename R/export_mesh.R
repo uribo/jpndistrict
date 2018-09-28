@@ -1,9 +1,8 @@
 #' Export district's mesh polygon
 #'
 #' @inheritParams code_validate
-#' @importFrom dplyr filter mutate select everything
+#' @importFrom dplyr filter mutate select everything pull
 #' @importFrom jpmesh fine_separate mesh_to_coords
-#' @importFrom magrittr use_series
 #' @importFrom purrr map set_names pmap
 #' @importFrom sf st_intersects st_sf
 #' @importFrom tibble as_data_frame tibble

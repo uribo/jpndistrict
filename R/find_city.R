@@ -64,8 +64,8 @@ find_pref <- function(longitude, latitude, geometry = NULL, ...) {
 #'
 #' @inheritParams find_city
 #' @importFrom jpmesh coords_to_mesh
-#' @importFrom dplyr filter inner_join select
-#' @importFrom purrr set_names
+#' @importFrom dplyr filter inner_join select mutate
+#' @importFrom purrr pmap_chr set_names
 #' @importFrom tibble as_tibble
 #' @examples
 #' \dontrun{

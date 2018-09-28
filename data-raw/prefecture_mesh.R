@@ -5,20 +5,6 @@ library(testthat)
 
 data("sf_jpmesh", package = "jpmesh")
 
-export_pref_80km_mesh <- function(code,...) {
-  sf_pref <- jpndistrict::jpn_pref(pref_code = code)
-
-  res <- sf_jpmesh[tibble::tibble(res_contains = suppressMessages(sf::st_overlaps(sf_jpmesh,
-                                                                                  sf_pref))) %>%
-                     mutate(id = row_number()) %>%
-                     tidyr::unnest() %>%
-                     use_series(id), ] %>%
-    use_series(meshcode) %>%
-    unique()
-
-  return(res)
-}
-expect_length(export_pref_80km_mesh(1), 40L)
 
 prefecture_mesh <- tibble::tibble(
   prefcode = sprintf("%02d", 1:47),

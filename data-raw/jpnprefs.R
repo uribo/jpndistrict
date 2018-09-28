@@ -6,7 +6,6 @@
 options(digits = 9)
 # Load Employed Packages --------------------------------------------------
 library(rvest) # 0.3.2
-library(magrittr) # 1.5
 library(testthat) # 1.0.2
 # forcats (0.2.0), devtools (1.13.2)
 library(tidyverse)
@@ -25,7 +24,7 @@ df <-
   html_table(fill = TRUE) %>%
   purrr::flatten_df() %>%
   select(2, 4, 6, 11) %>%
-  set_colnames(c("prefecture", "capital", "region", "jis_code")) %>%
+  set_names(c("prefecture", "capital", "region", "jis_code")) %>%
   arrange(jis_code) %>%
   mutate(jis_code = sprintf("%02d", jis_code),
          capital = recode(capital,
@@ -42,7 +41,7 @@ df_en <-
   html_table(fill = TRUE) %>%
   purrr::flatten_df() %>%
   select(2, 5) %>%
-  set_colnames(c("prefecture", "major_island")) %>%
+  set_names(c("prefecture", "major_island")) %>%
   mutate(major_island = recode(major_island,
                                `Hokkaido`       = "北海道",
                                `Honshu`         = "本州",
@@ -75,16 +74,17 @@ df_coords <-
   flatten() %>%
   as.data.frame() %>%
   t() %>%
-  set_rownames(NULL) %>%
-  set_colnames(c("lat", "lon")) %>%
   as.data.frame() %>%
+  remove_rownames() %>%
+  set_names(c("lat", "lon")) %>%
   separate(col = lat, into = c(paste("lat", c("d", "m", "s"), sep = "_")), sep = "_") %>%
   separate(lon, c(paste("lon", c("d", "m", "s"), sep = "_")), "_") %>%
   mutate(latitude  = as.numeric(lat_d) + (as.numeric(lat_m) + as.numeric(lat_s) / 60) / 60,
          longitude = as.numeric(lon_d) + (as.numeric(lon_m) + as.numeric(lon_s) / 60) / 60) %>%
   select(latitude, longitude)
 
-jpnprefs %<>%
+jpnprefs <-
+  jpnprefs %>%
   bind_cols(df_coords) %>%
   # jis codeの順で水準を作る
   mutate(prefecture = prefecture %>% factor() %>% forcats::fct_relevel(prefecture)) %>%
