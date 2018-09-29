@@ -88,29 +88,29 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install from CRAN.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"jpndistrict"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">"jpndistrict"</span>)</a></code></pre></div>
 <p>For developers, please use the <strong>devtool</strong> package to install via the GitHub repository.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
-devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"uribo/jpndistrict"</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"uribo/jpndistrict"</span>)</a></code></pre></div>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load Package</span>
-<span class="kw">library</span>(jpndistrict)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Load Package</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">library</span>(jpndistrict)</a></code></pre></div>
 <div id="administrative-area-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#administrative-area-data" class="anchor"></a>Administrative area data</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">jpn_pref</span>(<span class="dv">14</span>)
-<span class="kw">jpn_pref</span>(<span class="dv">14</span>, <span class="dt">district =</span> <span class="ot">FALSE</span>)
-<span class="kw">jpn_cities</span>(<span class="dv">14</span>, <span class="dt">admin_name =</span> <span class="st">"海老名市"</span>)
-<span class="kw">jpn_cities</span>(<span class="dv">33</span>, <span class="dt">admin_name =</span> <span class="kw">c</span>(<span class="st">"倉敷市"</span>, <span class="st">"笠岡市"</span>))</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/jpn_pref.html">jpn_pref</a></span>(<span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="reference/jpn_pref.html">jpn_pref</a></span>(<span class="dv">14</span>, <span class="dt">district =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="reference/jpn_cities.html">jpn_cities</a></span>(<span class="dv">14</span>, <span class="dt">admin_name =</span> <span class="st">"海老名市"</span>)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw"><a href="reference/jpn_cities.html">jpn_cities</a></span>(<span class="dv">33</span>, <span class="dt">admin_name =</span> <span class="kw">c</span>(<span class="st">"倉敷市"</span>, <span class="st">"笠岡市"</span>))</a></code></pre></div>
 </div>
 <div id="administration-office-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#administration-office-data" class="anchor"></a>Administration office data</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">jpn_admins</span>(<span class="dt">jis_code =</span> <span class="dv">33</span>)
-<span class="kw">jpn_admins</span>(<span class="dt">jis_code =</span> <span class="kw">c</span>(<span class="st">"33101"</span>, <span class="st">"33212"</span>))</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/jpn_admins.html">jpn_admins</a></span>(<span class="dt">jis_code =</span> <span class="dv">33</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="reference/jpn_admins.html">jpn_admins</a></span>(<span class="dt">jis_code =</span> <span class="kw">c</span>(<span class="st">"33101"</span>, <span class="st">"33212"</span>))</a></code></pre></div>
 </div>
 </div>
 </div>
