@@ -1,3 +1,4 @@
+^tic\.R$
 ^\.env$
 ^.*\.Rproj$
 ^\.Rproj\.user$
