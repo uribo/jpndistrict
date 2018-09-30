@@ -9,6 +9,8 @@ RUN set -x && \
 
 RUN set -x && \
   install2.r --error \
+    assertr \
+    here \
     jpmesh \
     lwgeom \
     magick \
@@ -19,4 +21,5 @@ RUN set -x && \
     "klutometis/roxygen" \
     "r-lib/roxygen2md" \
     "r-lib/devtools" \
-    "r-lib/pkgdown"
+    "r-lib/pkgdown" && \
+  rm -rf /tmp/downloaded_packages/ /tmp/*.rds

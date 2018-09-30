@@ -22,7 +22,6 @@ Depends:
 Imports: 
     dplyr (>= 0.7.4),
     leaflet (>= 1.1.0),
-    lwgeom (>= 0.1-4),
     magrittr (>= 1.5),
     miniUI (>= 0.1.1),
     purrr (>= 0.2.4),
@@ -39,4 +38,4 @@ Suggests:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.0.9000
