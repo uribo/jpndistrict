@@ -5,8 +5,7 @@
 #' @import leaflet
 #' @import miniUI
 #' @import shiny
-#' @importFrom dplyr filter
-#' @importFrom magrittr use_series
+#' @importFrom dplyr filter mutate pull
 #' @importFrom sf st_transform
 #' @examples
 #' \dontrun{
@@ -16,7 +15,19 @@
 district_viewer <- function(color = "red") {
   # nolint start
   # nocov start
-  prefecture <- city <- city_code <- jis_code <- geometry <- NULL
+  . <-
+    prefecture <- city <- city_code <- jis_code <- geometry <- NULL
+
+  jpnprefs <-
+    jpnprefs %>%
+    dplyr::mutate(prefecture = purrr::pmap_chr(.,
+                                               ~ paste(intToUtf8(..2, multiple = TRUE), collapse = "")),
+                  capital = purrr::pmap_chr(.,
+                                               ~ paste(intToUtf8(..3, multiple = TRUE), collapse = "")),
+                  region = purrr::pmap_chr(.,
+                                               ~ paste(intToUtf8(..4, multiple = TRUE), collapse = "")),
+                  major_island = purrr::pmap_chr(.,
+                                               ~ paste(intToUtf8(..5, multiple = TRUE), collapse = "")))
 
   # UI ----------------------------------------------------------------------
   ui <- miniPage(
@@ -62,7 +73,7 @@ district_viewer <- function(color = "red") {
         session,
         "cities",
         paste(intToUtf8(c(24066, 21306, 30010, 26449, 12434, 36984, 25246), multiple = TRUE), collapse = ""),
-        choices = unique(magrittr::use_series(
+        choices = unique(dplyr::pull(
           jpn_pref(admin_name = input$pref),
           city
         ))
@@ -87,7 +98,7 @@ district_viewer <- function(color = "red") {
       prefcode <-
         jpnprefs %>%
         dplyr::filter(prefecture == as.character(input$pref)) %>%
-        magrittr::use_series(jis_code)
+        dplyr::pull(jis_code)
 
       if (is.null(input$cities)) {
         map_data <- jpn_pref(pref_code = prefcode, district = TRUE)

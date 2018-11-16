@@ -128,23 +128,31 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
 #' @description Get prefecture code from prefecture of name or number.
 #' @param code numeric
 #' @param admin_name prefecture code for Japanese (character)
-#' @importFrom magrittr use_series
-#' @importFrom dplyr filter
+#' @importFrom dplyr filter mutate pull
+#' @importFrom purrr pmap_chr
 collect_prefcode <- function(code = NULL, admin_name = NULL) {
-  jis_code <- prefecture <- NULL
+  . <- jis_code <- prefecture <- NULL
 
   jpnprefs <-
-    readRDS(system.file("extdata/jpnprefs.rds",
-                        package = "jpndistrict"))
+    jpnprefs %>%
+    dplyr::mutate(prefecture = purrr::pmap_chr(.,
+                                               ~ collapse_int2utf8(..2)),
+                  capital = purrr::pmap_chr(.,
+                                            ~ collapse_int2utf8(..3)),
+                  region = purrr::pmap_chr(.,
+                                           ~ collapse_int2utf8(..4)),
+                  major_island = purrr::pmap_chr(.,
+                                                 ~ collapse_int2utf8(..5)))
+
 
   if (missing(admin_name)) {
     pref_code <-
       dplyr::filter(jpnprefs, jis_code == code_validate(code)$code) %>%
-      magrittr::use_series(jis_code)
+      dplyr::pull(jis_code)
   } else if (missing(code)) {
     pref_code <-
       dplyr::filter(jpnprefs, prefecture == admin_name) %>%
-      magrittr::use_series(jis_code)
+      dplyr::pull(jis_code)
   }
 
   return(pref_code)
@@ -259,7 +267,7 @@ which_pol_min <- function(longitude, latitude, ...) {
 
   pref_code_chr <-
     find_prefs(longitude = longitude, latitude = latitude) %>%
-    magrittr::use_series(pref_code)
+    dplyr::pull(pref_code)
 
   sp_polygon <- NULL
   which_row  <- integer(0)
@@ -321,4 +329,22 @@ sfg_point_as_coords <- function(geometry) {
       list(longitude = sf::st_coordinates(geometry)[1],
            latitude =  sf::st_coordinates(geometry)[2])
     }
+}
+
+collapse_int2utf8 <- function(var) {
+  paste(intToUtf8(var, multiple = TRUE), collapse = "")
+}
+
+export_pref_80km_mesh <- function(code, ...) {
+
+  meshcode <- NULL
+
+  sf_pref <- jpn_pref(pref_code = code)
+
+  res <- suppressMessages(jpmesh::sf_jpmesh %>%
+                            sf::st_join(sf_pref, sf::st_overlaps, left = FALSE) %>%
+                            dplyr::pull(meshcode) %>%
+                            unique())
+
+  return(res)
 }

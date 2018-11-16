@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Citation and Authors • jpndistrict</title>
+<title>Administration code varidation — code_validate • jpndistrict</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,12 +25,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 
 
-<meta property="og:title" content="Citation and Authors" />
+<meta property="og:title" content="Administration code varidation — code_validate" />
+
+<meta property="og:description" content="Administration code varidation" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -49,7 +51,7 @@
   </head>
 
   <body>
-    <div class="container template-citation-authors">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -60,7 +62,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">jpndistrict</a>
+        <a class="navbar-link" href="../index.html">jpndistrict</a>
         <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9000</span>
       </span>
     </div>
@@ -68,16 +70,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="news/index.html">Changelog</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -98,40 +100,55 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Citation</h1>
+    <h1>Administration code varidation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/uribo/jpndistrict#readme/blob/master/R/code_validate.R'><code>R/code_validate.R</code></a></small>
+    <div class="hidden name"><code>code_validate.Rd</code></div>
     </div>
 
-    <p>Uryu S (2017).
-&ldquo;jpndistirct: Create Japanese Administration Area and Office Maps.&rdquo;
-<a href="http://github.com/uribo/jpndistrict">http://github.com/uribo/jpndistrict</a>. 
-</p>
-    <pre>@Misc{,
-  title = {jpndistirct: Create Japanese Administration Area and Office Maps},
-  author = {Shinya Uryu},
-  year = {2017},
-  url = {http://github.com/uribo/jpndistrict},
-}</pre>
-    <div class="page-header">
-      <h1>Authors</h1>
+    <div class="ref-description">
+    
+    <p>Administration code varidation</p>
+    
     </div>
 
-    <ul class="list-unstyled">
-      <li>
-        <p><strong>Shinya Uryu</strong>. Author, maintainer. <a href='https://orcid.org/0000-0002-0493-6186' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid' height='16'></a>
-        </p>
-      </li>
-      <li>
-        <p><strong>Geospatial Information Authority of Japan</strong>. Data contributor. 
-        <br /><small>This package data sets, National Land numerical information by the Geographical Survey Institute with the approval of Geographical Survey Institute Head (Approval No.603FY2017 information usage)</small></p>
-      </li>
+    <pre class="usage"><span class='fu'>code_validate</span>(<span class='no'>jis_code</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>jis_code</th>
+      <td><p>jis code for prefecture and city identifical number.
+If prefecture, must be from 1 to 47. If city, range of 5 digits.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>The <code>code_validate</code> function was added in version 0.3.2.9000</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>code_validate</span>(<span class='kw'>jis_code</span> <span class='kw'>=</span> <span class='st'>"05"</span>)
+<span class='fu'>code_validate</span>(<span class='kw'>jis_code</span> <span class='kw'>=</span> <span class='fl'>33101</span>)
+<span class='fu'>code_validate</span>(<span class='kw'>jis_code</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"01"</span>, <span class='st'>"33101"</span>))
+<span class='co'># }</span></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#note">Note</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
-
 </div>
-
 
       <footer>
       <div class="copyright">

@@ -64,8 +64,8 @@ find_pref <- function(longitude, latitude, geometry = NULL, ...) {
 #'
 #' @inheritParams find_city
 #' @importFrom jpmesh coords_to_mesh
-#' @importFrom dplyr filter inner_join select
-#' @importFrom purrr set_names
+#' @importFrom dplyr filter inner_join select mutate
+#' @importFrom purrr pmap_chr set_names
 #' @importFrom tibble as_tibble
 #' @examples
 #' \dontrun{
@@ -79,7 +79,7 @@ find_pref <- function(longitude, latitude, geometry = NULL, ...) {
 #' @name find_prefs
 #' @export
 find_prefs <- function(longitude, latitude, geometry = NULL) {
-  prefcode <- jis_code <- meshcode <- prefecture <- region <- NULL
+  . <- prefcode <- jis_code <- meshcode <- prefecture <- region <- NULL
 
   if (!is.null(geometry)) {
     if (sf::st_is(geometry, "POINT")) {
@@ -91,7 +91,11 @@ find_prefs <- function(longitude, latitude, geometry = NULL) {
   }
 
   jpnprefs <- jpnprefs %>%
-    dplyr::select(jis_code, prefecture, region)
+    dplyr::select(jis_code, prefecture, region) %>%
+    dplyr::mutate(prefecture = purrr::pmap_chr(.,
+                                               ~ collapse_int2utf8(..2)),
+                  region = purrr::pmap_chr(.,
+                                           ~ collapse_int2utf8(..3)))
 
   res <-
     prefecture_mesh %>%
