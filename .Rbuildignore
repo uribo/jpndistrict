@@ -1,4 +1,3 @@
-^.*\.xls$
 ^\.env$
 ^.*\.Rproj$
 ^\.Rproj\.user$
