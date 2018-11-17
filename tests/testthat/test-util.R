@@ -145,3 +145,30 @@ test_that("input geometry", {
   expect_named(test, c("longitude", "latitude"))
 
 })
+
+test_that("City name table", {
+  expect_equal(
+    find_jis_code(33, "\u5009\u6577\u5e02"),
+    "33202")
+  expect_equal(
+    expect_warning(
+      find_jis_code(33, "\u5ca1\u5c71\u5e02", strict = TRUE)),
+    NA_character_)
+  expect_length(
+    find_jis_code(33, "\u5ca1\u5c71\u5e02", strict = FALSE),
+   4L)
+
+  expect_identical(
+    cityname_reform("\u52dd\u7530\u90e1\u52dd\u592e\u753a"),
+    "\u52dd\u7530\u90e1 \u52dd\u592e\u753a"
+  )
+  expect_is(
+    cityname_reform("\u5ca1\u5c71\u5e02"),
+    "character"
+  )
+  x <- "\u52dd\u7530\u90e1 \u52dd\u592e\u753a"
+  expect_equal(
+    cityname_reform(x),
+    x
+  )
+})
