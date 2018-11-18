@@ -85,6 +85,7 @@ test_that("Failed", {
 })
 
 test_that("city", {
+  skip_on_os("windows")
   test <- find_city(longitude = 130.4412895, latitude = 30.2984335)
   expect_s3_class(test, "tbl")
   expect_equal(dim(test), c(1, 4))
