@@ -79,16 +79,22 @@ d_mod <-
                                                                                  NA_character_,
                                                                                  .))) %>%
                              arrange(after_code) %>%
-                             fill(starts_with("after_"), .direction = "down") %>%
+                             fill(date, starts_with("after_"), .direction = "down") %>%
                              dplyr::select(type,
                                     date,
                                     before_code, before_city_name,
                                     after_code, after_city_name))) %>%
-  tidyr::unnest()
+  tidyr::unnest() %>%
+  verify(dim(.) == c(1436, 7)) %>%
+  group_by(id) %>%
+  tidyr::fill(date, .direction = "up") %>%
+  ungroup() %>%
+  verify(sum(is.na(.$date)) == 0)
 
 citycode_sets <-
   d_mod %>%
   dplyr::filter(!stringr::str_detect(date, "^H")) %>%
+  verify(nrow(.) == 1382) %>%
   mutate(
     date = if_else(!stringr::str_detect(date, "^H"),
                    as_date(as.numeric(date), origin = "1900-01-01") - days(2),
@@ -96,6 +102,7 @@ citycode_sets <-
   bind_rows(
     d_mod %>%
       dplyr::filter(stringr::str_detect(date, "^H")) %>%
+      verify(nrow(.) == 54) %>%
       mutate(date = purrr::map(date,
                                ~ .x %>%
                                  strsplit(split = "\\.") %>%
@@ -109,7 +116,8 @@ citycode_sets <-
                                  lubridate::as_date())) %>%
       tidyr::unnest()
   ) %>%
-  arrange(date)
+  arrange(date) %>%
+  verify(dim(.) == c(1436, 7))
 
 citycode_sets <-
   citycode_sets %>%
@@ -122,7 +130,7 @@ citycode_sets <-
     starts_with("after"),
     .id,
     .type) %>%
-  verify(dim(.) == c(556, 7))
+  verify(dim(.) == c(1436, 7))
 
 readr::write_rds(citycode_sets,
                  "inst/extdata/citycode_sets.rds",
