@@ -84,6 +84,10 @@ d_mod <-
                                     date,
                                     before_code, before_city_name,
                                     after_code, after_city_name))) %>%
+  mutate(data = purrr::map(data,
+                           ~ .x %>%
+                             arrange(before_code) %>%
+                             fill(starts_with("before_"), .direction = "down"))) %>%
   tidyr::unnest() %>%
   verify(dim(.) == c(1436, 7)) %>%
   group_by(id) %>%
