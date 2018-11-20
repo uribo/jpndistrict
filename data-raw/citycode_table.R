@@ -129,7 +129,8 @@ citycode_sets <-
     starts_with("before"),
     starts_with("after"),
     .id) %>%
-  verify(dim(.) == c(1436, 6))
+  verify(dim(.) == c(1436, 6)) %>%
+  verify(sum(is.na(.$before_code)) == 1L)
 
 readr::write_rds(citycode_sets,
                  "inst/extdata/citycode_sets.rds",
