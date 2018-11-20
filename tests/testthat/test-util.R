@@ -171,4 +171,9 @@ test_that("City name table", {
     cityname_reform(x),
     x
   )
+  expect_equal(
+    cityname_reform("\u5ca1\u5c71\u5e02\u5317\u533a"),
+    "\u5ca1\u5c71\u5e02 \u5317\u533a"
+  )
+
 })

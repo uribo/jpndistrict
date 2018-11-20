@@ -50,6 +50,11 @@ cityname_reform <- function(admin_name) {
       purrr::flatten() %>%
       purrr::map_at(1, ~ paste0(., "\u90e1")) %>%
       purrr::reduce(paste)
+  } else if (rlang::is_true(grepl("^.+\u5e02.+\u533a$", admin_name))) {
+    strsplit(admin_name, split = "\u5e02") %>%
+      purrr::flatten_chr() %>%
+      purrr::map_chr(~ gsub("[[:space:]]", "", x = .x)) %>%
+      paste(collapse = "\u5e02 ")
   } else {
     admin_name
   }
