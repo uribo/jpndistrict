@@ -60,10 +60,7 @@ d_mod <-
                                    after_city_name),
          after_code = if_else(after_code == "同左",
                               before_code,
-                              after_code))
-
-d_mod <-
-  d_mod %>%
+                              after_code)) %>%
   group_by(id) %>%
   tidyr::nest()
 
@@ -80,8 +77,7 @@ d_mod <-
                                                                                  .))) %>%
                              arrange(after_code) %>%
                              fill(date, starts_with("after_"), .direction = "down") %>%
-                             dplyr::select(type,
-                                    date,
+                             dplyr::select(date,
                                     before_code, before_city_name,
                                     after_code, after_city_name))) %>%
   mutate(data = purrr::map(data,
@@ -89,9 +85,10 @@ d_mod <-
                              arrange(before_code) %>%
                              fill(starts_with("before_"), .direction = "down"))) %>%
   tidyr::unnest() %>%
-  verify(dim(.) == c(1436, 7)) %>%
+  arrange(id, date) %>%
+  verify(dim(.) == c(1436, 6)) %>%
   group_by(id) %>%
-  tidyr::fill(date, .direction = "up") %>%
+  tidyr::fill(date, .direction = "down") %>%
   ungroup() %>%
   verify(sum(is.na(.$date)) == 0)
 
@@ -120,21 +117,19 @@ citycode_sets <-
                                  lubridate::as_date())) %>%
       tidyr::unnest()
   ) %>%
-  arrange(date) %>%
-  verify(dim(.) == c(1436, 7))
+  arrange(date, after_code) %>%
+  verify(dim(.) == c(1436, 6))
 
 citycode_sets <-
   citycode_sets %>%
   mutate(.id = as.numeric(forcats::fct_inorder(as.character(id)))) %>%
-  rename(.type = type) %>%
   dplyr::select(-id) %>%
   dplyr::select(
     date,
     starts_with("before"),
     starts_with("after"),
-    .id,
-    .type) %>%
-  verify(dim(.) == c(1436, 7))
+    .id) %>%
+  verify(dim(.) == c(1436, 6))
 
 readr::write_rds(citycode_sets,
                  "inst/extdata/citycode_sets.rds",
