@@ -10,3 +10,4 @@ data-raw/KSJ_N03/
 data-raw/mic_city_table/
 *.pdf
 *.zip
+.Rapp.history
