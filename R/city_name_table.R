@@ -1,13 +1,15 @@
-#' Find prefecture code
+#' Find jis city code
 #'
 #' @inheritParams jpn_pref
 #' @inheritParams jpn_cities
 #' @param strict matching patterns
-#' @return Prefecture Identification Code (JIS X 0401)
+#' @return Identification code for cities,towns and villages (JIS X 0402:2010)
 #' @examples
 #' \dontrun{
 #' find_jis_code(33, "\u5009\u6577\u5e02")
 #' find_jis_code(33, "\u5009\u6577\u5e02", strict = FALSE)
+#'
+#' find_jis_code(14, c("\u938c\u5009\u5e02", "\u5c0f\u7530\u539f\u5e02"), strict = FALSE)
 #' }
 find_jis_code <- function(pref_code, admin_name, strict = TRUE) {
 
@@ -15,7 +17,6 @@ find_jis_code <- function(pref_code, admin_name, strict = TRUE) {
 
   pref <- rlang::quo(pref_code)
 
-  # REVIEW:
   sf_pref <-
     jpn_pref(pref_code = rlang::eval_tidy(pref))
 

@@ -157,6 +157,12 @@ test_that("City name table", {
   expect_length(
     find_jis_code(33, "\u5ca1\u5c71\u5e02", strict = FALSE),
    4L)
+  expect_setequal(
+    find_jis_code(14,
+                  c("\u938c\u5009\u5e02", "\u5c0f\u7530\u539f\u5e02"),
+                  strict = FALSE),
+    c("14204", "14206")
+  )
 
   expect_identical(
     cityname_reform("\u52dd\u7530\u90e1\u52dd\u592e\u753a"),

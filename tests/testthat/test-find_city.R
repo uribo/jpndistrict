@@ -26,7 +26,6 @@ test_that("prefecture", {
 })
 
 test_that("Failed", {
-  skip_on_os("windows")
   expect_message(
     find_pref(125.2468750000, 24.7145833333),
     intToUtf8(
@@ -53,7 +52,6 @@ test_that("Failed", {
     )
   )
 
-  skip_on_os("windows")
   expect_message(
     find_city(longitude = 140.639815, latitude = 36.108976),
     intToUtf8(
@@ -85,7 +83,6 @@ test_that("Failed", {
 })
 
 test_that("city", {
-  skip_on_os("windows")
   test <- find_city(longitude = 130.4412895, latitude = 30.2984335)
   expect_s3_class(test, "tbl")
   expect_equal(dim(test), c(1, 4))

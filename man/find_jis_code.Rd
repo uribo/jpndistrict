@@ -2,7 +2,7 @@
 % Please edit documentation in R/city_name_table.R
 \name{find_jis_code}
 \alias{find_jis_code}
-\title{Find prefecture code}
+\title{Find jis city code}
 \usage{
 find_jis_code(pref_code, admin_name, strict = TRUE)
 }
@@ -14,14 +14,16 @@ find_jis_code(pref_code, admin_name, strict = TRUE)
 \item{strict}{matching patterns}
 }
 \value{
-Prefecture Identification Code (JIS X 0401)
+Identification code for cities,towns and villages (JIS X 0402:2010)
 }
 \description{
-Find prefecture code
+Find jis city code
 }
 \examples{
 \dontrun{
 find_jis_code(33, "\\u5009\\u6577\\u5e02")
 find_jis_code(33, "\\u5009\\u6577\\u5e02", strict = FALSE)
+
+find_jis_code(14, c("\\u938c\\u5009\\u5e02", "\\u5c0f\\u7530\\u539f\\u5e02"), strict = FALSE)
 }
 }
