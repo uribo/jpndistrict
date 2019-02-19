@@ -1,4 +1,4 @@
-FROM rocker/geospatial:3.5.1
+FROM rocker/geospatial:3.5.2
 
 RUN set -x && \
   apt-get update && \
@@ -7,12 +7,16 @@ RUN set -x && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
+ARG GITHUB_PAT
+
+RUN set -x && \
+  echo "GITHUB_PAT=$GITHUB_PAT" >> /usr/local/lib/R/etc/Renviron
+
 RUN set -x && \
   install2.r --error \
     assertr \
     here \
     jpmesh \
-    lwgeom \
     magick \
     pryr \
     usethis && \
@@ -22,5 +26,6 @@ RUN set -x && \
     "r-lib/roxygen2md" \
     "r-lib/devtools" \
     "r-lib/pkgdown" \
+    "r-spatial/lwgeom" \
     "uribo/odkitchen" && \
   rm -rf /tmp/downloaded_packages/ /tmp/*.rds
