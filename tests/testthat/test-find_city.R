@@ -8,6 +8,7 @@ test_that("prefecture", {
   expect_is(test$prefecture, "character")
   expect_identical(sf::st_crs(test), crs_4326)
 
+  skip_if_not_installed("lwgeom")
   test <- find_pref(longitude = 140.1137418, latitude = 36.0533957)
   expect_named(test, c("pref_code", "prefecture", "geometry"))
   expect_equal(test$pref_code, "08")
