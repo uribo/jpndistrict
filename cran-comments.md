@@ -1,6 +1,7 @@
 ## Test environments
-- local macOS (High Sierra) install, R 3.5.0
-- ubuntu 14.04.3 (on travis-ci), oldrel and release
+- local macOS (Mojave) install, R 3.6.0
+- ubuntu 14.04.5 (on travis-ci), oldrel and release
+- Debian GNU/Linux 9 (on Docker)
 - win-builder
 
 ## R CMD check results

@@ -1,8 +1,8 @@
 Type: Package
 Package: jpndistrict
 Title: Create Japanese Administration Area and Office Maps
-Version: 0.3.2.9000
-Date: 2018-06-14
+Version: 0.3.3
+Date: 2019-05-09
 Authors@R: c(
     person(given = "Shinya", family = "Uryu", email = "suika1127@gmail.com", role  = c("aut", "cre"), comment = c(ORCID = "0000-0002-0493-6186")),
     person("Geospatial Information Authority of Japan", role = "dtc", 
@@ -39,4 +39,4 @@ Suggests:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 6.1.1.9000

@@ -21,3 +21,4 @@
 ^appveyor\.yml$
 ^\.lintr$
 ^.*\.xls$
+^CRAN-RELEASE$
