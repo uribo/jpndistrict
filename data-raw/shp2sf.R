@@ -18,19 +18,23 @@ if (file.exists("data-raw/KSJ_N03/N03-170101_GML.zip") == FALSE) {
   download.file(dl_url,
                 paste0("data-raw/KSJ_N03/", basename(dl_url)))
   unzip(paste0("data-raw/KSJ_N03/", basename(dl_url)), exdir = "data-raw/KSJ_N03")
-  # add to Git Ignore
+  usethis::use_git_ignore("data-raw/KSJ_N03/")
 }
 
 # Modified shapefile ----------------------------------------------------------
 sf_japan <-
   st_read("data-raw/KSJ_N03/N03-17_170101.shp", stringsAsFactors = FALSE) %>%
-  set_names(c("prefecture", "sichyo_sinkyokyoku", "gun_seireishitei", "city", "city_code", "geometry")) %>%
+  set_names(c("prefecture", "sichyo_sinkyokyoku", "gun_seireishitei",
+              "city", "city_code", "geometry")) %>%
   mutate(city = if_else(!is.na(gun_seireishitei),
-                        if_else(is.na(city), gun_seireishitei, paste(gun_seireishitei, city)),
+                        if_else(is.na(city),
+                                gun_seireishitei,
+                                paste(gun_seireishitei, city)),
                         as.character(city)),
          pref_code = substr(city_code, 1, 2),
          city_code = as.character(city_code)) %>%
-  select(pref_code, prefecture, sichyo_sinkyokyoku, city_code, city, geometry) %>%
+  select(pref_code, prefecture, sichyo_sinkyokyoku,
+         city_code, city, geometry) %>%
   st_simplify(preserveTopology = TRUE, dTolerance = 0.0005) %>%
   st_transform(crs = 4326)
 
@@ -129,7 +133,8 @@ pref_modified <- function(prefcode) {
 expect_equal(nrow(pref_modified(prefcode = 33)), 30L)
 expect_equal(nrow(pref_modified(prefcode = 13)), 62L)
 
-dir.create("inst/extdata/ksj_n03/")
+if (dir.exists("inst/extdata/ksj_n03/") == FALSE)
+  dir.create("inst/extdata/ksj_n03/")
 
 # 5MB以内に収める
 1:47 %>%
