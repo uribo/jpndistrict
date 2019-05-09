@@ -1,4 +1,4 @@
-FROM rocker/geospatial:3.5.2
+FROM rocker/geospatial:3.6.0
 
 RUN set -x && \
   apt-get update && \
