@@ -149,69 +149,56 @@ test_that("input geometry", {
 test_that("City name table", {
   expect_equal(
     find_jis_code(33,
-                  paste(enc2native(intToUtf8(c(20489, 25975, 24066),
-                                             multiple = TRUE)),
-                        collapse = "")),
+                  enc2native(intToUtf8(c(20489, 25975, 24066),
+                                             multiple = FALSE))),
     "33202")
   expect_equal(
     expect_warning(
       find_jis_code(33,
-                    paste(enc2native(intToUtf8(c(23713, 23665, 24066),
-                                               multiple = TRUE)),
-                          collapse = ""),
+                    enc2native(intToUtf8(c(23713, 23665, 24066),
+                                               multiple = FALSE)),
                     strict = TRUE)),
     NA_character_)
   expect_length(
     find_jis_code(33,
-                  paste(enc2native(intToUtf8(c(23713, 23665, 24066),
-                                             multiple = TRUE)),
-                        collapse = ""),
+                  enc2native(intToUtf8(c(23713, 23665, 24066),
+                                             multiple = FALSE)),
                   strict = FALSE),
    4L)
   expect_setequal(
     find_jis_code(14,
-                  c(paste(enc2native(intToUtf8(c(37772, 20489, 24066),
-                                               multiple = TRUE)),
-                        collapse = ""),
-                    paste(enc2native(intToUtf8(c(23567, 30000, 21407, 24066),
-                                               multiple = TRUE)),
-                          collapse = "")),
+                  c(enc2native(intToUtf8(c(37772, 20489, 24066),
+                                               multiple = FALSE)),
+                    enc2native(intToUtf8(c(23567, 30000, 21407, 24066),
+                                               multiple = FALSE))),
                   strict = FALSE),
     c("14204", "14206")
   )
 
   expect_identical(
     cityname_reform(
-      paste(enc2native(intToUtf8(c(21213, 30000, 37089, 21213, 22830, 30010),
-                                 multiple = TRUE)),
-            collapse = "")
-    ),
-    paste(enc2native(intToUtf8(c(21213, 30000, 37089, 32, 21213, 22830, 30010),
-                               multiple = TRUE)),
-          collapse = "")
-  )
+      enc2native(intToUtf8(c(21213, 30000, 37089, 21213, 22830, 30010),
+                           multiple = FALSE))),
+    enc2native(intToUtf8(c(21213, 30000, 37089, 32, 21213, 22830, 30010),
+                               multiple = FALSE)))
   expect_is(
-    cityname_reform(paste(enc2native(intToUtf8(c(23713, 23665, 24066),
-                                               multiple = TRUE)),
-                          collapse = "")),
+    cityname_reform(enc2native(intToUtf8(c(23713, 23665, 24066),
+                                               multiple = FALSE))),
     "character"
   )
-  x <- paste(enc2native(intToUtf8(c(21213, 30000, 37089, 32, 21213, 22830, 30010),
-                                  multiple = TRUE)),
-             collapse = "")
+  x <- enc2native(intToUtf8(c(21213, 30000, 37089, 32, 21213, 22830, 30010),
+                                  multiple = FALSE))
   expect_equal(
     cityname_reform(x),
     x
   )
   expect_equal(
     cityname_reform(
-      paste(enc2native(intToUtf8(c(23713, 23665, 24066, 21271, 21306),
-                                 multiple = TRUE)),
-            collapse = "")
+      enc2native(intToUtf8(c(23713, 23665, 24066, 21271, 21306),
+                                 multiple = FALSE))
     ),
-    paste(enc2native(intToUtf8(c(23713, 23665, 24066, 32, 21271, 21306),
-                               multiple = TRUE)),
-          collapse = "")
+    enc2native(intToUtf8(c(23713, 23665, 24066, 32, 21271, 21306),
+                               multiple = FALSE))
   )
 
 })

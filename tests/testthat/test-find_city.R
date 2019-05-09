@@ -29,33 +29,35 @@ test_that("prefecture", {
 test_that("Failed", {
   expect_message(
     find_pref(125.2468750000, 24.7145833333),
-    intToUtf8(
-      c(
-        25351,
-        23450,
-        12375,
-        12383,
-        24231,
-        27161,
-        12364,
-        12509,
-        12522,
-        12468,
-        12531,
-        12395,
-        21547,
-        12414,
-        12428,
-        12414,
-        12379,
-        12435
+    enc2native(
+      intToUtf8(
+        c(
+          25351,
+          23450,
+          12375,
+          12383,
+          24231,
+          27161,
+          12364,
+          12509,
+          12522,
+          12468,
+          12531,
+          12395,
+          21547,
+          12414,
+          12428,
+          12414,
+          12379,
+          12435
+        ), multiple = FALSE
       )
     )
   )
 
   expect_message(
     find_city(longitude = 140.639815, latitude = 36.108976),
-    intToUtf8(
+    enc2native(intToUtf8(
       c(
         25351,
         23450,
@@ -75,7 +77,7 @@ test_that("Failed", {
         12414,
         12379,
         12435
-      )
+      ))
     ))
   test <-
     find_pref(125.2468750000, 24.7145833333)
@@ -94,7 +96,7 @@ test_that("city", {
   test <- find_city(longitude = 140.1137418, latitude = 36.0533957, geometry = NULL)
   expect_equal(test$city_code, "08220")
   expect_equal(test$city,
-               paste(intToUtf8(c(12388, 12367, 12400, 24066), multiple = TRUE), collapse = ""))
+               intToUtf8(c(12388, 12367, 12400, 24066), multiple = FALSE))
 
   test <- find_city(geometry = sf::st_point(c(130.4412895, 30.2984335)))
   expect_equal(test$city_code, "46505")
