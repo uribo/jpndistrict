@@ -22,17 +22,13 @@ Find jis city code
 \examples{
 \dontrun{
 find_jis_code(33,
-paste(enc2native(intToUtf8(c(20489, 25975, 24066),
-multiple = TRUE)), collapse = ""))
+intToUtf8(c(20489, 25975, 24066), multiple = FALSE))
 find_jis_code(33,
-paste(enc2native(intToUtf8(c(20489, 25975, 24066),
-multiple = TRUE)), collapse = ""),
+enc2native(intToUtf8(c(20489, 25975, 24066), multiple = FALSE)),
 strict = FALSE)
 
 find_jis_code(14,
-c(paste(enc2native(intToUtf8(c(37772, 20489, 24066), multiple = TRUE)),
-collapse = ""),
-paste(enc2native(intToUtf8(c(23567, 30000, 21407, 24066), multiple = TRUE)),
-collapse = "")), strict = FALSE)
+c(enc2native(intToUtf8(c(37772, 20489, 24066), multiple = FALSE)),
+  enc2native(intToUtf8(c(23567, 30000, 21407, 24066), multiple = FALSE))), strict = FALSE)
 }
 }

@@ -143,28 +143,30 @@ find_city <- function(longitude, latitude, geometry = NULL, ...) {
 
   if (identical(pol_min$which, integer(0)) == TRUE) {
     # not found
-    message(intToUtf8(
-      c(
-        25351,
-        23450,
-        12375,
-        12383,
-        24231,
-        27161,
-        12364,
-        12509,
-        12522,
-        12468,
-        12531,
-        12395,
-        21547,
-        12414,
-        12428,
-        12414,
-        12379,
-        12435
-      )
-    ))
+    rlang::inform(
+      enc2native(intToUtf8(
+        c(
+          25351,
+          23450,
+          12375,
+          12383,
+          24231,
+          27161,
+          12364,
+          12509,
+          12522,
+          12468,
+          12531,
+          12395,
+          21547,
+          12414,
+          12428,
+          12414,
+          12379,
+          12435
+        ), multiple = FALSE
+      ))
+    )
   } else {
     res <- pol_min$spdf[pol_min$which, ] %>%
       dplyr::select(prefecture, city_code, city, geometry)

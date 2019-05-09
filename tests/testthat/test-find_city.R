@@ -13,7 +13,7 @@ test_that("prefecture", {
   expect_named(test, c("pref_code", "prefecture", "geometry"))
   expect_equal(test$pref_code, "08")
   expect_equal(test$prefecture,
-               paste(intToUtf8(c(33576, 22478, 30476), multiple = TRUE), collapse = ""))
+               intToUtf8(c(33576, 22478, 30476), multiple = FALSE))
 
   test <- find_pref(geometry = sf::st_point(c(136.6833, 35.05)))
   expect_equal(test$pref_code, "24")
@@ -77,7 +77,7 @@ test_that("Failed", {
         12414,
         12379,
         12435
-      ))
+      ), multiple = FALSE)
     ))
   test <-
     find_pref(125.2468750000, 24.7145833333)

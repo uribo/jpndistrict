@@ -92,8 +92,9 @@ test_that("return prefecture jis code as string", {
   expect_is(test, "character")
   expect_equal(test, "33")
 
+
   char_okym <-
-    paste(intToUtf8(c(23713, 23665, 30476), multiple = TRUE), collapse = "")
+    intToUtf8(c(23713, 23665, 30476), multiple = FALSE)
   expect_identical(
     collect_prefcode(33),
     collect_prefcode(admin_name = char_okym)
@@ -147,58 +148,64 @@ test_that("input geometry", {
 })
 
 test_that("City name table", {
+
+  skip_if_not(l10n_info()$`UTF-8`)
+  x_okayama <-
+    enc2native(intToUtf8(c(23713, 23665, 24066),
+                         multiple = FALSE))
+  x_kurashiki <-
+    enc2native(intToUtf8(c(20489, 25975, 24066),
+                         multiple = FALSE))
+  x_kanagawa <-
+    c(enc2native(intToUtf8(c(37772, 20489, 24066),
+                           multiple = FALSE)),
+      enc2native(intToUtf8(c(23567, 30000, 21407, 24066),
+                           multiple = FALSE)))
+
   expect_equal(
     find_jis_code(33,
-                  enc2native(intToUtf8(c(20489, 25975, 24066),
-                                             multiple = FALSE))),
+                  admin_name = x_kurashiki),
     "33202")
   expect_equal(
     expect_warning(
       find_jis_code(33,
-                    enc2native(intToUtf8(c(23713, 23665, 24066),
-                                               multiple = FALSE)),
+                    admin_name = x_okayama,
                     strict = TRUE)),
     NA_character_)
   expect_length(
     find_jis_code(33,
-                  enc2native(intToUtf8(c(23713, 23665, 24066),
-                                             multiple = FALSE)),
+                  admin_name = x_okayama,
                   strict = FALSE),
    4L)
   expect_setequal(
     find_jis_code(14,
-                  c(enc2native(intToUtf8(c(37772, 20489, 24066),
-                                               multiple = FALSE)),
-                    enc2native(intToUtf8(c(23567, 30000, 21407, 24066),
-                                               multiple = FALSE))),
+                  admin_name = x_kanagawa,
                   strict = FALSE),
-    c("14204", "14206")
-  )
+    c("14204", "14206"))
+
+  x_syouou <-
+    enc2native(intToUtf8(c(21213, 30000, 37089, 21213, 22830, 30010),
+                       multiple = FALSE))
+  x_syouou_space <-
+    enc2native(intToUtf8(c(21213, 30000, 37089, 32, 21213, 22830, 30010),
+                         multiple = FALSE))
+
+  x_okayama_kita_space <-
+    enc2native(intToUtf8(c(23713, 23665, 24066, 32, 21271, 21306),
+                       multiple = FALSE))
 
   expect_identical(
-    cityname_reform(
-      enc2native(intToUtf8(c(21213, 30000, 37089, 21213, 22830, 30010),
-                           multiple = FALSE))),
-    enc2native(intToUtf8(c(21213, 30000, 37089, 32, 21213, 22830, 30010),
-                               multiple = FALSE)))
+    cityname_reform(x_syouou),
+    x_syouou_space)
   expect_is(
-    cityname_reform(enc2native(intToUtf8(c(23713, 23665, 24066),
-                                               multiple = FALSE))),
-    "character"
-  )
-  x <- enc2native(intToUtf8(c(21213, 30000, 37089, 32, 21213, 22830, 30010),
-                                  multiple = FALSE))
+    cityname_reform(x_okayama),
+    "character")
+
   expect_equal(
-    cityname_reform(x),
-    x
-  )
+    cityname_reform(x_syouou_space),
+    x_syouou_space)
   expect_equal(
-    cityname_reform(
-      enc2native(intToUtf8(c(23713, 23665, 24066, 21271, 21306),
-                                 multiple = FALSE))
-    ),
-    enc2native(intToUtf8(c(23713, 23665, 24066, 32, 21271, 21306),
-                               multiple = FALSE))
-  )
+    cityname_reform(x_okayama_kita_space),
+    x_okayama_kita_space)
 
 })

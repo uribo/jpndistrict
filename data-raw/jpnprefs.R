@@ -10,15 +10,12 @@ library(tidyverse)
 
 # Japanese ----------------------------------------------------------------
 x <-
-  paste(
-    enc2native(
+  enc2native(
       intToUtf8(c(26481, 20140, 65288, 26032, 23487, 21306, 65289),
-                multiple = TRUE)),
-    collapse = "")
+                multiple = FALSE))
 xx <-
-  paste(enc2native(intToUtf8(c(26032, 23487, 21306),
-                             multiple = TRUE)),
-        collapse = "")
+  enc2native(intToUtf8(c(26032, 23487, 21306),
+                             multiple = FALSE))
 
 df_prefs_jp <-
   read_html("https://ja.wikipedia.org/wiki/%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C") %>%
@@ -47,21 +44,16 @@ df_prefs_en <-
   select(2, 5) %>%
   set_names(c("prefecture", "major_island")) %>%
   mutate(major_island = recode(major_island,
-                               `Hokkaido`       = paste(enc2native(intToUtf8(c(21271, 28023, 36947),
-                                                                             multiple = TRUE)),
-                                                        collapse = ""),
-                               `Honshu`         = paste(enc2native(intToUtf8(c(26412, 24030),
-                                                                             multiple = TRUE)),
-                                                        collapse = ""),
-                               `Shikoku`        = paste(enc2native(intToUtf8(c(22235, 22269),
-                                                                             multiple = TRUE)),
-                                                        collapse = ""),
-                               `Kyushu`         = paste(enc2native(intToUtf8(c(20061, 24030),
-                                                                             multiple = TRUE)),
-                                                        collapse = ""),
-                               `Ryukyu Islands` = paste(enc2native(intToUtf8(c(29705, 29699),
-                                                                             multiple = TRUE)),
-                                                        collapse = ""))) %>%
+                               `Hokkaido`       = enc2native(intToUtf8(c(21271, 28023, 36947),
+                                                                       multiple = FALSE)),
+                               `Honshu`         = enc2native(intToUtf8(c(26412, 24030),
+                                                                       multiple = FALSE)),
+                               `Shikoku`        = enc2native(intToUtf8(c(22235, 22269),
+                                                                       multiple = FALSE)),
+                               `Kyushu`         = enc2native(intToUtf8(c(20061, 24030),
+                                                                       multiple = FALLSE)),
+                               `Ryukyu Islands` = enc2native(intToUtf8(c(29705, 29699),
+                                                                       multiple = FALSE)))) %>%
   verify(dim(.) == c(47, 2))
 
 jpnprefs <-
