@@ -16,7 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -63,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">jpndistrict</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -71,7 +72,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -106,26 +107,31 @@
       <small>Source: <a href='https://github.com/uribo/jpndistrict/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="jpndistrict-0-3-2-9000" class="section level1">
+    <div id="jpndistrict-0-3-3" class="section level1">
 <h1 class="page-header">
-<a href="#jpndistrict-0-3-2-9000" class="anchor"></a>jpndistrict 0.3.2.9000<small> Unreleased </small>
+<a href="#jpndistrict-0-3-3" class="anchor"></a>jpndistrict 0.3.3<small> Unreleased </small>
 </h1>
 <div id="api" class="section level2">
 <h2 class="hasAnchor">
 <a href="#api" class="anchor"></a>API</h2>
 <ul>
-<li>Added new functions to validate jis code. (<code><a href="../reference/code_validate.html">code_validate()</a></code> and <code><a href="../reference/code_reform.html">code_reform()</a></code>)</li>
+<li>Added new functions to validate jis code. (<code>code_validate()</code>, <code>code_reform()</code> and <code>cityname_reform()</code>)</li>
+<li>English column names have been added to the <code>jpnprefs</code> data set. <a href="https://github.com/uribo/jpndistrict/pull/21"><a href='https://github.com/uribo/jpndistrict/issues/21'>#21</a></a>, by Ryo Nakagawara (<a href='https://github.com/Ryo-N7'>@Ryo-N7</a>)</li>
+<li>Added new function to find city code (<code>find_jis_code()</code>). This function do not consider historical changes. <a href="https://github.com/uribo/jpndistrict/pull/23"><a href='https://github.com/uribo/jpndistrict/issues/23'>#23</a></a>
+</li>
 </ul>
 </div>
 <div id="fixed-issues" class="section level2">
 <h2 class="hasAnchor">
 <a href="#fixed-issues" class="anchor"></a>Fixed Issues</h2>
 <ul>
-<li>Mismatching variable names in <code><a href="../reference/jpn_pref.html">jpn_pref()</a></code> <a href="https://github.com/uribo/jpndistrict/issues/17"><a href='https://github.com/uribo/jpndistrict/issues/17'>#17</a></a>
+<li>Mismatching variable names in <code>jpn_pref()</code> <a href="https://github.com/uribo/jpndistrict/issues/17"><a href='https://github.com/uribo/jpndistrict/issues/17'>#17</a></a>
 </li>
 <li>Always returns the nearest city or prefecture <a href="https://github.com/uribo/jpndistrict/issues/18"><a href='https://github.com/uribo/jpndistrict/issues/18'>#18</a></a>
 </li>
-<li>Failed in <code><a href="../reference/code_validate.html">code_validate()</a></code> <a href="https://github.com/uribo/jpndistrict/issues/19"><a href='https://github.com/uribo/jpndistrict/issues/19'>#19</a></a>
+<li>Failed in <code>code_validate()</code> <a href="https://github.com/uribo/jpndistrict/issues/19"><a href='https://github.com/uribo/jpndistrict/issues/19'>#19</a></a>
+</li>
+<li>Unify behavior due to differences in parameters in <code>jpn_pref()</code>. <a href="https://github.com/uribo/jpndistrict/issues/22"><a href='https://github.com/uribo/jpndistrict/issues/22'>#22</a></a>
 </li>
 </ul>
 </div>
@@ -137,7 +143,7 @@
 <ul>
 <li>Clarified the arguments that to select administration area. pref_code is jis code from 1 to 47. jis_code is an identifier for a city that range of 5 digits.</li>
 <li>
-<code><a href="../reference/find_city.html">find_city()</a></code> is support sf geometry.</li>
+<code>find_city()</code> is support sf geometry.</li>
 </ul>
 <div id="fixed-issues-1" class="section level2">
 <h2 class="hasAnchor">
@@ -146,9 +152,9 @@
 <li>Remove redundant character from prefecture code 13 data <a href="https://github.com/uribo/jpndistrict/issues/13"><a href='https://github.com/uribo/jpndistrict/issues/13'>#13</a></a>
 </li>
 <li>
-<code><a href="../reference/mesh_district.html">mesh_district()</a></code> now return only selected administation area <a href="https://github.com/uribo/jpndistrict/issues/15"><a href='https://github.com/uribo/jpndistrict/issues/15'>#15</a></a>
+<code>mesh_district()</code> now return only selected administation area <a href="https://github.com/uribo/jpndistrict/issues/15"><a href='https://github.com/uribo/jpndistrict/issues/15'>#15</a></a>
 </li>
-<li>Broken <code><a href="../reference/district_viewer.html">district_viewer()</a></code> <a href="https://github.com/uribo/jpndistrict/issues/16"><a href='https://github.com/uribo/jpndistrict/issues/16'>#16</a></a>
+<li>Broken <code>district_viewer()</code> <a href="https://github.com/uribo/jpndistrict/issues/16"><a href='https://github.com/uribo/jpndistrict/issues/16'>#16</a></a>
 </li>
 </ul>
 </div>
@@ -197,10 +203,10 @@
 <h2 class="hasAnchor">
 <a href="#api-1" class="anchor"></a>API</h2>
 <ul>
-<li>New function a find from coordinates to prefecture and city that <code><a href="../reference/find_pref.html">find_pref()</a></code> and <code><a href="../reference/find_city.html">find_city()</a></code>.</li>
-<li>Add a function <code><a href="../reference/mesh_district.html">mesh_district()</a></code> that export to meshed city area.</li>
+<li>New function a find from coordinates to prefecture and city that <code>find_pref()</code> and <code>find_city()</code>.</li>
+<li>Add a function <code>mesh_district()</code> that export to meshed city area.</li>
 <li>Projected coordinates are unified to WGS84 (espg: 4326).</li>
-<li>Rename <code>spdf_jpn_pref()</code> function to <code><a href="../reference/jpn_pref.html">jpn_pref()</a></code>.</li>
+<li>Rename <code>spdf_jpn_pref()</code> function to <code>jpn_pref()</code>.</li>
 </ul>
 </div>
 </div>
@@ -210,7 +216,7 @@
 </h1>
 <ul>
 <li>Added support for sf.</li>
-<li>Remove <code>gg_jpn_district()</code>. Use instead <code><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggsf">ggplot2::geom_sf()</a></code> (ggplot2 &gt; 2.2.1)</li>
+<li>Remove <code>gg_jpn_district()</code>. Use instead <code><a href="https://rdrr.io/pkg/ggplot2/man/ggsf.html">ggplot2::geom_sf()</a></code> (ggplot2 &gt; 2.2.1)</li>
 <li>Convert string variables to factor always FALSE.</li>
 </ul>
 </div>
@@ -230,7 +236,7 @@
 <ul>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 <li>Prepare base functions.</li>
-<li>Added <code><a href="../reference/district_viewer.html">district_viewer()</a></code> for shiny gadgets.</li>
+<li>Added <code>district_viewer()</code> for shiny gadgets.</li>
 </ul>
 </div>
   </div>
@@ -239,7 +245,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#jpndistrict-0-3-2-9000">0.3.2.9000</a></li>
+        <li><a href="#jpndistrict-0-3-3">0.3.3</a></li>
         <li><a href="#jpndistrict-0-3-2">0.3.2</a></li>
         <li><a href="#jpndistrict-0-3-1">0.3.1</a></li>
         <li><a href="#jpndistrict-0-3-0">0.3.0</a></li>
@@ -258,7 +264,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
 </div>
       </footer>
    </div>
