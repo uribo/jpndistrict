@@ -141,10 +141,19 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>find_jis_code</span>(<span class='fl'>33</span>, <span class='st'>"\u5009\u6577\u5e02"</span>)
-<span class='fu'>find_jis_code</span>(<span class='fl'>33</span>, <span class='st'>"\u5009\u6577\u5e02"</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>find_jis_code</span>(<span class='fl'>33</span>,
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Encoding'>enc2native</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/utf8Conversion'>intToUtf8</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20489</span>, <span class='fl'>25975</span>, <span class='fl'>24066</span>),
+<span class='kw'>multiple</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)), <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>""</span>))
+<span class='fu'>find_jis_code</span>(<span class='fl'>33</span>,
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Encoding'>enc2native</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/utf8Conversion'>intToUtf8</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20489</span>, <span class='fl'>25975</span>, <span class='fl'>24066</span>),
+<span class='kw'>multiple</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)), <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>""</span>),
+<span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>find_jis_code</span>(<span class='fl'>14</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"\u938c\u5009\u5e02"</span>, <span class='st'>"\u5c0f\u7530\u539f\u5e02"</span>), <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>find_jis_code</span>(<span class='fl'>14</span>,
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Encoding'>enc2native</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/utf8Conversion'>intToUtf8</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>37772</span>, <span class='fl'>20489</span>, <span class='fl'>24066</span>), <span class='kw'>multiple</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)),
+<span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>""</span>),
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Encoding'>enc2native</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/utf8Conversion'>intToUtf8</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>23567</span>, <span class='fl'>30000</span>, <span class='fl'>21407</span>, <span class='fl'>24066</span>), <span class='kw'>multiple</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)),
+<span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>""</span>)), <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
