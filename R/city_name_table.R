@@ -6,10 +6,19 @@
 #' @return Identification code for cities,towns and villages (JIS X 0402:2010)
 #' @examples
 #' \dontrun{
-#' find_jis_code(33, "\u5009\u6577\u5e02")
-#' find_jis_code(33, "\u5009\u6577\u5e02", strict = FALSE)
+#' find_jis_code(33,
+#' paste(enc2native(intToUtf8(c(20489, 25975, 24066),
+#' multiple = TRUE)), collapse = ""))
+#' find_jis_code(33,
+#' paste(enc2native(intToUtf8(c(20489, 25975, 24066),
+#' multiple = TRUE)), collapse = ""),
+#' strict = FALSE)
 #'
-#' find_jis_code(14, c("\u938c\u5009\u5e02", "\u5c0f\u7530\u539f\u5e02"), strict = FALSE)
+#' find_jis_code(14,
+#' c(paste(enc2native(intToUtf8(c(37772, 20489, 24066), multiple = TRUE)),
+#' collapse = ""),
+#' paste(enc2native(intToUtf8(c(23567, 30000, 21407, 24066), multiple = TRUE)),
+#' collapse = "")), strict = FALSE)
 #' }
 find_jis_code <- function(pref_code, admin_name, strict = TRUE) {
 
@@ -44,18 +53,29 @@ find_jis_code <- function(pref_code, admin_name, strict = TRUE) {
 
 cityname_reform <- function(admin_name) {
 
-  if (rlang::is_true(grepl("^.+\u90e1.+(\u753a|\u6751)$", admin_name)) &&
-      !grepl("^.+\u90e1[:space:].+(\u753a|\u6751)$", admin_name)) {
-    strsplit(admin_name, split = "\u90e1") %>%
+  if (rlang::is_true(
+    grepl(paste0("^.+", enc2native(intToUtf8(37089)),
+           ".+(", enc2native(intToUtf8(30010)),
+           "|", enc2native(intToUtf8(26449)),
+           ")$"), admin_name)) &&
+      !grepl(
+        paste0("^.+", enc2native(intToUtf8(37089)),
+               "[:space:].+(", enc2native(intToUtf8(30010)),
+               "|", enc2native(intToUtf8(26449)),
+               ")$"), admin_name)) {
+    strsplit(admin_name, split = enc2native(intToUtf8(37089))) %>%
       purrr::map(~ gsub("[[:space:]]", "", .x)) %>%
       purrr::flatten() %>%
-      purrr::map_at(1, ~ paste0(., "\u90e1")) %>%
+      purrr::map_at(1, ~ paste0(., enc2native(intToUtf8(37089)))) %>%
       purrr::reduce(paste)
-  } else if (rlang::is_true(grepl("^.+\u5e02.+\u533a$", admin_name))) {
-    strsplit(admin_name, split = "\u5e02") %>%
+  } else if (rlang::is_true(grepl(
+    paste0("^.+", enc2native(intToUtf8(24066)),
+           ".+", enc2native(intToUtf8(21306)),
+           "$"), admin_name))) {
+    strsplit(admin_name, split = enc2native(intToUtf8(24066))) %>%
       purrr::flatten_chr() %>%
       purrr::map_chr(~ gsub("[[:space:]]", "", x = .x)) %>%
-      paste(collapse = "\u5e02 ")
+      paste(collapse = paste(enc2native(intToUtf8(c(24066, 32), multiple = TRUE)), collapse = ""))
   } else {
     admin_name
   }

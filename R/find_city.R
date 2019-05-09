@@ -90,12 +90,9 @@ find_prefs <- function(longitude, latitude, geometry = NULL) {
     }
   }
 
-  jpnprefs <- jpnprefs %>%
-    dplyr::select(jis_code, prefecture, region) %>%
-    dplyr::mutate(prefecture = purrr::pmap_chr(.,
-                                               ~ collapse_int2utf8(..2)),
-                  region = purrr::pmap_chr(.,
-                                           ~ collapse_int2utf8(..3)))
+  jpnprefs <-
+    jpnprefs %>%
+    dplyr::select(jis_code, prefecture, region)
 
   res <-
     prefecture_mesh %>%

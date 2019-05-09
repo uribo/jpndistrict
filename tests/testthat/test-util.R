@@ -148,38 +148,70 @@ test_that("input geometry", {
 
 test_that("City name table", {
   expect_equal(
-    find_jis_code(33, "\u5009\u6577\u5e02"),
+    find_jis_code(33,
+                  paste(enc2native(intToUtf8(c(20489, 25975, 24066),
+                                             multiple = TRUE)),
+                        collapse = "")),
     "33202")
   expect_equal(
     expect_warning(
-      find_jis_code(33, "\u5ca1\u5c71\u5e02", strict = TRUE)),
+      find_jis_code(33,
+                    paste(enc2native(intToUtf8(c(23713, 23665, 24066),
+                                               multiple = TRUE)),
+                          collapse = ""),
+                    strict = TRUE)),
     NA_character_)
   expect_length(
-    find_jis_code(33, "\u5ca1\u5c71\u5e02", strict = FALSE),
+    find_jis_code(33,
+                  paste(enc2native(intToUtf8(c(23713, 23665, 24066),
+                                             multiple = TRUE)),
+                        collapse = ""),
+                  strict = FALSE),
    4L)
   expect_setequal(
     find_jis_code(14,
-                  c("\u938c\u5009\u5e02", "\u5c0f\u7530\u539f\u5e02"),
+                  c(paste(enc2native(intToUtf8(c(37772, 20489, 24066),
+                                               multiple = TRUE)),
+                        collapse = ""),
+                    paste(enc2native(intToUtf8(c(23567, 30000, 21407, 24066),
+                                               multiple = TRUE)),
+                          collapse = "")),
                   strict = FALSE),
     c("14204", "14206")
   )
 
   expect_identical(
-    cityname_reform("\u52dd\u7530\u90e1\u52dd\u592e\u753a"),
-    "\u52dd\u7530\u90e1 \u52dd\u592e\u753a"
+    cityname_reform(
+      paste(enc2native(intToUtf8(c(21213, 30000, 37089, 21213, 22830, 30010),
+                                 multiple = TRUE)),
+            collapse = "")
+    ),
+    paste(enc2native(intToUtf8(c(21213, 30000, 37089, 32, 21213, 22830, 30010),
+                               multiple = TRUE)),
+          collapse = "")
   )
   expect_is(
-    cityname_reform("\u5ca1\u5c71\u5e02"),
+    cityname_reform(paste(enc2native(intToUtf8(c(23713, 23665, 24066),
+                                               multiple = TRUE)),
+                          collapse = "")),
     "character"
   )
-  x <- "\u52dd\u7530\u90e1 \u52dd\u592e\u753a"
+  x <- paste(enc2native(intToUtf8(c(21213, 30000, 37089, 32, 21213, 22830, 30010),
+                                  multiple = TRUE)),
+             collapse = "")
   expect_equal(
     cityname_reform(x),
     x
   )
   expect_equal(
-    cityname_reform("\u5ca1\u5c71\u5e02\u5317\u533a"),
-    "\u5ca1\u5c71\u5e02 \u5317\u533a"
+    cityname_reform(
+      paste(enc2native(intToUtf8(c(23713, 23665, 24066, 21271, 21306),
+                                 multiple = TRUE)),
+            collapse = "")
+    ),
+    paste(enc2native(intToUtf8(c(23713, 23665, 24066, 32, 21271, 21306),
+                               multiple = TRUE)),
+          collapse = "")
   )
 
 })

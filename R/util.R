@@ -95,7 +95,7 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
     if (is.null(path) & file.exists(dest.path) == FALSE) {
       utils::download.file(
         paste0(
-          "http://nlftp.mlit.go.jp/ksj/gml/data/N03/N03-15/N03-150101_",
+          "http://nlftp.mlit.go.jp/ksj/gml/data/N03/N03-2015/N03-150101_",
           pref.identifer,
           "_GML.zip"
         ),
@@ -132,18 +132,6 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
 #' @importFrom purrr pmap_chr
 collect_prefcode <- function(code = NULL, admin_name = NULL) {
   . <- jis_code <- prefecture <- NULL
-
-  jpnprefs <-
-    jpnprefs %>%
-    dplyr::mutate(prefecture = purrr::pmap_chr(.,
-                                               ~ collapse_int2utf8(..2)),
-                  capital = purrr::pmap_chr(.,
-                                            ~ collapse_int2utf8(..3)),
-                  region = purrr::pmap_chr(.,
-                                           ~ collapse_int2utf8(..4)),
-                  major_island = purrr::pmap_chr(.,
-                                                 ~ collapse_int2utf8(..5)))
-
 
   if (missing(admin_name)) {
     pref_code <-
