@@ -24,6 +24,9 @@ jpn_pref <- function(pref_code,
                      download         = FALSE,
                      drop_sinkyokyoku = TRUE) {
 
+  city_code <- city_name <- city_name_ <- city_name_full <- NULL
+  . <- geometry <- pref_name <- NULL
+
     if (missing(admin_name)) {
       pref_code <- collect_prefcode(code = pref_code)
     } else if (missing(pref_code)) {
@@ -35,7 +38,14 @@ jpn_pref <- function(pref_code,
                              package = "jpndistrict"))
 
   } else {
-    d <- read_ksj_cityarea(code = as.numeric(pref_code)) # nocov
+    d <-
+      read_ksj_cityarea(code = as.numeric(pref_code)) %>%  # nocov
+      dplyr::mutate(pref_code = as.character(pref_code),
+                    city_name_full = purrr::pmap_chr(.,
+                                                     ~ cityname_reform(..4))) %>%
+      dplyr::select(pref_code, pref_name,
+                    city_code, city = city_name_full,
+                    city_name_, city_name, geometry)
   }
 
   if (drop_sinkyokyoku == TRUE) {
