@@ -1,5 +1,5 @@
 # Load Employed Packages --------------------------------------------------
-# 5MB以下
+# # Fit within 5MB
 library(dplyr)
 library(purrr)
 library(testthat)
@@ -40,7 +40,8 @@ sf_japan <-
 
 expect_gte(pryr::object_size(sf_japan), 65) # MB
 
-# 市区町村で一つのPOLYGON、すなわちMULTIPOLYGONにする
+# Set to MULTIPOLYGON when it consists of one POLYGON
+# and multiple POLYGON in the city or ward
 sf_japan_distinct <-
   rbind(
     sf_japan %>%
@@ -81,7 +82,6 @@ sf_japan_distinct <-
 expect_equal(n_distinct(sf_japan_distinct$pref_code), 47L)
 
 pref_modified <- function(prefcode) {
-  # st_simplify でwarningが出るのでsuppress
   pref <- rlang::enquo(prefcode)
 
   res <- suppressWarnings(
@@ -100,8 +100,7 @@ expect_equal(nrow(pref_modified(prefcode = 13)), 62L)
 if (dir.exists("inst/extdata/ksj_n03/") == FALSE)
   dir.create("inst/extdata/ksj_n03/")
 
-# Fit within 5MB
-seq.int(1, 47, by = 1) %>%
+seq_len(47) %>%
   purrr::walk(
   ~ sprintf("%02d", .x) %>%
     pref_modified(prefcode = .) %>%
