@@ -34,8 +34,8 @@ install.packages("jpndistrict")
 For developers, please use the **devtool** package to install via the GitHub repository.
 
 ```{r, echo = TRUE, eval = FALSE}
-install.packages("devtools")
-devtools::install_github("uribo/jpndistrict")
+install.packages("remotes")
+remotes::install_github("uribo/jpndistrict")
 ```
 
 ## Usage
@@ -54,9 +54,32 @@ jpn_cities(14, admin_name = "海老名市")
 jpn_cities(33, admin_name = c("倉敷市", "笠岡市"))
 ```
 
+```{r, eval = FALSE, echo = TRUE}
+# Return mesh polygons included in administrative areas.
+mesh_district(jis_code = "05")
+mesh_district(jis_code = 33101)
+```
+
+
 ### Administration office data
 
 ```{r, eval = FALSE, echo = TRUE}
 jpn_admins(jis_code = 33)
 jpn_admins(jis_code = c("33101", "33212"))
 ```
+
+### Reverse geocoding in prefecture and city level
+
+```{r, eval = FALSE, echo = TRUE}
+find_pref(longitude = 133.915, latitude = 34.666)
+find_city(longitude = 133.915, latitude = 34.666)
+# sfg
+find_city(geometry = sf::st_point(c(140.112, 36.083)))
+```
+### City name and code validation
+
+```{r, eval = FALSE, echo = TRUE}
+code_validate(jis_code = 33101)
+code_reform(jis_code = c(1, "33", "08201"))
+```
+
