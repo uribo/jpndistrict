@@ -3,7 +3,7 @@
 #' @inheritParams jpn_pref
 #' @inheritParams jpn_cities
 #' @param strict matching patterns
-#' @return Identification code for cities,towns and villages (JIS X 0402:2010)
+#' @return Identification code for cities, towns and villages (JIS X 0402:2010)
 #' @examples
 #' \dontrun{
 #' find_jis_code(33,

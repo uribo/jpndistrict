@@ -14,7 +14,7 @@ find_jis_code(pref_code, admin_name, strict = TRUE)
 \item{strict}{matching patterns}
 }
 \value{
-Identification code for cities,towns and villages (JIS X 0402:2010)
+Identification code for cities, towns and villages (JIS X 0402:2010)
 }
 \description{
 Find jis city code
