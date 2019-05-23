@@ -18,17 +18,6 @@ district_viewer <- function(color = "red") {
   . <-
     prefecture <- city <- city_code <- jis_code <- geometry <- NULL
 
-  jpnprefs <-
-    jpnprefs %>%
-    dplyr::mutate(prefecture = purrr::pmap_chr(.,
-                                               ~ paste(intToUtf8(..2, multiple = TRUE), collapse = "")),
-                  capital = purrr::pmap_chr(.,
-                                               ~ paste(intToUtf8(..3, multiple = TRUE), collapse = "")),
-                  region = purrr::pmap_chr(.,
-                                               ~ paste(intToUtf8(..4, multiple = TRUE), collapse = "")),
-                  major_island = purrr::pmap_chr(.,
-                                               ~ paste(intToUtf8(..5, multiple = TRUE), collapse = "")))
-
   # UI ----------------------------------------------------------------------
   ui <- miniPage(
     gadgetTitleBar("District Viewer"),

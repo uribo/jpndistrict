@@ -60,59 +60,23 @@ expect_lte(pryr::object_size(sf_japan_distinct), 5300000) # MB
 city_union <- function(df) {
   df %>%
     split(.$city_code) %>%
-    map(~ st_buffer(st_union(st_buffer(., 0)), dist = 0.0001)) %>%
-    reduce(c) %>%
-    st_sfc()
+    purrr::map(~ sf::st_buffer(sf::st_union(sf::st_buffer(., 0)), dist = 0.0001)) %>%
+    purrr::reduce(c) %>%
+    sf::st_sfc()
 }
 
-tmp_a <-
-  sf_japan %>%
-  filter(city_code == "46527") %>%
-  group_by(city_code) %>%
-  tidyr::nest() %>%
-  transmute(out = purrr::map(data,
-                          function(df) {
-                            st_buffer(st_union(st_buffer(df, 0)), dist = 0.0001)
-                          }
-  ))
-
-tmp_a <-
-  tmp_a$out[[1]] %>% st_sfc()
-
-tmp_b <-
-  sf_japan %>%
-  filter(city_code == "46527") %>%
-  city_union()
-expect_true(identical(tmp_a, tmp_b))
-
-# ちょい時間かかる (~10min.)
+#  ~ 10 mins.
 sf_japan_distinct$geometry <-
   c(sf_japan %>%
       filter(city_code != "46527") %>%
       city_union(),
     sf_japan %>%
       filter(city_code == "46527") %>%
-      city_union()
-  )
+      city_union())
 
-# 元に戻す
-# 連鎖で実行しない (Errorになる)
 sf_japan_distinct <-
   sf_japan_distinct %>%
   arrange(city_code)
-
-sf_japan_distinct %>%
-  filter(city == "倉敷市") %>%
-  plot()
-sf_japan %>%
-  filter(city == "倉敷市") %>%
-  plot()
-sf_japan_distinct %>%
-  filter(city == "岡山市 北区") %>%
-  plot()
-sf_japan_distinct %>%
-  filter(grepl("岡山市", city)) %>%
-  plot()
 
 expect_equal(n_distinct(sf_japan_distinct$pref_code), 47L)
 
@@ -136,12 +100,11 @@ expect_equal(nrow(pref_modified(prefcode = 13)), 62L)
 if (dir.exists("inst/extdata/ksj_n03/") == FALSE)
   dir.create("inst/extdata/ksj_n03/")
 
-# 5MB以内に収める
-1:47 %>%
+# Fit within 5MB
+seq.int(1, 47, by = 1) %>%
   purrr::walk(
   ~ sprintf("%02d", .x) %>%
     pref_modified(prefcode = .) %>%
     readr::write_rds(path = paste0("inst/extdata/ksj_n03/pref_",
                                    sprintf("%02s", .x), ".rds"),
-                     compress = "xz")
-)
+                     compress = "xz"))

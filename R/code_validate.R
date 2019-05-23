@@ -12,6 +12,7 @@
 #' }
 #' @export
 code_validate <- function(jis_code) {
+
   . <- NULL
 
   res <-
@@ -72,7 +73,7 @@ prefcode_validate <- function(pref_code) {
 }
 
 match_city_name <- function(jis_code) {
-  . <- city_code <- NULL
+  city_code <- city <- NULL
 
   df <-
     code_reform(jis_code) %>%
@@ -80,8 +81,8 @@ match_city_name <- function(jis_code) {
     unique() %>%
     purrr::map_dfr(
       ~ jpn_pref(.x, district = TRUE) %>%
-        sf::st_set_geometry(NULL) %>%
-        .[c("city_code", "city")])
+        sf::st_drop_geometry() %>%
+        dplyr::select(city_code, city))
 
   res <-
     subset(df, city_code %in% jis_code)

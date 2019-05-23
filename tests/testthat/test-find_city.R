@@ -17,7 +17,9 @@ test_that("prefecture", {
 
   test <- find_pref(geometry = sf::st_point(c(136.6833, 35.05)))
   expect_equal(test$pref_code, "24")
-  test <- find_prefs(geometry = sf::st_point(c(136.6833, 35.05)))
+  test <- find_prefs(longitude = NULL,
+                     latitude = NULL,
+                     geometry = sf::st_point(c(136.6833, 35.05)))
   expect_equal(dim(test), c(6, 4))
 
   test <-

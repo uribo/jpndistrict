@@ -1,12 +1,13 @@
 #' Export district's mesh polygon
 #'
 #' @inheritParams code_validate
-#' @importFrom dplyr filter mutate select everything pull
+#' @importFrom dplyr filter mutate select pull
 #' @importFrom jpmesh fine_separate mesh_to_coords
 #' @importFrom purrr map set_names pmap
 #' @importFrom sf st_intersects st_sf
 #' @importFrom tibble as_data_frame tibble
 #' @importFrom tidyr unnest
+#' @importFrom tidyselect everything
 #' @examples
 #' \dontrun{
 #' mesh_district(jis_code = "05")
@@ -38,7 +39,7 @@ mesh_district <- function(jis_code = NULL) {
                                           tidyr::unnest() %>%
                                           dplyr::pull(id) %>%
                                           unique(), ] %>%
-    .$meshcode %>%
+    dplyr::pull(meshcode) %>%
     purrr::map(jpmesh::fine_separate) %>%
     rlang::flatten_chr() %>%
     unique() %>%
@@ -46,7 +47,7 @@ mesh_district <- function(jis_code = NULL) {
     purrr::set_names("meshcode") %>%
     dplyr::mutate(out = purrr::pmap(., ~ jpmesh::mesh_to_coords(...))) %>%
     tidyr::unnest() %>%
-    dplyr::select(meshcode, dplyr::everything()) %>%
+    dplyr::select(meshcode, tidyselect::everything()) %>%
     dplyr::mutate(geometry = purrr::pmap(., ~ jpmesh:::mesh_to_poly(...))) %>%
     sf::st_sf(crs = 4326, stringsAsFactors = FALSE)
 
@@ -62,7 +63,7 @@ mesh_district <- function(jis_code = NULL) {
                        tidyr::unnest() %>%
                        dplyr::pull(id) %>%
                        unique(), ] %>%
-    .$meshcode %>%
+    dplyr::pull(meshcode) %>%
     purrr::map(jpmesh::fine_separate) %>%
     rlang::flatten_chr() %>%
     unique() %>%
@@ -70,7 +71,7 @@ mesh_district <- function(jis_code = NULL) {
     purrr::set_names("meshcode") %>%
     dplyr::mutate(out = purrr::pmap(., ~ jpmesh::mesh_to_coords(...))) %>%
     tidyr::unnest() %>%
-    dplyr::select(meshcode, dplyr::everything()) %>%
+    dplyr::select(meshcode, tidyselect::everything()) %>%
     dplyr::mutate(geometry = purrr::pmap(., ~ jpmesh:::mesh_to_poly(...))) %>%
     sf::st_sf(crs = 4326, stringsAsFactors = FALSE)
 
