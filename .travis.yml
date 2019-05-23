@@ -1,5 +1,6 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 # Default configuration for use with tic package
+# tic documentation to get started: https://ropenscilabs.github.io/tic/
 # Usually you shouldn't need to change the first part of the file
 
 # DO NOT CHANGE THE CODE BELOW
@@ -35,14 +36,13 @@ after_script: R -q -e 'tic::after_script()'
 # Header
 language: r
 sudo: required
-dist: trusty
+dist: xenial
 cache: packages
 latex: false
 
 #env
 env:
   global:
-  - _R_CHECK_FORCE_SUGGESTS_=false
   - MAKEFLAGS="-j 2"
 
 matrix:
