@@ -1,3 +1,5 @@
+# jpndistrict (development version)
+
 # jpndistrict 0.3.4
 
 - Fix CRAN package check results with Latin-1 error.
