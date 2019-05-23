@@ -1,3 +1,5 @@
+url: https://uribo.github.io/jpndistrict
+
 templates:
   params:
     bootswatch: paper
@@ -6,25 +8,30 @@ home:
   strip_header: true
   links:
   - text: Similar projects
-    href: https://github.com/hrbrmstr/albersusa, https://github.com/seankross/minimap
+    href:
+      - https://github.com/hrbrmstr/albersusa
 
 reference:
-
   - title: Spatial Data frame (polygon and point)
     contents:
-    - read_ksj_p33
-    - spdf_jpn_pref
-    - spdf_jpn_cities
+    - jpn_admins
+    - jpn_cities
+    - jpn_pref
+    - mesh_district
 
-  - title: Create district area maps
+  - title: City name utilities
     contents:
-    - gg_jpn_district
-
+      - code_reform
+      - code_validate
+  - title: Reverse geocoding
+    contents:
+      - find_city
+      - find_pref
+      - find_prefs
   - title: Data
-    desc: >
-      Simple displaed as rectangel for Japan (fortified).
     contents:
     - jpnprefs
+    - prefecture_mesh
 
 navbar:
   right:

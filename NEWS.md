@@ -1,5 +1,9 @@
 # jpndistrict (development version)
 
+- Fix CRAN package check results with Latin-1 error.
+- Refactoring of dependency packages and functions mainly using rlang and tidyverse.
+- Renewal pkgdown site and travis ci environment with tic.
+
 # jpndistrict 0.3.3
 
 ## API
