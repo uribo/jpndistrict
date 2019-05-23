@@ -280,6 +280,10 @@ which_pol_min <- function(longitude, latitude, ...) {
       ))
 
     if (length(which_row) > 1) {
+
+      if (!requireNamespace("lwgeom", quietly = TRUE))
+        rlang::abort("lwgeom required: install that first") # nocov
+
       which_row <-
         which.min(sf::st_distance(st_sfc(x, crs = 4326),
                                   sp_polygon,

@@ -47,15 +47,13 @@ find_pref <- function(longitude, latitude, geometry = NULL, ...) {
         dplyr::select(-dist)
     }
 
-    df_tmp <- res %>%
-      dplyr::mutate(pref_code = substr(city_code, 1, 2)) %>%
-      dplyr::select(pref_code, prefecture)
-    res <- df_tmp %>%
-      dplyr::right_join(jpn_pref(pref_code = df_tmp$pref_code,
-                                 district = FALSE) %>%
-                          sf::st_drop_geometry(),
-                        by = c("pref_code", "prefecture")) %>%
-      purrr::set_names(c("pref_code", "prefecture", "geometry")) %>%
+    res <-
+      jpn_pref(pref_code = res %>%
+                 dplyr::mutate(pref_code = substr(city_code, 1, 2)) %>%
+                 dplyr::select(pref_code, prefecture) %>%
+                 sf::st_drop_geometry() %>%
+                 pull(pref_code),
+                    district = FALSE) %>%
       dplyr::mutate(pref_code = sprintf("%02d", as.numeric(pref_code))) %>%
       tweak_sf_output()
     return(res)

@@ -17,7 +17,7 @@ License: MIT + file LICENSE
 URL: https://uribo.github.io/jpndistrict/
 BugReports: https://github.com/uribo/jpndistrict/issues
 Depends: 
-    R (>= 3.1.2)
+    R (>= 3.3.0)
 Imports: 
     dplyr (>= 0.7.4),
     jpmesh (>= 1.0.0),
@@ -34,7 +34,7 @@ Imports:
 Suggests: 
     covr,
     knitr,
-    lwgeom,
+    lwgeom (>= 0.1-7),
     rvest,
     testthat
 Encoding: UTF-8
