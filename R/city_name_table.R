@@ -14,7 +14,7 @@
 #'
 #' find_jis_code(14,
 #' c(enc2native(intToUtf8(c(37772, 20489, 24066), multiple = FALSE)),
-#'   enc2native(intToUtf8(c(23567, 30000, 21407, 24066), multiple = FALSE))), strict = FALSE)
+#'   enc2native(intToUtf8(c(23567, 30000, 21407, 24066), multiple = FALSE))), strict = FALSE) # nolint
 #' }
 find_jis_code <- function(pref_code, admin_name, strict = TRUE) {
 

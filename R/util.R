@@ -83,38 +83,38 @@ read_ksj_cityarea <- function(code = NULL, path = NULL) {
 path_ksj_cityarea <- function(code = NULL, path = NULL) {
   # nocov start
   if (missing(path)) {
-    pref.identifer <- sprintf("%02d", code)
-    dest.path <-
+    pref_identifer <- sprintf("%02d", code)
+    dest_path <-
       paste(tempdir(),
-            paste0("N03-150101_", pref.identifer, "_GML.zip"),
+            paste0("N03-150101_", pref_identifer, "_GML.zip"),
             sep = "/")
 
-    extract.path <- paste(tempdir(), pref.identifer,  sep = "/")
+    extract_path <- paste(tempdir(), pref_identifer,  sep = "/")
 
     # ksj zip file none
-    if (is.null(path) & file.exists(dest.path) == FALSE) {
+    if (is.null(path) & file.exists(dest_path) == FALSE) {
       utils::download.file(
         paste0(
           "http://nlftp.mlit.go.jp/ksj/gml/data/N03/N03-2015/N03-150101_",
-          pref.identifer,
+          pref_identifer,
           "_GML.zip"
         ),
-        destfile <- dest.path,
+        destfile <- dest_path,
         method   <- "auto",
         quiet    <- TRUE
       )
-      utils::unzip(zipfile = dest.path,
-                   exdir   = extract.path)
+      utils::unzip(zipfile = dest_path,
+                   exdir   = extract_path)
 
-      path <- paste(extract.path, gsub(
+      path <- paste(extract_path, gsub(
         ".zip$",
         "",
-        paste0("N03-20150101_", pref.identifer, "_GML.zip")
+        paste0("N03-20150101_", pref_identifer, "_GML.zip")
       ), sep = "/")
 
       # ksj zip file exist
-    } else if (file.exists(dest.path) == TRUE) {
-      path <- extract.path
+    } else if (file.exists(dest_path) == TRUE) {
+      path <- extract_path
     }
 
   }
@@ -131,7 +131,7 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
 #' @importFrom dplyr filter mutate pull
 #' @importFrom purrr pmap_chr
 collect_prefcode <- function(code = NULL, admin_name = NULL) {
-  . <- jis_code <- prefecture <- NULL
+  jis_code <- prefecture <- NULL
 
   if (missing(admin_name)) {
     pref_code <-
@@ -154,11 +154,9 @@ collect_prefcode <- function(code = NULL, admin_name = NULL) {
 #' @import sf
 collect_cityarea <- function(path = NULL) {
   # nocov start
-  . <-
-    N03_001 <-
-    N03_002 <- N03_003 <- N03_004 <- N03_007 <- tmp_var <- NULL
+  . <- N03_001 <- N03_002 <- N03_003 <- N03_004 <- N03_007 <- tmp_var <- NULL # nolint
   pref_name <-
-    city_name_ <- city_name <- city_name_full <- city_code <- geometry <- NULL
+    city_name_ <- city_name <- city_name_full <- city_code <- geometry <- NULL # nolint
 
   res <-
     suppressWarnings(
@@ -334,7 +332,9 @@ export_pref_80km_mesh <- function(code, ...) {
   sf_pref <- jpn_pref(pref_code = code)
 
   res <- suppressMessages(jpmesh::sf_jpmesh %>%
-                            sf::st_join(sf_pref, sf::st_overlaps, left = FALSE) %>%
+                            sf::st_join(sf_pref,
+                                        sf::st_overlaps,
+                                        left = FALSE) %>%
                             dplyr::pull(meshcode) %>%
                             unique())
 

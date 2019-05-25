@@ -34,7 +34,7 @@ d_orig <-
   verify(dim(.) == c(1438, 14)) %>%
   dplyr::select(5, 6, 7,
          9, 10, 11, 12, 14) %>%
-  dplyr::slice(-c(1:2)) %>%
+  dplyr::slice(-seq_len(2)) %>%
   verify(dim(.) == c(1436, 8)) %>%
   purrr::set_names(
     c("prefecture"),

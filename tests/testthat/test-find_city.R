@@ -60,7 +60,7 @@ test_that("city", {
   test <- find_city(geometry = st_point(c(136.6833, 35.05)))
   expect_equal(test$city_code, "24205")
 
-  test <- find_city(longitude = 140.1137418, latitude = 36.0533957, geometry = NULL)
+  test <- find_city(longitude = 140.1137418, latitude = 36.0533957, geometry = NULL) # nolint
   expect_equal(test$city_code, "08220")
   expect_false(sf::st_is_empty(test$geometry))
   skip_if_not(l10n_info()$`UTF-8`)

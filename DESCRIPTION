@@ -14,7 +14,7 @@ Description: Utilizing the data that Japanese administration area provided
     This package provide map data is based on the Digital Map 25000 (Map Image) published 
     by Geospatial Information Authority of Japan (Approval No.603FY2017 information usage <http://www.gsi.go.jp>).
 License: MIT + file LICENSE
-URL: https://uribo.github.io/jpndistrict/
+URL: https://uribo.github.io/jpndistrict
 BugReports: https://github.com/uribo/jpndistrict/issues
 Depends: 
     R (>= 3.3.0)
@@ -34,6 +34,7 @@ Imports:
 Suggests: 
     covr,
     knitr,
+    lintr (>= 1.0.3),
     lwgeom (>= 0.1-7),
     rvest,
     testthat

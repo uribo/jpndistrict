@@ -21,7 +21,7 @@ prefecture_mesh <-
 # prefecture_mesh %>% count(meshcode, sort = TRUE)
 # library(leaflet)
 # pal <- colorFactor(palette = viridis::viridis(47),
-#                    domain = stringr::str_pad(1:47, width = 2, pad = "0"))
+#                    domain = stringr::str_pad(seq_len(47), width = 2, pad = "0"))
 # leaflet(data = prefecture_mesh %>% filter(prefcode == "01")) %>% addTiles() %>%
 #   addPolygons(label = ~prefcode,
 #               color = ~pal(prefcode),

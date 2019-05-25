@@ -11,7 +11,8 @@ jpn_admins(jis_code)
 If prefecture, must be from 1 to 47. If city, range of 5 digits.}
 }
 \value{
-data.frame. contains follow columns jis_code, type, name, address, longitude and latitude.
+data.frame. contains follow columns jis_code,
+type, name, address, longitude and latitude.
 }
 \description{
 Name and geolocations for administration offices in prefecture.

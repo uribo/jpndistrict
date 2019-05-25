@@ -14,7 +14,8 @@ test_that("Data", {
 
   expect_s3_class(prefecture_mesh, c("tbl", "data.frame"))
   expect_equal(dim(prefecture_mesh), c(314, 5))
-  expect_named(prefecture_mesh, c("prefcode", "meshcode", "name", "type", "geometry"))
+  expect_named(prefecture_mesh,
+               c("prefcode", "meshcode", "name", "type", "geometry"))
 })
 
 
@@ -73,7 +74,7 @@ test_that("Administration code varidation", {
     code_validate(48)
   )
   expect_length(
-    sapply(1:47, code_validate),
+    sapply(seq_len(47), code_validate),
     94L
   )
   expect_equal(
@@ -137,18 +138,13 @@ test_that("reverge-geo coding", {
 })
 
 test_that("input geometry", {
-
-  # expect_null(sfg_point_as_coords(geometry = NULL))
-
   test <-
     sfg_point_as_coords(sf::st_point(c(130.4412895, 30.2984335)))
   expect_is(test, "list")
   expect_named(test, c("longitude", "latitude"))
-
 })
 
 test_that("City name table", {
-
   skip_if_not(l10n_info()$`UTF-8`)
   x_okayama <-
     enc2native(intToUtf8(c(23713, 23665, 24066),
@@ -161,7 +157,6 @@ test_that("City name table", {
                            multiple = FALSE)),
       enc2native(intToUtf8(c(23567, 30000, 21407, 24066),
                            multiple = FALSE)))
-
   expect_equal(
     find_jis_code(33,
                   admin_name = x_kurashiki),
@@ -182,25 +177,21 @@ test_that("City name table", {
                   admin_name = x_kanagawa,
                   strict = FALSE),
     c("14204", "14206"))
-
   x_syouou <-
     enc2native(intToUtf8(c(21213, 30000, 37089, 21213, 22830, 30010),
                        multiple = FALSE))
   x_syouou_space <-
     enc2native(intToUtf8(c(21213, 30000, 37089, 32, 21213, 22830, 30010),
                          multiple = FALSE))
-
   x_okayama_kita_space <-
     enc2native(intToUtf8(c(23713, 23665, 24066, 32, 21271, 21306),
                        multiple = FALSE))
-
   expect_identical(
     cityname_reform(x_syouou),
     x_syouou_space)
   expect_is(
     cityname_reform(x_okayama),
     "character")
-
   expect_equal(
     cityname_reform(x_syouou_space),
     x_syouou_space)

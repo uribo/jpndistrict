@@ -13,7 +13,7 @@
 #' @export
 code_validate <- function(jis_code) {
 
-  . <- NULL
+  . <- NULL # nolint
 
   res <-
     code_reform(jis_code)
@@ -44,7 +44,7 @@ code_validate <- function(jis_code) {
 #' code_reform(c(1, "33", "08201"))
 #' @export
 code_reform <- function(jis_code) {
-  . <- NULL
+  . <- NULL # nolint
 
   checked <-
     jis_code %>%
@@ -65,16 +65,13 @@ code_reform <- function(jis_code) {
 prefcode_validate <- function(pref_code) {
   codes <-
     sapply(seq(1, 47, 1), sprintf, fmt = "%02d")
-
   if (identical(codes[codes %in% pref_code], character(0)))
-    rlang::abort("jis_code must be start a integer or as character from 1 to 47.")
-
+    rlang::abort("jis_code must be start a integer or as character from 1 to 47.") # nolint
   pref_code
 }
 
 match_city_name <- function(jis_code) {
-  city_code <- city <- NULL
-
+  city_code <- NULL
   df <-
     code_reform(jis_code) %>%
     purrr::map_chr(~ substr(.x, 1, 2)) %>%
@@ -83,16 +80,12 @@ match_city_name <- function(jis_code) {
       ~ jpn_pref(.x, district = TRUE) %>%
         sf::st_drop_geometry() %>%
         dplyr::select(city_code, city))
-
   res <-
     subset(df, city_code %in% jis_code)
-
   n_mismatch <-
     length(jis_code[!jis_code %in% res$city_code])
-
   if (n_mismatch >= 1)
     rlang::inform(
       paste(n_mismatch, "matching code were not found."))
-
   res
 }

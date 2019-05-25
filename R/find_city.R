@@ -16,7 +16,7 @@
 #' }
 #' @export
 find_pref <- function(longitude, latitude, geometry = NULL, ...) {
-  . <- pref_code <- prefecture <- city_code <- dist <- NULL
+  . <- pref_code <- prefecture <- city_code <- dist <- NULL # nolint
 
   if (rlang::is_false(rlang::is_null(geometry))) {
     if (sf::st_is(geometry, "POINT")) {

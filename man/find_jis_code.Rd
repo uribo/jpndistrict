@@ -29,6 +29,6 @@ strict = FALSE)
 
 find_jis_code(14,
 c(enc2native(intToUtf8(c(37772, 20489, 24066), multiple = FALSE)),
-  enc2native(intToUtf8(c(23567, 30000, 21407, 24066), multiple = FALSE))), strict = FALSE)
+  enc2native(intToUtf8(c(23567, 30000, 21407, 24066), multiple = FALSE))), strict = FALSE) # nolint
 }
 }

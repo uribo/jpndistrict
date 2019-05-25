@@ -13,8 +13,9 @@ If prefecture, must be from 1 to 47. If city, range of 5 digits.}
 \item{admin_name}{administration name}
 }
 \description{
-City area polygon data. When an administrative name (jis_code_city) or code (jis_code_city)
-is specified as an argument, the target city data is extracted. If neither is given,
+City area polygon data. When an administrative name
+(jis_code_city) or code (jis_code_city) is specified as an argument,
+the target city data is extracted. If neither is given,
 it becomes the data of the target prefecture.
 }
 \examples{
