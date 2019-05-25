@@ -27,5 +27,6 @@ RUN set -x && \
     "r-lib/devtools" \
     "r-lib/pkgdown" \
     "r-spatial/lwgeom" \
+    "tidyverse/tidyr" \
     "uribo/odkitchen" && \
   rm -rf /tmp/downloaded_packages/ /tmp/*.rds
