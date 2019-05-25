@@ -12,23 +12,18 @@
 #' }
 #' @export
 code_validate <- function(jis_code) {
-
   . <- NULL # nolint
-
   res <-
     code_reform(jis_code)
-
   names(res) <-
     res %>%
     purrr::map(nchar) %>%
     purrr::map_chr(~ ifelse(.x == 2, "prefecture", "city"))
-
   res <-
     res %>%
     purrr::map_if(names(.) == "prefecture", ~ prefcode_validate(.x)) %>%
     purrr::map_if(names(.) == "city", ~ match_city_name(.x)$city_code) %>%
     purrr::keep(~ length(.x) == 1)
-
   list(administration_type = names(res),
        code = purrr::flatten_chr(res))
 }
@@ -45,16 +40,13 @@ code_validate <- function(jis_code) {
 #' @export
 code_reform <- function(jis_code) {
   . <- NULL # nolint
-
   checked <-
     jis_code %>%
     purrr::map(nchar) %>%
     purrr::keep(~ .x %in% c(1, 2, 5)) %>%
     length()
-
   if (length(jis_code) != checked)
     rlang::abort("Input jis-code must to 2 or 5 digits.")
-
   jis_code %>%
     purrr::map(as.numeric) %>%
     purrr::map_if(.p = nchar(.) %in% c(1, 2), ~ sprintf("%02d", .x)) %>%

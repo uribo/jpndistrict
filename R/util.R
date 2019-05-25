@@ -7,7 +7,6 @@
 collect_ksj_p34 <- function(path = NULL) {
   jis_code <- NULL
   code <- gsub(".+P34-14_|_GML|/", "", path)
-
   d <- sf::st_read(
     paste0(path, "/", list.files(path, pattern = paste0(code, ".shp$"))),
     stringsAsFactors = FALSE,
@@ -20,9 +19,7 @@ collect_ksj_p34 <- function(path = NULL) {
     magrittr::set_colnames(
       c("jis_code", "type", "name", "address", "geometry")) %>%
     dplyr::mutate(jis_code = as.factor(jis_code))
-
   return(d)
-
 }
 
 #' Intermediate function
@@ -35,7 +32,6 @@ raw_bind_cityareas <- function(pref) {
     suppressMessages(suppressWarnings(sf::st_buffer(pref, 0) %>%
                                         sf::st_union() %>%
                                         sf::st_sf()))
-
   df_res <- suppressMessages(
     suppressWarnings(
       tmp_union %>%
@@ -50,11 +46,8 @@ raw_bind_cityareas <- function(pref) {
         pref_code = 1,
         prefecture = 2,
         geometry = 3
-      )
-  )
-
+      ))
   return(df_res)
-
 }
 
 #' Intermediate function
@@ -67,9 +60,7 @@ read_ksj_cityarea <- function(code = NULL, path = NULL) {
   if (missing(path)) {
     path <- path_ksj_cityarea(code)
   }
-
   res <- collect_cityarea(path)
-
   return(res)
   # nocov end
 }
@@ -88,9 +79,7 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
       paste(tempdir(),
             paste0("N03-150101_", pref_identifer, "_GML.zip"),
             sep = "/")
-
     extract_path <- paste(tempdir(), pref_identifer,  sep = "/")
-
     # ksj zip file none
     if (is.null(path) & file.exists(dest_path) == FALSE) {
       utils::download.file(
@@ -105,7 +94,6 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
       )
       utils::unzip(zipfile = dest_path,
                    exdir   = extract_path)
-
       path <- paste(extract_path, gsub(
         ".zip$",
         "",
@@ -116,9 +104,7 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
     } else if (file.exists(dest_path) == TRUE) {
       path <- extract_path
     }
-
   }
-
   return(path)
   # nocov end
 }
@@ -132,7 +118,6 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
 #' @importFrom purrr pmap_chr
 collect_prefcode <- function(code = NULL, admin_name = NULL) {
   jis_code <- prefecture <- NULL
-
   if (missing(admin_name)) {
     pref_code <-
       dplyr::filter(jpnprefs, jis_code == code_validate(code)$code) %>%
@@ -142,7 +127,6 @@ collect_prefcode <- function(code = NULL, admin_name = NULL) {
       dplyr::filter(jpnprefs, prefecture == admin_name) %>%
       dplyr::pull(jis_code)
   }
-
   return(pref_code)
 }
 
@@ -157,7 +141,6 @@ collect_cityarea <- function(path = NULL) {
   . <- N03_001 <- N03_002 <- N03_003 <- N03_004 <- N03_007 <- tmp_var <- NULL # nolint
   pref_name <-
     city_name_ <- city_name <- city_name_full <- city_code <- geometry <- NULL # nolint
-
   res <-
     suppressWarnings(
       sf::st_read(
@@ -193,7 +176,6 @@ collect_cityarea <- function(path = NULL) {
                       city_name_, city_name, city_name_full, city_code,
                       geometry)
     )
-
   return(res)
   # nocov end
 }
@@ -211,7 +193,6 @@ read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
     df_df_url <-
       readRDS(system.file("extdata/ksj_P34_index.rds",
                           package = "jpndistrict"))
-
     if (is.null(path) &
         file.exists(paste(tempdir(),
                           df_df_url$dest_file[pref_code], sep = "/")) == FALSE) {
@@ -224,17 +205,14 @@ read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
         zipfile = paste(tempdir(), df_df_url$dest_file[pref_code], sep = "/"),
         exdir   = paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]),  sep = "/")
       )
-
       path <- paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]),  sep = "/")
     } else if (file.exists(paste(tempdir(), df_df_url$dest_file[pref_code], sep = "/")) == TRUE) {
       path <- paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]),  sep = "/") # nocov
     }
-
     res <- collect_ksj_p34(path = path)
   } else {
     res <- collect_ksj_p34(path = path) # nocov
   }
-
   return(res)
   # nolint end
 }
@@ -248,16 +226,12 @@ read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
 #' @importFrom sf st_contains st_point
 #' @name which_pol_min
 which_pol_min <- function(longitude, latitude, ...) {
-
   pref_code <- NULL
-
   pref_code_chr <-
     find_prefs(longitude = longitude, latitude = latitude) %>%
     dplyr::pull(pref_code)
-
   sp_polygon <- NULL
   which_row  <- integer(0)
-
   if (identical(pref_code_chr, character(0)) == TRUE) {
     1
   } else {
@@ -265,10 +239,8 @@ which_pol_min <- function(longitude, latitude, ...) {
       pref_code_chr %>%
       purrr::map(jpn_pref) %>%
       purrr::reduce(rbind)
-
     x <-
       sf::st_point(c(longitude, latitude), dim = "XY")
-
     which_row <-
       suppressMessages(grep(
         TRUE,
@@ -276,22 +248,17 @@ which_pol_min <- function(longitude, latitude, ...) {
                           x,
                           sparse = FALSE)
       ))
-
     if (length(which_row) > 1) {
-
       if (!requireNamespace("lwgeom", quietly = TRUE))
         rlang::abort("lwgeom required: install that first") # nocov
-
       which_row <-
         which.min(sf::st_distance(st_sfc(x, crs = 4326),
                                   sp_polygon,
                                   by_element = TRUE))
-
       sp_polygon <-
         jpn_pref(pref_code = which_row)
     }
   }
-
   list(spdf = sp_polygon, which = which_row)
 }
 
@@ -302,19 +269,15 @@ crs_4326 <-
 
 tweak_sf_output <- function(target) {
   target <- sf::st_sf(target)
-
   if (identical(sf::st_crs(target)$proj4string, crs_4326) != TRUE) {
     target <- sf::st_transform(target, crs = 4326)
   }
-
   res <- target %>%
     tibble::as_tibble() %>% sf::st_sf()
-
   return(res)
 }
 
 sfg_point_as_coords <- function(geometry) {
-
   if (sf::st_is(geometry, "POINT")) {
       list(longitude = sf::st_coordinates(geometry)[1],
            latitude =  sf::st_coordinates(geometry)[2])
@@ -326,23 +289,19 @@ collapse_int2utf8 <- function(var) {
 }
 
 export_pref_80km_mesh <- function(code, ...) {
-
   meshcode <- NULL
-
   sf_pref <- jpn_pref(pref_code = code)
-
   res <- suppressMessages(jpmesh::sf_jpmesh %>%
                             sf::st_join(sf_pref,
                                         sf::st_overlaps,
                                         left = FALSE) %>%
                             dplyr::pull(meshcode) %>%
                             unique())
-
   return(res)
 }
 
 mesh_intersect <- function(data, x) {
-  res_contains = NULL
+  res_contains <- NULL
   df_tmp <- tibble::tibble(
     res_contains = suppressMessages(
       rowSums(sf::st_intersects(data,
@@ -351,7 +310,6 @@ mesh_intersect <- function(data, x) {
   df_tmp$id <- seq_len(nrow(df_tmp))
   data[df_tmp %>%
          dplyr::filter(res_contains != 0) %>%
-         tidyr::unnest() %>%
          dplyr::pull(id) %>%
          unique(), ]
 }

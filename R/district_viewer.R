@@ -17,7 +17,6 @@ district_viewer <- function(color = "red") {
   # nocov start
   . <-
     prefecture <- city <- city_code <- jis_code <- geometry <- NULL
-
   # UI ----------------------------------------------------------------------
   ui <- miniPage(
     gadgetTitleBar("District Viewer"),
@@ -42,7 +41,6 @@ district_viewer <- function(color = "red") {
           )
         )
       ),
-
       miniTabPanel(
         "Map",
         icon = icon("map-o"),
@@ -53,7 +51,6 @@ district_viewer <- function(color = "red") {
                    miniContentPanel(dataTableOutput("my.table")))
     )
   )
-
   # Server ------------------------------------------------------------------
   server <- function(input, output, session) {
     observe({
@@ -68,21 +65,15 @@ district_viewer <- function(color = "red") {
         ))
       )
     })
-
-
     output$my.table <- renderDataTable({
       d <- jpn_pref(admin_name = input$pref) %>%
         dplyr::select(city_code, city, geometry)
-
-
       if (!is.null(input$cities)) {
         dplyr::filter(d, city %in% c(input$cities))
       } else {
         d
       }
-
     })
-
     output$my.map <- renderLeaflet({
       prefcode <-
         jpnprefs %>%
@@ -91,23 +82,18 @@ district_viewer <- function(color = "red") {
 
       if (is.null(input$cities)) {
         map_data <- jpn_pref(pref_code = prefcode, district = TRUE)
-
       } else {
         map_data <-
           jpn_cities(jis_code = prefcode,
                      admin_name = c(input$cities))
       }
-
       leaflet() %>%
         addTiles() %>%
         addPolylines(data = map_data,
                      color = color,
                      label = ~ map_data$city)
-
-
     })
   }
-
   runGadget(ui,
             server,
             viewer = dialogViewer("district_viewer", width = 650, height = 500))

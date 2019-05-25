@@ -17,7 +17,6 @@
 #' @export
 find_pref <- function(longitude, latitude, geometry = NULL, ...) {
   . <- pref_code <- prefecture <- city_code <- dist <- NULL # nolint
-
   if (rlang::is_false(rlang::is_null(geometry))) {
     if (sf::st_is(geometry, "POINT")) {
       coords <-
@@ -26,7 +25,6 @@ find_pref <- function(longitude, latitude, geometry = NULL, ...) {
       latitude <- coords$latitude
     }
   }
-
   res <- find_city(longitude, latitude, ...)
   if (rlang::is_false(rlang::is_null(res))) {
     if (nrow(res) > 1) {
@@ -39,14 +37,12 @@ find_pref <- function(longitude, latitude, geometry = NULL, ...) {
                             sf::st_point(c(longitude, latitude)) %>%
                               sf::st_sfc(crs = 4326),
                             by_element = TRUE)))
-
       res <-
         res %>%
         dplyr::arrange(dist) %>%
         dplyr::slice(1L) %>%
         dplyr::select(-dist)
     }
-
     res <-
       jpn_pref(pref_code = res %>%
                  dplyr::mutate(pref_code = substr(city_code, 1, 2)) %>%
@@ -80,7 +76,6 @@ find_pref <- function(longitude, latitude, geometry = NULL, ...) {
 #' @export
 find_prefs <- function(longitude, latitude, geometry = NULL) {
   prefcode <- jis_code <- meshcode <- prefecture <- region <- NULL
-
   if (rlang::is_false(rlang::is_null(geometry))) {
     if (sf::st_is(geometry, "POINT")) {
       coords <-
@@ -89,11 +84,9 @@ find_prefs <- function(longitude, latitude, geometry = NULL) {
       latitude <- coords$latitude
     }
   }
-
   jpnprefs <-
     jpnprefs %>%
     dplyr::select(jis_code, prefecture, region)
-
   res <-
     prefecture_mesh %>%
     as.data.frame() %>%
@@ -106,7 +99,6 @@ find_prefs <- function(longitude, latitude, geometry = NULL) {
     purrr::set_names(
       c("pref_code", "meshcode_80km", "prefecture", "region")) %>%
     tibble::as_tibble()
-
   return(res)
 }
 
@@ -129,7 +121,6 @@ find_prefs <- function(longitude, latitude, geometry = NULL) {
 #' @export
 find_city <- function(longitude, latitude, geometry = NULL, ...) {
   prefecture <- city_code <- city <- NULL
-
   if (!is.null(geometry)) {
     if (sf::st_is(geometry, "POINT")) {
       coords <-
@@ -138,16 +129,13 @@ find_city <- function(longitude, latitude, geometry = NULL, ...) {
       latitude <- coords$latitude
     }
   }
-
   pol_min <- which_pol_min(longitude, latitude, ...)
-
   if (identical(pol_min$which, integer(0)) == TRUE) {
     # not found
     rlang::inform("Specified coordinates are not included in the polygon.")
   } else {
     res <- pol_min$spdf[pol_min$which, ] %>%
       dplyr::select(prefecture, city_code, city, geometry)
-
     return(res)
   }
 }
