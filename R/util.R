@@ -340,3 +340,34 @@ export_pref_80km_mesh <- function(code, ...) {
 
   return(res)
 }
+
+mesh_intersect <- function(data, x) {
+  res_contains = NULL
+  df_tmp <- tibble::tibble(
+    res_contains = suppressMessages(
+      rowSums(sf::st_intersects(data,
+                                x,
+                                sparse = FALSE))))
+  df_tmp$id <- seq_len(nrow(df_tmp))
+  data[df_tmp %>%
+         dplyr::filter(res_contains != 0) %>%
+         tidyr::unnest() %>%
+         dplyr::pull(id) %>%
+         unique(), ]
+}
+
+mesh_intersect_filter <- function(data) {
+  . <- meshcode <- NULL
+  data %>%
+    dplyr::pull(meshcode) %>%
+    purrr::map(jpmesh::fine_separate) %>%
+    rlang::flatten_chr() %>%
+    unique() %>%
+    tibble::enframe(name = NULL) %>%
+    purrr::set_names("meshcode") %>%
+    dplyr::mutate(out = purrr::pmap(., ~ jpmesh::mesh_to_coords(...))) %>%
+    tidyr::unnest() %>%
+    dplyr::select(meshcode, tidyselect::everything()) %>%
+    dplyr::mutate(geometry = purrr::pmap(., ~ jpmesh:::mesh_to_poly(...))) %>%
+    sf::st_sf(crs = 4326, stringsAsFactors = FALSE)
+}
