@@ -38,6 +38,8 @@ Suggests:
     lwgeom (>= 0.1-7),
     rvest,
     testthat
+Remotes:
+    tidyverse/tidyr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
