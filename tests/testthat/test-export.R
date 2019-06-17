@@ -1,22 +1,20 @@
 context("test-export.R")
 
-d <- mesh_district(jis_code = 33101)
-d2 <- mesh_district(jis_code = 14401)
+d <- mesh_district(jis_code = "33101")
+d2 <- mesh_district(jis_code = "14401")
 d3 <- mesh_district(jis_code = "08")
 
 test_that("mesh_district", {
+  skip_on_appveyor()
   expect_is(
     d,
-    c("sf", "data.frame")
-  )
+    c("sf", "data.frame", "tbl_df"))
   expect_equal(
     dim(d),
-    c(511L, 6L)
-  )
+    c(511L, 6L))
   expect_equal(
     dim(d2),
-    c(54L, 6L)
-  )
+    c(54L, 6L))
   expect_named(
     d,
     c(

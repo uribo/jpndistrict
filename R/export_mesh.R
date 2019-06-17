@@ -11,7 +11,7 @@
 #' @examples
 #' \dontrun{
 #' mesh_district(jis_code = "05")
-#' mesh_district(jis_code = 33101)
+#' mesh_district(jis_code = "33101")
 #' }
 #' @export
 mesh_district <- function(jis_code = NULL) {
