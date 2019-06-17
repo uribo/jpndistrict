@@ -1,22 +1,19 @@
 #' Collect administration office point datasets.
 #'
 #' @param path path to P34 shapefile (if already exist)
-#' @importFrom magrittr extract
 #' @importFrom sf st_read
 #' @importFrom dplyr mutate if_else
+#' @importFrom purrr set_names
 collect_ksj_p34 <- function(path = NULL) {
   jis_code <- NULL
   code <- gsub(".+P34-14_|_GML|/", "", path)
   d <- sf::st_read(
     paste0(path, "/", list.files(path, pattern = paste0(code, ".shp$"))),
     stringsAsFactors = FALSE,
-    options = c(paste0(
-      "ENCODING=",
-      dplyr::if_else(tolower(Sys.info()[["sysname"]]) == "windows",
-                     "UTF8", "cp932")
-    ))
-  ) %>%
-    magrittr::set_colnames(
+    as_tibble = TRUE,
+    crs = 4612,
+    options = "ENCODING=cp932") %>%
+    purrr::set_names(
       c("jis_code", "type", "name", "address", "geometry")) %>%
     dplyr::mutate(jis_code = as.factor(jis_code))
   return(d)
@@ -148,15 +145,10 @@ collect_cityarea <- function(path = NULL) {
           path,
           pattern = "shp$",
           full.names = TRUE,
-          recursive = TRUE
-        ),
-        stringsAsFactors = FALSE,
-        options = c(paste0(
-          "ENCODING=",
-          dplyr::if_else(tolower(Sys.info()[["sysname"]]) == "windows",
-                         "UTF8", "cp932")
-        ))
-      ) %>%
+          recursive = TRUE),
+        crs = 4612,
+        as_tibble = TRUE,
+        stringsAsFactors = FALSE) %>%
         sf::st_simplify(preserveTopology = FALSE, dTolerance = 0.001) %>%
         dplyr::filter(sf::st_is_empty(.) == FALSE) %>%
         dplyr::mutate(
@@ -203,11 +195,11 @@ read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
       )
       utils::unzip(
         zipfile = paste(tempdir(), df_df_url$dest_file[pref_code], sep = "/"),
-        exdir   = paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]),  sep = "/")
+        exdir   = paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]), sep = "/")
       )
-      path <- paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]),  sep = "/")
+      path <- paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]), sep = "/")
     } else if (file.exists(paste(tempdir(), df_df_url$dest_file[pref_code], sep = "/")) == TRUE) {
-      path <- paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]),  sep = "/") # nocov
+      path <- paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]), sep = "/") # nocov
     }
     res <- collect_ksj_p34(path = path)
   } else {
