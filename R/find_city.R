@@ -93,7 +93,7 @@ find_prefs <- function(longitude, latitude, geometry = NULL) {
     dplyr::select(prefcode, meshcode) %>%
     dplyr::filter(meshcode == jpmesh::coords_to_mesh(longitude,
                                                      latitude,
-                                                     mesh_size = "80km")) %>%
+                                                     mesh_size = 80)) %>%
     dplyr::inner_join(jpnprefs,
                       by = c("prefcode" = "jis_code")) %>%
     purrr::set_names(

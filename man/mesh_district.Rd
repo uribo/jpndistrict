@@ -16,6 +16,6 @@ Export district's mesh polygon
 \examples{
 \dontrun{
 mesh_district(jis_code = "05")
-mesh_district(jis_code = 33101)
+mesh_district(jis_code = "33101")
 }
 }
