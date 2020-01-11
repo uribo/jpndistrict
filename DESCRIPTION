@@ -32,15 +32,15 @@ Imports:
     tidyselect (>= 0.2.5),
     tidyr (>= 1.0.0)
 Suggests: 
-    covr,
-    knitr,
+    covr (>= 3.4.0),
+    knitr (>= 1.26),
     lintr (>= 1.0.3),
     lwgeom (>= 0.1-7),
-    rvest,
-    testthat
+    rvest (>= 0.3.5),
+    testthat (>= 2.3.1)
 Remotes:
     uribo/jpmesh
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1.9000
+RoxygenNote: 7.0.2

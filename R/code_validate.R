@@ -1,15 +1,13 @@
-#' Administration code varidation
+#' Administration code validation
 #'
 #' @param jis_code jis code for prefecture and city identifical number.
 #' If prefecture, must be from 1 to 47. If city, range of 5 digits.
 #' @importFrom purrr flatten_chr keep map map_chr map_if
 #' @note The `code_validate` function was added in version 0.3.2.9000
 #' @examples
-#' \dontrun{
 #' code_validate(jis_code = "05")
 #' code_validate(jis_code = 33101)
 #' code_validate(jis_code = c("01", "33101"))
-#' }
 #' @export
 code_validate <- function(jis_code) {
   . <- NULL # nolint
@@ -29,10 +27,7 @@ code_validate <- function(jis_code) {
 }
 
 #' Reform input jis code as 2 or 5 character length.
-#'
 #' @inheritParams code_validate
-#' @importFrom rlang abort
-#' @importFrom purrr flatten_chr keep map map_if
 #' @note The `code_reform` function was added in version 0.3.2.9000
 #' @name code_reform
 #' @examples

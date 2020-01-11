@@ -5,12 +5,11 @@ library(tidyr)
 library(lubridate)
 library(assertr)
 
-if (dir.exists(here::here("data-raw", "mic_city_table")) == FALSE)
-  dir.create(here::here("data-raw", "mic_city_table"))
+if (dir.exists(here::here("data-raw/mic_city_table")) == FALSE)
+  dir.create(here::here("data-raw/mic_city_table"))
 
-if (file.exists(here::here("data-raw", "mic_city_table", "000562731.xls")) == FALSE) {
+if (file.exists(here::here("data-raw/mic_city_table/000562731.xls")) == FALSE) {
   base_url <- "http://www.soumu.go.jp/"
-
   x <-
     read_html(glue::glue(base_url, "denshijiti/code.html"))
 

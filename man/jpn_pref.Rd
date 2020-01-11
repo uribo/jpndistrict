@@ -4,8 +4,13 @@
 \alias{jpn_pref}
 \title{Simple features for prefecture area polygon}
 \usage{
-jpn_pref(pref_code, admin_name, district = TRUE, download = FALSE,
-  drop_sinkyokyoku = TRUE)
+jpn_pref(
+  pref_code,
+  admin_name,
+  district = TRUE,
+  download = FALSE,
+  drop_sinkyokyoku = TRUE
+)
 }
 \arguments{
 \item{pref_code}{jis code from 1 to 47}
