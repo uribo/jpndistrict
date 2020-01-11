@@ -1,4 +1,4 @@
-FROM rocker/geospatial:3.6.0
+FROM rocker/geospatial:3.6.2
 
 RUN set -x && \
   apt-get update && \
@@ -13,20 +13,16 @@ RUN set -x && \
   echo "GITHUB_PAT=$GITHUB_PAT" >> /usr/local/lib/R/etc/Renviron
 
 RUN set -x && \
-  install2.r --error \
+  install2.r --error --skipinstalled --repos 'http://mran.revolutionanalytics.com/snapshot/2020-01-10' \
     assertr \
     here \
-    jpmesh \
+    lwgeom \
     magick \
+    pkgload \
     pryr \
+    roxygen2 \
     usethis && \
   installGithub.r \
-    "r-lib/pkgload" \
-    "klutometis/roxygen" \
-    "r-lib/roxygen2md" \
-    "r-lib/devtools" \
-    "r-lib/pkgdown" \
-    "r-spatial/lwgeom" \
-    "tidyverse/tidyr" \
-    "uribo/odkitchen" && \
+    uribo/jpmesh \
+    uribo/odkitchen && \
   rm -rf /tmp/downloaded_packages/ /tmp/*.rds
