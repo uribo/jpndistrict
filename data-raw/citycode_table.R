@@ -48,7 +48,7 @@ d_orig <-
 d_mod <-
   d_orig %>%
   mutate_at(vars(c("type", "date", "after_code", "after_city_name")),
-            funs(if_else(. == "〃",
+            .funs = list(~ if_else(. == "〃",
                          NA_character_,
                          .))) %>%
   mutate(id = if_else(!is.na(prefecture),
@@ -84,7 +84,7 @@ d_mod <-
                            ~ .x %>%
                              arrange(before_code) %>%
                              fill(starts_with("before_"), .direction = "down"))) %>%
-  tidyr::unnest() %>%
+  tidyr::unnest(cols = data) %>%
   arrange(id, date) %>%
   verify(dim(.) == c(1436, 6)) %>%
   group_by(id) %>%
@@ -115,7 +115,7 @@ citycode_sets <-
                                  purrr::flatten_dbl() %>%
                                  paste(collapse = "-") %>%
                                  lubridate::as_date())) %>%
-      tidyr::unnest()
+      tidyr::unnest_longer(col = date)
   ) %>%
   arrange(date, after_code) %>%
   verify(dim(.) == c(1436, 6))

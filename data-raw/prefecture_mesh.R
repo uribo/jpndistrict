@@ -1,5 +1,6 @@
-# devtools::load_all()
-library(tidyverse)
+# pkgload::load_all()
+library(tidyr)
+library(dplyr)
 library(sf)
 library(assertr)
 
@@ -11,7 +12,7 @@ prefecture_mesh <-
   meshcode = seq_len(47) %>%
     map(export_pref_80km_mesh)
 ) %>%
-  unnest() %>%
+  unnest_longer(col = meshcode) %>%
   left_join(sf_jpmesh %>% select(meshcode, name = name_roman, type, geometry), by = "meshcode") %>%
   st_sf(crs = 4326) %>%
   mutate(name = stringi::stri_trans_totitle(name)) %>%
