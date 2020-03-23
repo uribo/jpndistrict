@@ -7,7 +7,7 @@ test_that("prefecture", {
   expect_equal(dim(test), c(1, 3))
   expect_equal(test$pref_code, "46")
   expect_is(test$prefecture, "character")
-  expect_identical(sf::st_crs(test), crs_4326)
+  expect_equal(sf::st_crs(test)$input, "EPSG:4326")
 
   test <- find_pref(geometry = sf::st_point(c(136.6833, 35.05)))
   expect_equal(test$pref_code, "24")
@@ -66,5 +66,4 @@ test_that("city", {
   skip_if_not(l10n_info()$`UTF-8`)
   expect_equal(test$city,
                intToUtf8(c(12388, 12367, 12400, 24066), multiple = FALSE))
-
 })

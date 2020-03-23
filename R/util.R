@@ -254,14 +254,9 @@ which_pol_min <- function(longitude, latitude, ...) {
   list(spdf = sp_polygon, which = which_row)
 }
 
-crs_4326 <-
-  structure(list(epsg = 4326L,
-                 proj4string = "+proj=longlat +datum=WGS84 +no_defs"),
-            class = "crs")
-
 tweak_sf_output <- function(target) {
   target <- sf::st_sf(target)
-  if (identical(sf::st_crs(target)$proj4string, crs_4326) != TRUE) {
+  if (identical(sf::st_crs(target)$input, "EPSG:4326") != TRUE) {
     target <- sf::st_transform(target, crs = 4326)
   }
   res <- target %>%

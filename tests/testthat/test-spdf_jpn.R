@@ -11,7 +11,6 @@ test_that("jpn_pref", {
   expect_s3_class(df_pref, c("tbl"))
   expect_equal(df_pref$prefecture[1],
                intToUtf8(c(23713, 23665, 30476), multiple = FALSE))
-
   expect_equal(
     unique(jpn_pref(pref_code = 33)$pref_code),
     "33"
@@ -34,7 +33,7 @@ test_that("jpn_pref", {
       "geometry"
     )
   )
-  expect_identical(sf::st_crs(df_pref), crs_4326)
+  expect_equal(sf::st_crs(df_pref)$input, "EPSG:4326")
   expect_named(
     jpn_pref(pref_code = 12, drop_sinkyokyoku = TRUE),
     c("pref_code", "prefecture", "city_code", "city", "geometry")
@@ -45,7 +44,7 @@ test_that("jpn_pref", {
   expect_s3_class(df_pref2, c("tbl"))
   expect_named(df_pref2,
                c("pref_code", "prefecture", "geometry"))
-  expect_identical(sf::st_crs(df_pref2), crs_4326)
+  expect_identical(sf::st_crs(df_pref2)$input, "EPSG:4326")
 
   df_pref13 <-
     jpn_pref(pref_code = 13, district = TRUE)
@@ -76,7 +75,7 @@ test_that("jpn_cities", {
     33103, 33104, 33205
   ))), 3L)
   expect_equal(nrow(jpn_cities(jis_code = 33205)), 1L)
-  expect_identical(sf::st_crs(df_city), crs_4326)
+  expect_identical(sf::st_crs(df_city)$input, "EPSG:4326")
 
   expect_equal(dim(
     jpn_cities(
@@ -85,12 +84,10 @@ test_that("jpn_cities", {
     )
   ),
   c(1, 3))
-
 })
 
 test_that("Collect administration offices data", {
   df_admins <- jpn_admins(jis_code = 47)
-
   expect_s3_class(df_admins, c("sf"))
   expect_equal(dim(df_admins), c(65, 5))
   expect_named(df_admins,
