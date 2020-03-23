@@ -255,12 +255,15 @@ which_pol_min <- function(longitude, latitude, ...) {
 }
 
 tweak_sf_output <- function(target) {
-  target <- sf::st_sf(target)
+  target <-
+    sf::st_sf(target)
   if (identical(sf::st_crs(target)$input, "EPSG:4326") != TRUE) {
     target <- sf::st_transform(target, crs = 4326)
   }
-  res <- target %>%
-    tibble::as_tibble() %>% sf::st_sf()
+  res <-
+    target %>%
+    tibble::as_tibble() %>%
+    sf::st_sf()
   return(res)
 }
 
@@ -277,7 +280,8 @@ collapse_int2utf8 <- function(var) {
 
 export_pref_80km_mesh <- function(code, ...) {
   meshcode <- NULL
-  sf_pref <- jpn_pref(pref_code = code)
+  sf_pref <-
+    jpn_pref(pref_code = code)
   res <- suppressMessages(jpmesh::sf_jpmesh %>%
                             sf::st_join(sf_pref,
                                         sf::st_overlaps,
