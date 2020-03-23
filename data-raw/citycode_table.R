@@ -1,30 +1,27 @@
-# remotes::install_github("uribo/odkitchen")
-library(readxl)
 library(dplyr)
 library(tidyr)
 library(lubridate)
 library(assertr)
 
-if (dir.exists(here::here("data-raw", "mic_city_table")) == FALSE)
-  dir.create(here::here("data-raw", "mic_city_table"))
+if (dir.exists("data-raw/mic_city_table") == FALSE)
+  dir.create("data-raw/mic_city_table")
 
-if (file.exists(here::here("data-raw", "mic_city_table", "000562731.xls")) == FALSE) {
+if (file.exists("data-raw/mic_city_table/000562731.xls") == FALSE) {
   base_url <- "http://www.soumu.go.jp/"
-
   x <-
-    read_html(glue::glue(base_url, "denshijiti/code.html"))
-
+    xml2::read_html(glue::glue(base_url, "denshijiti/code.html"))
   tgt_file <-
     x %>%
-    html_nodes(css = '#contentsWrapper > div.contentsBody > div > div:nth-child(2) > ul > li:nth-child(2) > ul > li:nth-child(2) > a') %>%
-    html_attr("href")
-
+    rvest::html_nodes(css = '#contentsWrapper > div.contentsBody > div > div:nth-child(2) > ul > li:nth-child(2) > ul > li:nth-child(2) > a') %>%
+    rvest::html_attr("href")
   glue::glue(base_url, tgt_file) %>%
-    download.file(destfile = here::here("data-raw", "mic_city_table", basename(files)))
+    download.file(destfile = paste0("data-raw/mic_city_table", basename(files)))
   rm(x)
 } else {
   tgt_file <-
-    list.files(here::here("data-raw", "mic_city_table"), pattern = "000562731.xls$", full.names = TRUE)
+    list.files("data-raw/mic_city_table",
+               pattern = "000562731.xls$",
+               full.names = TRUE)
 }
 
 d_orig <-
@@ -62,10 +59,7 @@ d_mod <-
                               before_code,
                               after_code)) %>%
   group_by(id) %>%
-  tidyr::nest()
-
-d_mod <-
-  d_mod %>%
+  tidyr::nest() %>%
   mutate(data = purrr::map(data,
                            ~ .x %>%
                              mutate_at(vars(ends_with("_code")),
@@ -84,7 +78,7 @@ d_mod <-
                            ~ .x %>%
                              arrange(before_code) %>%
                              fill(starts_with("before_"), .direction = "down"))) %>%
-  tidyr::unnest() %>%
+  tidyr::unnest(cols = data) %>%
   arrange(id, date) %>%
   verify(dim(.) == c(1436, 6)) %>%
   group_by(id) %>%
@@ -109,13 +103,13 @@ citycode_sets <-
                                  strsplit(split = "\\.") %>%
                                  purrr::flatten() %>%
                                  purrr::modify_at(1,
-                                                  odkitchen::convert_jyr) %>%
+                                                  zipangu::convert_jyear) %>%
                                  purrr::modify_at(c(2,3),
                                                   as.numeric) %>%
                                  purrr::flatten_dbl() %>%
                                  paste(collapse = "-") %>%
                                  lubridate::as_date())) %>%
-      tidyr::unnest()
+      tidyr::unnest(cols = date)
   ) %>%
   arrange(date, after_code) %>%
   verify(dim(.) == c(1436, 6))

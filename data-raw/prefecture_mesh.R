@@ -1,22 +1,21 @@
-# devtools::load_all()
+# pkgload::load_all()
 library(tidyverse)
 library(sf)
 library(assertr)
-
 data("sf_jpmesh", package = "jpmesh")
 
 prefecture_mesh <-
-  tibble(
+  tibble::tibble(
   prefcode = sprintf("%02d", seq_len(47)),
   meshcode = seq_len(47) %>%
-    map(export_pref_80km_mesh)
+    purrr::map(export_pref_80km_mesh)
 ) %>%
-  unnest() %>%
+  tidyr::unnest(cols = meshcode) %>%
   left_join(sf_jpmesh %>% select(meshcode, name = name_roman, type, geometry), by = "meshcode") %>%
   st_sf(crs = 4326) %>%
   mutate(name = stringi::stri_trans_totitle(name)) %>%
   verify(dim(.) == c(314, 5)) %>%
-  verify(has_all_names(c("prefcode", "meshcode", "name", "type", "geometry")))
+  verify(has_all_names("prefcode", "meshcode", "name", "type", "geometry"))
 
 # prefecture_mesh %>% count(meshcode, sort = TRUE)
 # library(leaflet)

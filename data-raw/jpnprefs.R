@@ -4,9 +4,10 @@
 
 options(digits = 9)
 # Load Employed Packages --------------------------------------------------
-library(rvest) # 0.3.2
+library(rvest)
 library(assertr)
-library(tidyverse)
+library(dplyr)
+library(purrr)
 
 # Japanese ----------------------------------------------------------------
 x <-
@@ -21,7 +22,7 @@ df_prefs_jp <-
   read_html("https://ja.wikipedia.org/wiki/%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C") %>%
   html_nodes(xpath = '//*[@id="mw-content-text"]/div/table[4]') %>% # css to correct table as wiki page was edited
   html_table(fill = TRUE) %>%
-  purrr::flatten_df() %>%
+  flatten_df() %>%
   verify(dim(.) == c(47, 12)) %>%
   select(2, 4, 6, 11) %>%
   set_names(c("prefecture", "capital", "region", "jis_code")) %>%
@@ -30,7 +31,7 @@ df_prefs_jp <-
          capital = recode(capital,
                           x =
                             xx),
-         prefecture = purrr::pmap_chr(.,
+         prefecture = pmap_chr(.,
                                       ~ gsub(pattern = "[0-9]{2}", replacement =  "", x = ..1,))) %>%
   verify(dim(.) == c(47, 4))
 
@@ -39,7 +40,7 @@ df_prefs_en <-
   read_html("https://en.wikipedia.org/wiki/Prefectures_of_Japan") %>%
   html_nodes(css = "#mw-content-text > div > table.wikitable.sortable") %>%
   html_table(fill = TRUE) %>%
-  purrr::flatten_df() %>%
+  flatten_df() %>%
   verify(dim(.) == c(47, 12)) %>%
   select(2, 5) %>%
   set_names(c("prefecture", "major_island")) %>%
@@ -51,7 +52,7 @@ df_prefs_en <-
                                `Shikoku`        = enc2native(intToUtf8(c(22235, 22269),
                                                                        multiple = FALSE)),
                                `Kyushu`         = enc2native(intToUtf8(c(20061, 24030),
-                                                                       multiple = FALLSE)),
+                                                                       multiple = FALSE)),
                                `Ryukyu Islands` = enc2native(intToUtf8(c(29705, 29699),
                                                                        multiple = FALSE)))) %>%
   verify(dim(.) == c(47, 2))
@@ -77,11 +78,11 @@ df_coords <-
   as.data.frame() %>%
   t() %>%
   as.data.frame() %>%
-  remove_rownames() %>%
+  tibble::remove_rownames() %>%
   set_names(c("lat", "lon")) %>%
   verify(dim(.) == c(47, 2)) %>%
-  separate(col = lat, into = c(paste("lat", c("d", "m", "s"), sep = "_")), sep = "_") %>%
-  separate(lon, c(paste("lon", c("d", "m", "s"), sep = "_")), "_") %>%
+  tidyr::separate(col = lat, into = c(paste("lat", c("d", "m", "s"), sep = "_")), sep = "_") %>%
+  tidyr::separate(lon, c(paste("lon", c("d", "m", "s"), sep = "_")), "_") %>%
   verify(ncol(.) == 6) %>%
   mutate(latitude  = as.numeric(lat_d) + (as.numeric(lat_m) + as.numeric(lat_s) / 60) / 60,
          longitude = as.numeric(lon_d) + (as.numeric(lon_m) + as.numeric(lon_s) / 60) / 60) %>%
@@ -93,7 +94,6 @@ jpnprefs <-
   bind_cols(df_coords) %>%
   verify(ncol(.) == 7) %>%
   # jis code
-  mutate(prefecture = prefecture %>% factor() %>% fct_relevel(prefecture)) %>%
   select(jis_code, prefecture,
          capital, region, major_island,
          capital_latitude = latitude, capital_longitude = longitude) %>%
@@ -105,7 +105,7 @@ jpn_pref_raw <-
   read_html("https://en.wikipedia.org/wiki/Prefectures_of_Japan") %>%
   html_nodes(xpath = '//*[@id="mw-content-text"]/div/table[4]') %>%
   html_table() %>%
-  purrr::flatten_df() %>%
+  flatten_df() %>%
   verify(dim(.) == c(47, 12))
 
 jpn_pref_df <-
@@ -116,9 +116,11 @@ jpn_pref_df <-
 # ---- English prefecture and capital names
 jpn_pref2_raw <-
   read_html("https://en.wikipedia.org/wiki/List_of_Japanese_prefectures_by_population") %>%
-  html_nodes(css = "table.wikitable:nth-child(7)") %>%
+  html_nodes(css = "#mw-content-text > div > table:nth-child(8)") %>%
   html_table() %>%
-  purrr::flatten_df()
+  flatten_df() %>%
+  filter(!is.na(Rank)) %>%
+  verify(dim(.) == c(47, 10))
 
 jpn_pref2_df <-
   jpn_pref2_raw %>%
@@ -133,12 +135,10 @@ jpnprefs <-
   select(jis_code, prefecture, capital, region, major_island,
          prefecture_en, capital_en, region_en, major_island_en,
          capital_latitude, capital_longitude) %>%
-  as_tibble()
-
-jpnprefs <-
-  jpnprefs %>%
+  as_tibble() %>%
+  mutate(prefecture = prefecture %>% as.factor() %>% forcats::fct_relevel(prefecture),
+         prefecture_en = prefecture_en %>% as.factor() %>% forcats::fct_relevel(prefecture_en)) %>%
   mutate_at(.vars = vars(ends_with("_en")),
             .funs = list(~ iconv(x = ., from = "UTF-8", to = "ASCII//TRANSLIT")))
 
 usethis::use_data(jpnprefs, overwrite = TRUE)
-d
