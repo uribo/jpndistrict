@@ -1,5 +1,6 @@
 # pkgload::load_all()
-library(tidyverse)
+library(tidyr)
+library(dplyr)
 library(sf)
 library(assertr)
 data("sf_jpmesh", package = "jpmesh")
@@ -10,7 +11,7 @@ prefecture_mesh <-
   meshcode = seq_len(47) %>%
     purrr::map(export_pref_80km_mesh)
 ) %>%
-  tidyr::unnest(cols = meshcode) %>%
+  unnest_longer(col = meshcode) %>%
   left_join(sf_jpmesh %>% select(meshcode, name = name_roman, type, geometry), by = "meshcode") %>%
   st_sf(crs = 4326) %>%
   mutate(name = stringi::stri_trans_totitle(name)) %>%

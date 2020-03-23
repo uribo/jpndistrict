@@ -308,10 +308,9 @@ mesh_intersect_filter <- function(data) {
     purrr::map(jpmesh::fine_separate) %>%
     rlang::flatten_chr() %>%
     unique() %>%
-    tibble::enframe(name = NULL) %>%
-    purrr::set_names("meshcode") %>%
-    dplyr::mutate(out = purrr::pmap(., ~ jpmesh::mesh_to_coords(...))) %>%
-    tidyr::unnest(cols = out) %>%
+    tibble::enframe(name = NULL, value = "meshcode") %>%
+    dplyr::mutate(out = purrr::map(meshcode, ~ jpmesh::mesh_to_coords(.x))) %>%
+    tidyr::unnest_wider(col = out) %>%
     dplyr::select(meshcode, tidyselect::everything()) %>%
     dplyr::mutate(geometry = purrr::pmap(., ~ jpmesh:::mesh_to_poly(...))) %>%
     sf::st_sf(crs = 4326, stringsAsFactors = FALSE)

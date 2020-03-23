@@ -3,10 +3,9 @@ library(tidyr)
 library(lubridate)
 library(assertr)
 
-if (dir.exists("data-raw/mic_city_table") == FALSE)
-  dir.create("data-raw/mic_city_table")
-
 if (file.exists("data-raw/mic_city_table/000562731.xls") == FALSE) {
+  if (dir.exists(here::here("data-raw/mic_city_table")) == FALSE)
+    dir.create(here::here("data-raw/mic_city_table"))
   base_url <- "http://www.soumu.go.jp/"
   x <-
     xml2::read_html(glue::glue(base_url, "denshijiti/code.html"))
@@ -45,7 +44,7 @@ d_orig <-
 d_mod <-
   d_orig %>%
   mutate_at(vars(c("type", "date", "after_code", "after_city_name")),
-            funs(if_else(. == "〃",
+            .funs = list(~ if_else(. == "〃",
                          NA_character_,
                          .))) %>%
   mutate(id = if_else(!is.na(prefecture),
@@ -63,10 +62,10 @@ d_mod <-
   mutate(data = purrr::map(data,
                            ~ .x %>%
                              mutate_at(vars(ends_with("_code")),
-                                       funs(stringr::str_sub(., 1, 5))))) %>%
+                                       list(~ stringr::str_sub(., 1, 5))))) %>%
   mutate(data = purrr::map(data,
                            ~ .x %>%
-                             mutate_at(vars(starts_with("after_")), funs(if_else(. == "削除",
+                             mutate_at(vars(starts_with("after_")), list(~ if_else(. == "削除",
                                                                                  NA_character_,
                                                                                  .))) %>%
                              arrange(after_code) %>%
@@ -109,7 +108,7 @@ citycode_sets <-
                                  purrr::flatten_dbl() %>%
                                  paste(collapse = "-") %>%
                                  lubridate::as_date())) %>%
-      tidyr::unnest(cols = date)
+      tidyr::unnest_longer(col = date)
   ) %>%
   arrange(date, after_code) %>%
   verify(dim(.) == c(1436, 6))

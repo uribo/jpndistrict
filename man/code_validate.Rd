@@ -2,7 +2,7 @@
 % Please edit documentation in R/code_validate.R
 \name{code_validate}
 \alias{code_validate}
-\title{Administration code varidation}
+\title{Administration code validation}
 \usage{
 code_validate(jis_code)
 }
@@ -11,15 +11,13 @@ code_validate(jis_code)
 If prefecture, must be from 1 to 47. If city, range of 5 digits.}
 }
 \description{
-Administration code varidation
+Administration code validation
 }
 \note{
 The \code{code_validate} function was added in version 0.3.2.9000
 }
 \examples{
-\dontrun{
 code_validate(jis_code = "05")
 code_validate(jis_code = 33101)
 code_validate(jis_code = c("01", "33101"))
-}
 }
