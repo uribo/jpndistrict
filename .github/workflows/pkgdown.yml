@@ -12,6 +12,11 @@ jobs:
       - uses: r-lib/actions/setup-r@master
       - uses: r-lib/actions/setup-pandoc@master
 
+      - name: Install gdal on macOS
+        run: |
+          brew install pkg-config
+          brew install gdal
+
       - name: Query dependencies
         run: |
           install.packages('remotes')

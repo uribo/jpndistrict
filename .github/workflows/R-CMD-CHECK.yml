@@ -11,7 +11,7 @@ jobs:
 
       - name: Install gdal on macOS
         run: |
-          brew cask install pkg-config
+          brew install pkg-config
           brew install gdal
 
       - name: Install dependencies
