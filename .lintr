@@ -1,1 +1,1 @@
-linters: lintr::with_defaults()
+linters: lintr::with_defaults(object_usage_linter = NULL)

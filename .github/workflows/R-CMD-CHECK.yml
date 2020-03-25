@@ -9,6 +9,11 @@ jobs:
       - uses: actions/checkout@v1
       - uses: r-lib/actions/setup-r@master
 
+      - name: Install gdal on macOS
+        run: |
+          brew cask install pkg-config
+          brew install gdal
+
       - name: Install dependencies
         run: Rscript -e "install.packages(c('remotes', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE)"
 
