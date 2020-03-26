@@ -20,7 +20,7 @@ Depends:
     R (>= 3.3.0)
 Imports: 
     dplyr (>= 0.8.3),
-    jpmesh (>= 1.1.3.9000),
+    jpmesh (>= 1.2.0),
     leaflet (>= 2.0.3),
     magrittr (>= 1.5),
     miniUI (>= 0.1.1),
@@ -38,9 +38,6 @@ Suggests:
     lwgeom (>= 0.2-1),
     rvest (>= 0.3.5),
     testthat (>= 2.3.2)
-Remotes:
-    uribo/jpmesh,
-    r-spatial/sf
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
