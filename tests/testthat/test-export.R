@@ -22,5 +22,5 @@ test_that("mesh_district", {
       "geometry"
     )
   )
-  expect_equal(dim(d3), c(6247, 6))
+  expect_equal(dim(d3), c(6246, 6))
 })

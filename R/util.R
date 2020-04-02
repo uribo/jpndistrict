@@ -254,11 +254,22 @@ which_pol_min <- function(longitude, latitude, ...) {
   list(spdf = sp_polygon, which = which_row)
 }
 
+crs_4326 <-
+  structure(list(epsg = 4326L,
+                 proj4string = "+proj=longlat +datum=WGS84 +no_defs"),
+            class = "crs")
+
 tweak_sf_output <- function(target) {
   target <-
     sf::st_sf(target)
-  if (identical(sf::st_crs(target)$input, "EPSG:4326") != TRUE) {
-    target <- sf::st_transform(target, crs = 4326)
+  if (utils::packageVersion("sf") <= numeric_version("0.8.1")) {
+    if (identical(sf::st_crs(target)$proj4string, crs_4326) != TRUE) {
+      target <- sf::st_transform(target, crs = 4326)
+    }
+  } else {
+    if (identical(sf::st_crs(target)$input, "EPSG:4326") != TRUE) {
+      target <- sf::st_transform(target, crs = 4326)
+    }
   }
   res <-
     target %>%
@@ -281,7 +292,8 @@ collapse_int2utf8 <- function(var) {
 export_pref_80km_mesh <- function(code, ...) {
   meshcode <- NULL
   sf_pref <-
-    jpn_pref(pref_code = code)
+    jpn_pref(pref_code = code) %>%
+    lwgeom::st_make_valid()
   res <- suppressMessages(jpmesh::sf_jpmesh %>%
                             sf::st_join(sf_pref,
                                         sf::st_overlaps,
@@ -318,4 +330,20 @@ mesh_intersect_filter <- function(data) {
     dplyr::select(meshcode, tidyselect::everything()) %>%
     dplyr::mutate(geometry = purrr::pmap(., ~ jpmesh:::mesh_to_poly(...))) %>%
     sf::st_sf(crs = 4326, stringsAsFactors = FALSE)
+}
+
+decode.sfencoded <- function(x, crs = 4326) {
+  geometry <- NULL
+  googlePolylines::polyline_wkt(x) %>%
+    dplyr::mutate(geometry = sf::st_as_sfc(geometry)) %>%
+    sf::st_sf(crs = crs)
+}
+
+decode.sf <- function(x) {
+  crs <- st_crs(x)
+  geometry <- NULL
+  googlePolylines::encode(x) %>%
+    googlePolylines::polyline_wkt() %>%
+    dplyr::mutate(geometry = sf::st_as_sfc(geometry)) %>%
+    sf::st_sf(crs = crs)
 }

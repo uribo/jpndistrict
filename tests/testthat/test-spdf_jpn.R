@@ -33,7 +33,11 @@ test_that("jpn_pref", {
       "geometry"
     )
   )
-  expect_equal(sf::st_crs(df_pref)$input, "EPSG:4326")
+  if (utils::packageVersion("sf") <= numeric_version("0.8.1")) {
+    expect_identical(sf::st_crs(df_pref), crs_4326)
+  } else {
+    expect_equal(sf::st_crs(df_pref)$input, "EPSG:4326")
+  }
   expect_named(
     jpn_pref(pref_code = 12, drop_sinkyokyoku = TRUE),
     c("pref_code", "prefecture", "city_code", "city", "geometry")
@@ -44,7 +48,11 @@ test_that("jpn_pref", {
   expect_s3_class(df_pref2, c("tbl"))
   expect_named(df_pref2,
                c("pref_code", "prefecture", "geometry"))
-  expect_identical(sf::st_crs(df_pref2)$input, "EPSG:4326")
+  if (utils::packageVersion("sf") <= numeric_version("0.8.1")) {
+    expect_identical(sf::st_crs(df_pref2), crs_4326)
+  } else {
+    expect_equal(sf::st_crs(df_pref2)$input, "EPSG:4326")
+  }
 
   df_pref13 <-
     jpn_pref(pref_code = 13, district = TRUE)
@@ -75,7 +83,11 @@ test_that("jpn_cities", {
     33103, 33104, 33205
   ))), 3L)
   expect_equal(nrow(jpn_cities(jis_code = 33205)), 1L)
-  expect_identical(sf::st_crs(df_city)$input, "EPSG:4326")
+  if (utils::packageVersion("sf") <= numeric_version("0.8.1")) {
+    expect_identical(sf::st_crs(df_city), crs_4326)
+  } else {
+    expect_equal(sf::st_crs(df_city)$input, "EPSG:4326")
+  }
 
   expect_equal(dim(
     jpn_cities(

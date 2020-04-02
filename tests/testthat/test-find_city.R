@@ -7,8 +7,11 @@ test_that("prefecture", {
   expect_equal(dim(test), c(1, 3))
   expect_equal(test$pref_code, "46")
   expect_is(test$prefecture, "character")
-  expect_equal(sf::st_crs(test)$input, "EPSG:4326")
-
+  if (utils::packageVersion("sf") <= numeric_version("0.8.1")) {
+    expect_identical(sf::st_crs(test), crs_4326)
+  } else {
+    expect_equal(sf::st_crs(test)$input, "EPSG:4326")
+  }
   test <- find_pref(geometry = sf::st_point(c(136.6833, 35.05)))
   expect_equal(test$pref_code, "24")
   test <- find_prefs(longitude = NULL,
@@ -26,7 +29,6 @@ test_that("prefecture", {
   skip_if_not(l10n_info()$`UTF-8`)
   expect_equal(test$prefecture,
                intToUtf8(c(33576, 22478, 30476), multiple = FALSE))
-
 })
 
 test_that("Failed", {

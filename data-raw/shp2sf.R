@@ -4,6 +4,7 @@ library(dplyr)
 library(purrr)
 library(testthat)
 library(sf)
+library(googlePolylines)
 # Download raw data (47 prefectures, 2017) ----------------------------------------------------------------------
 if (file.exists("data-raw/KSJ_N03/N03-170101_GML.zip") == FALSE) {
   dir.create("data-raw/KSJ_N03")
@@ -21,7 +22,9 @@ if (file.exists("data-raw/KSJ_N03/N03-170101_GML.zip") == FALSE) {
 
 # Modified shapefile ----------------------------------------------------------
 sf_japan <-
-  st_read("data-raw/KSJ_N03/N03-17_170101.shp", stringsAsFactors = FALSE) %>%
+  st_read("data-raw/KSJ_N03/N03-17_170101.shp",
+          stringsAsFactors = FALSE,
+          as_tibble = TRUE) %>%
   set_names(c("prefecture", "sichyo_sinkyokyoku", "gun_seireishitei",
               "city", "city_code", "geometry")) %>%
   mutate(city = if_else(!is.na(gun_seireishitei),
@@ -50,7 +53,7 @@ city_union <- function(df, prefcode_var, citycode_var, cityname_var) {
     dplyr::group_by(!!prefcode_var, !!citycode_var, !!cityname_var) %>%
     dplyr::group_map(
       ~ .x %>%
-        sf::st_make_valid() %>%
+        lwgeom::st_make_valid() %>%
         sf::st_union() %>%
         sf::st_buffer(dist = 0.0001) %>%
         st_simplify(preserveTopology = TRUE, dTolerance = 0.0015)
@@ -81,6 +84,7 @@ sprintf("%02d", seq_len(47)) %>%
   purrr::walk(
     ~ sf_japan_distinct %>%
       filter(pref_code == .x) %>%
+      googlePolylines::encode() %>%
       readr::write_rds(path = paste0("inst/extdata/ksj_n03/pref_",
                                      .x, ".rds"),
                        compress = "xz"))

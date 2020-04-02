@@ -22,3 +22,4 @@
 ^\.lintr$
 ^.*\.xls$
 ^CRAN-RELEASE$
+^\.github$

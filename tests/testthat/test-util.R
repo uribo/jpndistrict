@@ -92,8 +92,6 @@ test_that("return prefecture jis code as string", {
     collect_prefcode(33)
   expect_is(test, "character")
   expect_equal(test, "33")
-
-
   char_okym <-
     intToUtf8(c(23713, 23665, 30476), multiple = FALSE)
   expect_identical(

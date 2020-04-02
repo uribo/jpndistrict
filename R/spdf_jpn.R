@@ -23,7 +23,6 @@ jpn_pref <- function(pref_code,
                      district         = TRUE,
                      download         = FALSE,
                      drop_sinkyokyoku = TRUE) {
-
   city_code <- city_name <- city_name_ <- city_name_full <- NULL # nolint
   . <- geometry <- pref_name <- NULL # nolint
 
@@ -35,8 +34,8 @@ jpn_pref <- function(pref_code,
 
   if (download == FALSE) {
     d <- readRDS(system.file(paste0("extdata/ksj_n03/pref_", pref_code, ".rds"),
-                             package = "jpndistrict"))
-
+                             package = "jpndistrict")) %>%
+      decode.sfencoded()
   } else {
     d <-
       read_ksj_cityarea(code = as.numeric(pref_code)) %>%  # nocov
@@ -58,11 +57,8 @@ jpn_pref <- function(pref_code,
     res <- raw_bind_cityareas(d) %>%
       dplyr::mutate(pref_code = as.character(pref_code))
   }
-
-  res <- res %>%
+  res %>%
     tweak_sf_output()
-
-  return(res)
 }
 
 
