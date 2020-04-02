@@ -1,4 +1,5 @@
-# jpndistrict (development version)
+# jpndistrict 0.3.5
+
 - Follow up sf v0.9.0 update.
 - The geometry of the dataset referenced inside the package was encoded by Google's Polyline Encoding Algorithm with googlePolylines. This has reduced the file size.
 
