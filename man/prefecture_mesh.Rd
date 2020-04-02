@@ -4,14 +4,16 @@
 \name{prefecture_mesh}
 \alias{prefecture_mesh}
 \title{Prefecture's meshcode}
-\format{A simple feature data frame with 314 rows 5 variables:
+\format{
+A simple feature data frame with 314 rows 5 variables:
 \itemize{
 \item{prefcode: prefecture code}
 \item{meshcode}
 \item{name}
 \item{type}
 \item{geometry}
-}}
+}
+}
 \usage{
 prefecture_mesh
 }
