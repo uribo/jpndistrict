@@ -5,7 +5,6 @@
 .RData
 .Ruserdata
 .DS_Store
-revdep/
 data-raw/KSJ_N03/
 data-raw/mic_city_table/
 *.pdf
