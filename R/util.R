@@ -330,14 +330,14 @@ mesh_intersect_filter <- function(data) {
     sf::st_sf(crs = 4326, stringsAsFactors = FALSE)
 }
 
-decode.sfencoded <- function(x, crs = 4326) {
+decode.sfencoded <- function(x, crs = 4326) { # nolint
   geometry <- NULL
   googlePolylines::polyline_wkt(x) %>%
     dplyr::mutate(geometry = sf::st_as_sfc(geometry)) %>%
     sf::st_sf(crs = crs)
 }
 
-decode.sf <- function(x) {
+decode.sf <- function(x) { # nolint
   crs <- st_crs(x)
   geometry <- NULL
   googlePolylines::encode(x) %>%
