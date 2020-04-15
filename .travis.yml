@@ -37,14 +37,16 @@ after_script: R -q -e 'tic::after_script()'
 # Header
 language: r
 sudo: required
-dist: xenial
-cache: packages
+dist: trusty
+cache:
+  - packages
+  - ccache
 latex: false
 
 #env
-env:
-  global:
-  - MAKEFLAGS="-j 2"
+#env:
+#  global:
+#  - MAKEFLAGS="-j 2"
 
 matrix:
   include:
@@ -52,7 +54,7 @@ matrix:
   - r: oldrel
   - r: devel
 
-warnings_are_errors: true
+#warnings_are_errors: true
 
 #services
 services:
