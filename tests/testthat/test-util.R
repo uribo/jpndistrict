@@ -1,6 +1,7 @@
 context("utilities")
 
 test_that("Data", {
+  skip_if_not_installed("lwgeom")
   expect_length(export_pref_80km_mesh(1), 40L)
 
   expect_named(jpnprefs,

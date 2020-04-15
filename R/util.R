@@ -241,8 +241,6 @@ which_pol_min <- function(longitude, latitude, ...) {
                           sparse = FALSE)
       ))
     if (length(which_row) > 1) {
-      if (!requireNamespace("lwgeom", quietly = TRUE))
-        rlang::abort("lwgeom required: install that first") # nocov
       which_row <-
         which.min(sf::st_distance(st_sfc(x, crs = 4326),
                                   sp_polygon,
@@ -293,7 +291,7 @@ export_pref_80km_mesh <- function(code, ...) {
   meshcode <- NULL
   sf_pref <-
     jpn_pref(pref_code = code) %>%
-    lwgeom::st_make_valid()
+    sf::st_make_valid()
   res <- suppressMessages(jpmesh::sf_jpmesh %>%
                             sf::st_join(sf_pref,
                                         sf::st_overlaps,

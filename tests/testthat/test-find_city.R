@@ -2,7 +2,8 @@ context("reverse geocoding")
 
 test_that("prefecture", {
   skip_if_not_installed("lwgeom")
-  test <- find_pref(longitude = 130.4412895, latitude = 30.2984335)
+  test <-
+    find_pref(longitude = 130.4412895, latitude = 30.2984335)
   expect_s3_class(test, "tbl")
   expect_equal(dim(test), c(1, 3))
   expect_equal(test$pref_code, "46")

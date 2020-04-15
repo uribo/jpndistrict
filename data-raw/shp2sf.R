@@ -53,7 +53,7 @@ city_union <- function(df, prefcode_var, citycode_var, cityname_var) {
     dplyr::group_by(!!prefcode_var, !!citycode_var, !!cityname_var) %>%
     dplyr::group_map(
       ~ .x %>%
-        lwgeom::st_make_valid() %>%
+        sf::st_make_valid() %>%
         sf::st_union() %>%
         sf::st_buffer(dist = 0.0001) %>%
         st_simplify(preserveTopology = TRUE, dTolerance = 0.0015)
