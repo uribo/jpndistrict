@@ -22,7 +22,6 @@ Imports:
     dplyr (>= 0.8.3),
     jpmesh (>= 1.2.0),
     leaflet (>= 2.0.3),
-    lwgeom (>= 0.2-1),
     magrittr (>= 1.5),
     miniUI (>= 0.1.1),
     purrr (>= 0.3.3),
@@ -35,6 +34,7 @@ Imports:
 Suggests: 
     covr (>= 3.4.0),
     knitr (>= 1.26),
+    lwgeom (>= 0.2-1),
     rvest (>= 0.3.5),
     testthat (>= 2.3.2)
 Encoding: UTF-8
