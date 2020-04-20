@@ -13,7 +13,7 @@ RUN set -x && \
   echo "GITHUB_PAT=$GITHUB_PAT" >> /usr/local/lib/R/etc/Renviron
 
 RUN set -x && \
-  install2.r --error --repos 'http://mran.revolutionanalytics.com/snapshot/2020-04-13' \
+  install2.r --error --repos 'http://mran.revolutionanalytics.com/snapshot/2020-04-19' \
     assertr \
     jpmesh \
     kokudosuuchi \
@@ -24,4 +24,6 @@ RUN set -x && \
     roxygen2 \
     usethis \
     zipangu && \
+  installGithub.r \
+    r-lib/revdepcheck && \
   rm -rf /tmp/downloaded_packages/ /tmp/*.rds
