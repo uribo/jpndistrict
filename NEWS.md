@@ -1,3 +1,5 @@
+# jpndistrict (development version)
+
 # jpndistrict 0.3.6 (2020-04-20)
 
 - Changes to accomodate sf: st_make_valid no longer in lwgeom ([#32](https://github.com/uribo/jpndistrict/issues/32)).
