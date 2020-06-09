@@ -19,7 +19,7 @@ Depends:
     R (>= 3.3.0)
 Imports: 
     googlePolylines (>= 0.7.2),
-    dplyr (>= 0.8.3),
+    dplyr (>= 1.0.0),
     jpmesh (>= 1.2.0),
     leaflet (>= 2.0.3),
     magrittr (>= 1.5),
