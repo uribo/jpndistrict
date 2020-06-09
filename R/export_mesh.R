@@ -2,7 +2,6 @@
 #' @inheritParams code_validate
 #' @examples
 #' \dontrun{
-#' mesh_district(jis_code = "05")
 #' mesh_district(jis_code = "33101")
 #' }
 #' @export
