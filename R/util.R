@@ -260,20 +260,11 @@ crs_4326 <-
 tweak_sf_output <- function(target) {
   target <-
     sf::st_sf(target)
-  if (utils::packageVersion("sf") <= numeric_version("0.8.1")) {
-    if (identical(sf::st_crs(target)$proj4string, crs_4326) != TRUE) {
+  if (identical(sf::st_crs(target)$input, "EPSG:4326") != TRUE)
       target <- sf::st_transform(target, crs = 4326)
-    }
-  } else {
-    if (identical(sf::st_crs(target)$input, "EPSG:4326") != TRUE) {
-      target <- sf::st_transform(target, crs = 4326)
-    }
-  }
-  res <-
-    target %>%
+  target %>%
     tibble::as_tibble() %>%
     sf::st_sf()
-  return(res)
 }
 
 sfg_point_as_coords <- function(geometry) {
@@ -302,17 +293,14 @@ export_pref_80km_mesh <- function(code, ...) {
 }
 
 mesh_intersect <- function(data, x) {
-  res_contains <- NULL
-  df_tmp <- tibble::tibble(
-    res_contains = suppressMessages(
-      rowSums(sf::st_intersects(data,
-                                x,
-                                sparse = FALSE))))
-  df_tmp$id <- seq_len(nrow(df_tmp))
-  data[df_tmp %>%
-         dplyr::filter(res_contains != 0) %>%
-         dplyr::pull(id) %>%
-         unique(), ]
+  suppressMessages(
+    suppressWarnings(
+      sf::st_intersection(data,
+                          x %>%
+                            dplyr::group_by() %>%
+                            dplyr::summarise(do_union = FALSE))
+    )
+  )
 }
 
 mesh_intersect_filter <- function(data) {

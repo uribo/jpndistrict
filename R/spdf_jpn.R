@@ -87,7 +87,8 @@ jpn_cities <- function(jis_code, admin_name) {
   jis_code_q <- rlang::enquo(jis_code)
   admin_name_q <- rlang::enquo(admin_name)
 
-  d <- jis_code %>%
+  d <-
+    jis_code %>%
     purrr::map_chr(~ substr(.x, 1, 2)) %>%
     unique() %>%
     purrr::map(~ jpn_pref(pref_code = .x, district = TRUE)) %>%
@@ -97,16 +98,16 @@ jpn_cities <- function(jis_code, admin_name) {
 
   if (nchar(jis_code[1]) > 3) {
     if (missing(admin_name)) {
-      d <- dplyr::filter(d, city_code %in% !!jis_code_q)
+      d <-
+        dplyr::filter(d, city_code %in% !!jis_code_q)
     }
   }
   if (!missing(admin_name)) {
-      d <- dplyr::filter(d, city %in% !!admin_name_q)
+      d <-
+        dplyr::filter(d, city %in% !!admin_name_q)
     }
-
-  res <- tweak_sf_output(d)
-
-  return(res)
+  d %>%
+    tweak_sf_output()
 }
 
 #' Simple features for administration office points

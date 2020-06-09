@@ -10,7 +10,8 @@ mesh_district <- function(jis_code = NULL) {
   input_code <-
     code_validate(jis_code)
   if (input_code$administration_type == "prefecture") {
-    sf_admins <- jpn_pref(pref_code = input_code$code)
+    sf_admins <- jpn_pref(pref_code = input_code$code) %>%
+      sf::st_make_valid()
   } else if (input_code$administration_type == "city") {
     sf_admins <- jpn_cities(jis_code = input_code$code)
   }
