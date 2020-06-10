@@ -81,7 +81,7 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
     if (is.null(path) & file.exists(dest_path) == FALSE) {
       utils::download.file(
         paste0(
-          "http://nlftp.mlit.go.jp/ksj/gml/data/N03/N03-2015/N03-150101_",
+          "https://nlftp.mlit.go.jp/ksj/gml/data/N03/N03-2015/N03-150101_",
           pref_identifer,
           "_GML.zip"
         ),

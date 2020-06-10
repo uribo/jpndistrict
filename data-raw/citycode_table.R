@@ -6,7 +6,7 @@ library(assertr)
 if (!file.exists("data-raw/mic_city_table/000562731.xls")) {
   if (!dir.exists(here::here("data-raw/mic_city_table")))
     dir.create(here::here("data-raw/mic_city_table"))
-  base_url <- "http://www.soumu.go.jp/"
+  base_url <- "https://www.soumu.go.jp/"
   x <-
     xml2::read_html(glue::glue(base_url, "denshijiti/code.html"))
   tgt_file <-

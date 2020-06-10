@@ -5,7 +5,7 @@
 
 [![Travis-CI Build
 Status](https://travis-ci.org/uribo/jpndistrict.svg?branch=master)](https://travis-ci.org/uribo/jpndistrict)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/jpndistrict)](https://cran.r-project.org/package=jpndistrict)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/jpndistrict)](https://cran.r-project.org/package=jpndistrict)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/uribo/jpndistrict?branch=master&svg=true)](https://ci.appveyor.com/project/uribo/jpndistrict)
 [![Coverage
@@ -15,15 +15,15 @@ status](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](
 
 In this package, the administrative area data to be provided uses the
 National Land Numerical Information “National Land Numeral Information”
-<http://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03.html>
-<http://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-P34.html>. Shinya
+<https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03.html>
+<https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-P34.html>. Shinya
 Uryu is editing and processing this data. Therefore, when preparing a
 secondary work using this data, it is necessary to follow the term of
 the National Land Numerical Information.
 
 This package provide map data is based on the Digital Map 25000 (Map
 Image) published by Geospatial Information Authority of Japan (Approval
-No.603FY2017 information usage <http://www.gsi.go.jp>).
+No.603FY2017 information usage <https://www.gsi.go.jp>).
 
 ## Installation
 
