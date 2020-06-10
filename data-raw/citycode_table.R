@@ -3,7 +3,6 @@ library(tidyr)
 library(lubridate)
 library(assertr)
 
-
 if (!file.exists("data-raw/mic_city_table/000562731.xls")) {
   if (!dir.exists(here::here("data-raw/mic_city_table")))
     dir.create(here::here("data-raw/mic_city_table"))
@@ -28,7 +27,8 @@ tgt_file <-
 d_orig <-
   readxl::read_xls(tgt_file,
                    sheet = 1,
-                   skip = 1) %>%
+                   skip = 1,
+                   col_types = rep("text", 14)) %>%
   verify(dim(.) == c(1438, 14)) %>%
   dplyr::select(5, 6, 7,
          9, 10, 11, 12, 14) %>%
@@ -40,8 +40,7 @@ d_orig <-
     "type",
     "date",
     paste0("after_", c("code", "city_name")),
-    "reason"
-  )
+    "reason")
 
 d_mod <-
   d_orig %>%
@@ -87,19 +86,24 @@ d_mod <-
   ungroup() %>%
   verify(sum(is.na(.$date)) == 0)
 
+d <-
+  d_mod %>%
+  dplyr::filter(stringr::str_detect(date, "^H", negate = TRUE)) %>%
+  verify(nrow(.) == 1382)
+
 citycode_sets <-
   d_mod %>%
-  dplyr::filter(!stringr::str_detect(date, "^H")) %>%
+  dplyr::filter(stringr::str_detect(date, "^H", negate = TRUE)) %>%
   verify(nrow(.) == 1382) %>%
   mutate(
-    date = if_else(!stringr::str_detect(date, "^H"),
+    date = if_else(stringr::str_detect(date, "^H", negate = TRUE),
                    as_date(as.numeric(date), origin = "1900-01-01") - days(2),
                    lubridate::as_date(date))) %>%
   bind_rows(
     d_mod %>%
       dplyr::filter(stringr::str_detect(date, "^H")) %>%
       verify(nrow(.) == 54) %>%
-      mutate(date = purrr::map(date,
+      mutate(date = purrr::map_chr(date,
                                ~ .x %>%
                                  strsplit(split = "\\.") %>%
                                  purrr::flatten() %>%
@@ -108,9 +112,8 @@ citycode_sets <-
                                  purrr::modify_at(c(2,3),
                                                   as.numeric) %>%
                                  purrr::flatten_dbl() %>%
-                                 paste(collapse = "-") %>%
-                                 lubridate::as_date())) %>%
-      tidyr::unnest_longer(col = date)
+                                 paste(collapse = "-")) %>%
+               as_date())
   ) %>%
   arrange(date, after_code) %>%
   verify(dim(.) == c(1436, 6))

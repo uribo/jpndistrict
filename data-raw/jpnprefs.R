@@ -40,9 +40,8 @@ df_prefs_en <-
   read_html("https://en.wikipedia.org/wiki/Prefectures_of_Japan") %>%
   html_nodes(css = "#mw-content-text > div > table.wikitable.sortable") %>%
   html_table(fill = TRUE) %>%
-  flatten_df() %>%
-  verify(dim(.) == c(47, 12)) %>%
-  select(2, 5) %>%
+  purrr::pluck(1) %>%
+  select(2, 6) %>%
   set_names(c("prefecture", "major_island")) %>%
   mutate(major_island = recode(major_island,
                                `Hokkaido`       = enc2native(intToUtf8(c(21271, 28023, 36947),
@@ -105,12 +104,13 @@ jpn_pref_raw <-
   read_html("https://en.wikipedia.org/wiki/Prefectures_of_Japan") %>%
   html_nodes(xpath = '//*[@id="mw-content-text"]/div/table[4]') %>%
   html_table() %>%
-  flatten_df() %>%
-  verify(dim(.) == c(47, 12))
+  purrr::pluck(1) %>%
+  purrr::set_names(LETTERS[seq_len(13)]) %>%
+  verify(dim(.) == c(47, 13))
 
 jpn_pref_df <-
   jpn_pref_raw %>%
-  select(2, 4, 5) %>%
+  select(2, 5, 6) %>%
   set_names(c("kanji", "region_en", "major_island_en"))
 
 # ---- English prefecture and capital names

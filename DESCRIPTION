@@ -16,7 +16,7 @@ License: MIT + file LICENSE
 URL: https://uribo.github.io/jpndistrict
 BugReports: https://github.com/uribo/jpndistrict/issues
 Depends: 
-    R (>= 3.3.0)
+    R (>= 3.5.0)
 Imports: 
     googlePolylines (>= 0.7.2),
     dplyr (>= 1.0.0),
