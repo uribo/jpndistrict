@@ -16,6 +16,7 @@ RUN set -x && \
   install2.r --error --ncpus -1 --repos 'http://mran.revolutionanalytics.com/snapshot/2020-06-07' \
     assertr \
     jpmesh \
+    here \
     kokudosuuchi \
     lwgeom \
     magick \

@@ -293,14 +293,19 @@ export_pref_80km_mesh <- function(code, ...) {
 }
 
 mesh_intersect <- function(data, x) {
-  suppressMessages(
-    suppressWarnings(
-      sf::st_intersection(data,
-                          x %>%
-                            dplyr::group_by() %>%
-                            dplyr::summarise(do_union = FALSE))
-    )
-  )
+  res_contains <- NULL
+  df_tmp <- tibble::tibble(
+    res_contains = suppressMessages(
+      rowSums(sf::st_intersects(data,
+                                x %>%
+                                  group_by() %>%
+                                  summarise(do_union = FALSE),
+                                sparse = FALSE))))
+  df_tmp$id <- seq_len(nrow(df_tmp))
+  data[df_tmp %>%
+         dplyr::filter(res_contains != 0) %>%
+         dplyr::pull(id) %>%
+         unique(), ]
 }
 
 mesh_intersect_filter <- function(data) {
