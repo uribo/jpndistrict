@@ -3,8 +3,9 @@ library(tidyr)
 library(lubridate)
 library(assertr)
 
-if (file.exists("data-raw/mic_city_table/000562731.xls") == FALSE) {
-  if (dir.exists(here::here("data-raw/mic_city_table")) == FALSE)
+
+if (!file.exists("data-raw/mic_city_table/000562731.xls")) {
+  if (!dir.exists(here::here("data-raw/mic_city_table")))
     dir.create(here::here("data-raw/mic_city_table"))
   base_url <- "http://www.soumu.go.jp/"
   x <-
@@ -14,14 +15,15 @@ if (file.exists("data-raw/mic_city_table/000562731.xls") == FALSE) {
     rvest::html_nodes(css = '#contentsWrapper > div.contentsBody > div > div:nth-child(2) > ul > li:nth-child(2) > ul > li:nth-child(2) > a') %>%
     rvest::html_attr("href")
   glue::glue(base_url, tgt_file) %>%
-    download.file(destfile = paste0("data-raw/mic_city_table", basename(files)))
+    download.file(destfile = paste0("data-raw/mic_city_table/",
+                                    basename(tgt_file)))
   rm(x)
-} else {
-  tgt_file <-
-    list.files("data-raw/mic_city_table",
-               pattern = "000562731.xls$",
-               full.names = TRUE)
 }
+
+tgt_file <-
+  list.files("data-raw/mic_city_table",
+             pattern = "000562731.xls$",
+             full.names = TRUE)
 
 d_orig <-
   readxl::read_xls(tgt_file,

@@ -6,17 +6,14 @@ library(testthat)
 library(sf)
 library(googlePolylines)
 # Download raw data (47 prefectures, 2017) ----------------------------------------------------------------------
-if (file.exists("data-raw/KSJ_N03/N03-170101_GML.zip") == FALSE) {
+if (!file.exists("data-raw/KSJ_N03/N03-17_170101.shp")) {
   dir.create("data-raw/KSJ_N03")
-  dl_url <-
-    kokudosuuchi::getKSJURL(identifier = "N03") %>%
-    dplyr::filter(year == 2017, areaCode == 0) %>%
-    dplyr::pull(zipFileUrl)
-  download.file(dl_url,
-                paste0("data-raw/KSJ_N03/", basename(dl_url)))
-  unzip(paste0("data-raw/KSJ_N03/",
-               basename(dl_url)),
+  download.file("https://nlftp.mlit.go.jp/ksj/gml/data/N03/N03-2017/N03-170101_GML.zip",
+                destfile = "data-raw/KSJ_N03/N03-170101_GML.zip")
+  unzip("data-raw/KSJ_N03/N03-170101_GML.zip",
         exdir = "data-raw/KSJ_N03")
+  unlink("data-raw/KSJ_N03/N03-170101_GML.zip")
+  unlink("data-raw/KSJ_N03/N03-17_170101.xml")
   usethis::use_git_ignore("data-raw/KSJ_N03/")
 }
 
@@ -36,11 +33,9 @@ sf_japan <-
          city_code = as.character(city_code)) %>%
   select(pref_code, prefecture, sichyo_sinkyokyoku,
          city_code, city, geometry) %>%
-  st_transform(crs = 6668) %>%
-  st_simplify(preserveTopology = TRUE, dTolerance = 0.0005) %>%
   st_transform(crs = 4326)
 
-expect_gte(pryr::object_size(sf_japan), 69) # MB
+expect_gte(pryr::object_size(sf_japan), 273) # MB
 
 # Set to MULTIPOLYGON when it consists of one POLYGON
 # and multiple POLYGON in the city or ward
@@ -62,6 +57,7 @@ city_union <- function(df, prefcode_var, citycode_var, cityname_var) {
     sf::st_sfc()
 }
 
+# ~ 15min
 sf_japan_distinct <-
   sf_japan %>%
   st_drop_geometry() %>%
@@ -74,10 +70,11 @@ sf_japan_distinct <-
             to = "UTF8") %>%
   mutate(geometry = city_union(sf_japan, pref_code, city_code, city)) %>%
   st_as_sf() %>%
+  st_make_valid() %>%
   arrange(city_code)
 expect_equal(n_distinct(sf_japan_distinct$pref_code), 47L)
 
-if (dir.exists("inst/extdata/ksj_n03/") == FALSE)
+if (!dir.exists("inst/extdata/ksj_n03/"))
   dir.create("inst/extdata/ksj_n03/")
 
 sprintf("%02d", seq_len(47)) %>%
@@ -88,3 +85,13 @@ sprintf("%02d", seq_len(47)) %>%
       readr::write_rds(path = paste0("inst/extdata/ksj_n03/pref_",
                                      .x, ".rds"),
                        compress = "xz"))
+
+sprintf("%02d", seq_len(47)) %>%
+  purrr::map(
+    ~ file.size(paste0(
+      "inst/extdata/ksj_n03/pref_",
+      .x,
+      ".rds"
+    ))
+  ) %>%
+  purrr::reduce(`+`)
