@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-In this package, the administrative area data to be provided uses the National Land Numerical Information "National Land Numeral Information" <https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03.html> <https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-P34.html>. Shinya Uryu is editing and processing this data. Therefore, when preparing a secondary work using this data, it is necessary to follow the term of the National Land Numerical Information.
+In this package, the administrative area data to be provided uses the National Land Numerical Information "National Land Numeral Information" <https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v2_3.html> <https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-P34.html>. Shinya Uryu is editing and processing this data. Therefore, when preparing a secondary work using this data, it is necessary to follow the term of the National Land Numerical Information.
 
 This package provide map data is based on the Digital Map 25000 (Map Image) published by Geospatial Information Authority of Japan (Approval No.603FY2017 information usage <https://www.gsi.go.jp>).
 

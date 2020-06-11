@@ -79,16 +79,15 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
     extract_path <- paste(tempdir(), pref_identifer,  sep = "/")
     # ksj zip file none
     if (is.null(path) & file.exists(dest_path) == FALSE) {
-      utils::download.file(
+      curl::curl_download(
         paste0(
           "https://nlftp.mlit.go.jp/ksj/gml/data/N03/N03-2015/N03-150101_",
           pref_identifer,
           "_GML.zip"
         ),
-        destfile <- dest_path,
-        method   <- "auto",
-        quiet    <- TRUE
-      )
+        destfile = dest_path,
+        handle = curl::new_handle(ssl_verifypeer = FALSE))
+
       utils::unzip(zipfile = dest_path,
                    exdir   = extract_path)
       path <- paste(extract_path, gsub(
@@ -188,11 +187,10 @@ read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
     if (is.null(path) &
         file.exists(paste(tempdir(),
                           df_df_url$dest_file[pref_code], sep = "/")) == FALSE) {
-      utils::download.file(
+      curl::curl_download(
         df_df_url$zipFileUrl[pref_code],
         destfile = paste(tempdir(), df_df_url$dest_file[pref_code], sep = "/"),
-        method = "auto"
-      )
+        handle = curl::new_handle(ssl_verifypeer = FALSE))
       utils::unzip(
         zipfile = paste(tempdir(), df_df_url$dest_file[pref_code], sep = "/"),
         exdir   = paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]), sep = "/")

@@ -15,7 +15,7 @@ status](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](
 
 In this package, the administrative area data to be provided uses the
 National Land Numerical Information “National Land Numeral Information”
-<https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03.html>
+<https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v2_3.html>
 <https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-P34.html>. Shinya
 Uryu is editing and processing this data. Therefore, when preparing a
 secondary work using this data, it is necessary to follow the term of

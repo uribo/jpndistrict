@@ -1,5 +1,7 @@
 # jpndistrict (development version)
 
+- Reviewing how to download files, use curl from now on.
+
 # jpndistrict 0.3.6 (2020-04-20)
 
 - Changes to accomodate sf: st_make_valid no longer in lwgeom ([#32](https://github.com/uribo/jpndistrict/issues/32)).
