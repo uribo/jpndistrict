@@ -17,7 +17,6 @@ RUN set -x && \
     assertr \
     jpmesh \
     here \
-    kokudosuuchi \
     lwgeom \
     magick \
     pkgload \
