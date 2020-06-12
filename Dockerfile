@@ -21,6 +21,7 @@ RUN set -x && \
     magick \
     pkgload \
     pryr \
+    rhub \
     roxygen2 \
     usethis \
     zipangu && \
