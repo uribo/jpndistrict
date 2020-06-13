@@ -1,7 +1,7 @@
 Type: Package
 Package: jpndistrict
 Title: Create Japanese Administration Area and Office Maps
-Version: 0.3.7
+Version: 0.3.7.9000
 Date: 2020-06-12
 Authors@R: c(
     person(given = "Shinya", family = "Uryu", email = "suika1127@gmail.com", role  = c("aut", "cre"), comment = c(ORCID = "0000-0002-0493-6186")),
