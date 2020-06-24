@@ -1,3 +1,6 @@
+###################################
+# 過去の都道府県コード及び市区町村コードの改正
+###################################
 library(dplyr)
 library(tidyr)
 library(lubridate)
@@ -63,7 +66,7 @@ d_mod <-
   mutate(data = purrr::map(data,
                            ~ .x %>%
                              mutate_at(vars(ends_with("_code")),
-                                       list(~ stringr::str_sub(., 1, 5))))) %>%
+                                       list(~ stringr::str_sub(., 1, 6))))) %>%
   mutate(data = purrr::map(data,
                            ~ .x %>%
                              mutate_at(vars(starts_with("after_")), list(~ if_else(. == "削除",
@@ -91,28 +94,30 @@ d <-
   dplyr::filter(stringr::str_detect(date, "^H", negate = TRUE)) %>%
   verify(nrow(.) == 1382)
 
+split_jdate <- function(x) {
+  x %>%
+    strsplit(split = "\\.") %>%
+    purrr::flatten() %>%
+    purrr::modify_at(1,
+                     zipangu::convert_jyear) %>%
+    purrr::modify_at(c(2, 3),
+                     as.numeric) %>%
+    purrr::flatten_dbl() %>%
+    paste(collapse = "-")
+}
+
 citycode_sets <-
   d_mod %>%
   dplyr::filter(stringr::str_detect(date, "^H", negate = TRUE)) %>%
   verify(nrow(.) == 1382) %>%
   mutate(
-    date = if_else(stringr::str_detect(date, "^H", negate = TRUE),
-                   as_date(as.numeric(date), origin = "1900-01-01") - days(2),
-                   lubridate::as_date(date))) %>%
+    date = as_date(as.numeric(date), origin = "1900-01-01") - days(2)) %>%
   bind_rows(
     d_mod %>%
       dplyr::filter(stringr::str_detect(date, "^H")) %>%
       verify(nrow(.) == 54) %>%
       mutate(date = purrr::map_chr(date,
-                               ~ .x %>%
-                                 strsplit(split = "\\.") %>%
-                                 purrr::flatten() %>%
-                                 purrr::modify_at(1,
-                                                  zipangu::convert_jyear) %>%
-                                 purrr::modify_at(c(2,3),
-                                                  as.numeric) %>%
-                                 purrr::flatten_dbl() %>%
-                                 paste(collapse = "-")) %>%
+                               ~ split_jdate(.x)) %>%
                as_date())
   ) %>%
   arrange(date, after_code) %>%
@@ -128,7 +133,9 @@ citycode_sets <-
     starts_with("after"),
     .id) %>%
   verify(dim(.) == c(1436, 6)) %>%
-  verify(sum(is.na(.$before_code)) == 1L)
+  verify(sum(is.na(.$before_code)) == 1L) %>%
+  distinct(before_code, after_code, .id, .keep_all = TRUE) %>%
+  verify(nrow(.) == 1259L)
 
 readr::write_rds(citycode_sets,
                  "inst/extdata/citycode_sets.rds",
