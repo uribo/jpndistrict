@@ -311,7 +311,7 @@ mesh_intersect_filter <- function(data) {
   data %>%
     dplyr::pull(meshcode) %>%
     purrr::map(jpmesh::fine_separate) %>%
-    rlang::flatten_chr() %>%
+    purrr::reduce(c) %>%
     unique() %>%
     tibble::enframe(name = NULL, value = "meshcode") %>%
     dplyr::mutate(out = purrr::map(meshcode, ~ jpmesh::mesh_to_coords(.x))) %>%
