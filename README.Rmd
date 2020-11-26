@@ -60,7 +60,6 @@ mesh_district(jis_code = "05")
 mesh_district(jis_code = 33101)
 ```
 
-
 ### Administration office data
 
 ```{r, eval = FALSE, echo = TRUE}
@@ -76,10 +75,10 @@ find_city(longitude = 133.915, latitude = 34.666)
 # sfg
 find_city(geometry = sf::st_point(c(140.112, 36.083)))
 ```
+
 ### City name and code validation
 
 ```{r, eval = FALSE, echo = TRUE}
 code_validate(jis_code = 33101)
 code_reform(jis_code = c(1, "33", "08201"))
 ```
-

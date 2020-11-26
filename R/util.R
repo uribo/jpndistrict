@@ -310,15 +310,11 @@ mesh_intersect_filter <- function(data) {
   . <- meshcode <- out <- NULL # nolint
   data %>%
     dplyr::pull(meshcode) %>%
-    purrr::map(jpmesh::fine_separate) %>%
-    purrr::reduce(c) %>%
+    jpmesh::fine_separate() %>%
     unique() %>%
     tibble::enframe(name = NULL, value = "meshcode") %>%
-    dplyr::mutate(out = purrr::map(meshcode, ~ jpmesh::mesh_to_coords(.x))) %>%
-    tidyr::unnest_wider(col = out) %>%
-    dplyr::select(meshcode, tidyselect::everything()) %>%
-    dplyr::mutate(geometry = purrr::pmap(., ~ jpmesh:::mesh_to_poly(...))) %>%
-    sf::st_sf(crs = 4326, stringsAsFactors = FALSE)
+    jpmesh::meshcode_sf(mesh_var = "meshcode") %>%
+    dplyr::select(meshcode, tidyselect::everything())
 }
 
 decode.sfencoded <- function(x, crs = 4326) { # nolint
