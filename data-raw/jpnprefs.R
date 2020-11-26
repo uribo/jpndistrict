@@ -1,7 +1,7 @@
 #################################################
 # Nippon::prefectures
+# Last Update: 2020-11-26
 #################################################
-
 options(digits = 9)
 # Load Employed Packages --------------------------------------------------
 library(rvest)
@@ -32,7 +32,7 @@ df_prefs_jp <-
                           x =
                             xx),
          prefecture = pmap_chr(.,
-                                      ~ gsub(pattern = "[0-9]{2}", replacement =  "", x = ..1,))) %>%
+                               ~ gsub(pattern = "[0-9]{2}", replacement =  "", x = ..1,))) %>%
   verify(dim(.) == c(47, 4))
 
 # Roman -------------------------------------------------------------------

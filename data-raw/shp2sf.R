@@ -1,3 +1,7 @@
+####################################
+# 行政区域データ https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v2_4.html
+# Last Update: 2020-11-25
+####################################
 # Load Employed Packages --------------------------------------------------
 # # Fit within 5MB
 library(dplyr)
@@ -5,9 +9,10 @@ library(purrr)
 library(testthat)
 library(sf)
 library(googlePolylines)
-# Download raw data (47 prefectures, 2017) ----------------------------------------------------------------------
+# Download raw data (47 prefectures, 2017 H29) ----------------------------------------------------------------------
 if (!file.exists("data-raw/KSJ_N03/N03-17_170101.shp")) {
   dir.create("data-raw/KSJ_N03")
+  # Manual download
   download.file("https://nlftp.mlit.go.jp/ksj/gml/data/N03/N03-2017/N03-170101_GML.zip",
                 destfile = "data-raw/KSJ_N03/N03-170101_GML.zip")
   unzip("data-raw/KSJ_N03/N03-170101_GML.zip",
@@ -17,7 +22,7 @@ if (!file.exists("data-raw/KSJ_N03/N03-17_170101.shp")) {
   usethis::use_git_ignore("data-raw/KSJ_N03/")
 }
 
-# Modified shapefile ----------------------------------------------------------
+# Modified shape file ----------------------------------------------------------
 sf_japan <-
   st_read("data-raw/KSJ_N03/N03-17_170101.shp",
           stringsAsFactors = FALSE,
@@ -82,7 +87,7 @@ sprintf("%02d", seq_len(47)) %>%
     ~ sf_japan_distinct %>%
       filter(pref_code == .x) %>%
       googlePolylines::encode() %>%
-      readr::write_rds(path = paste0("inst/extdata/ksj_n03/pref_",
+      readr::write_rds(file = paste0("inst/extdata/ksj_n03/pref_",
                                      .x, ".rds"),
                        compress = "xz"))
 

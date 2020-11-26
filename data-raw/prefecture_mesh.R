@@ -1,3 +1,7 @@
+####################################
+# 80km mesh code
+# Last Update: 2020-11-25
+####################################
 # pkgload::load_all()
 library(tidyr)
 library(dplyr)
@@ -12,7 +16,9 @@ prefecture_mesh <-
     purrr::map(export_pref_80km_mesh)
 ) %>%
   unnest_longer(col = meshcode) %>%
-  left_join(sf_jpmesh %>% select(meshcode, name = name_roman, type, geometry), by = "meshcode") %>%
+  left_join(sf_jpmesh %>%
+              select(meshcode, name = name_roman, type, geometry),
+            by = "meshcode") %>%
   st_sf(crs = 4326) %>%
   mutate(name = stringi::stri_trans_totitle(name)) %>%
   verify(dim(.) == c(314, 5)) %>%

@@ -140,3 +140,34 @@ citycode_sets <-
 readr::write_rds(citycode_sets,
                  "inst/extdata/citycode_sets.rds",
                  compress = "xz")
+
+citycode_sets %>%
+  filter(after_city_name == "相模原市")
+citycode_sets %>%
+  filter(before_city_name == "相模原市")
+
+# 市区町村コードを入力として、各種の情報を返す
+# 市町村名、状態（現在も存在、廃止）
+# 総務省のリストにないやつ -->国土数値情報?
+
+# 最新の状況 (2020-06-24) -------------------------------------------------------------------
+# 平成31（2019）年 1月 1日時点
+# Rだと失敗?
+if (!file.exists("data-raw/N03-19_190101.geojson")) {
+  download.file("https://nlftp.mlit.go.jp/ksj/gml/data/N03/N03-2019/N03-190101_GML.zip",
+                destfile = "data-raw/N03-190101_GML.zip")
+  unzip("data-raw/N03-190101_GML.zip",
+        exdir = "data-raw")
+  list.files("data-raw", pattern = "N03-19_190101", full.names = TRUE) %>%
+    stringr::str_subset(".geojson$", negate = TRUE) %>%
+    unlink()
+  usethis::use_git_ignore("data-raw/N03-19_190101.geojson")
+}
+
+df_n03_2019 <-
+  sf::st_read("data-raw/N03-19_190101.geojson",
+          as_tibble = TRUE,
+          stringsAsFactors = FALSE) %>%
+  sf::st_drop_geometry() %>%
+  dplyr::select(3, 4, 5) %>%
+  dplyr::distinct()
