@@ -4,8 +4,6 @@
 # jpndistrict <img src="man/figures/logo.png" align="right" width="120px" />
 
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/jpndistrict)](https://cran.r-project.org/package=jpndistrict)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/uribo/jpndistrict?branch=master&svg=true)](https://ci.appveyor.com/project/uribo/jpndistrict)
 [![Coverage
 status](https://codecov.io/gh/uribo/jpndistrict/branch/master/graph/badge.svg)](https://codecov.io/github/uribo/jpndistrict?branch=master)
 
