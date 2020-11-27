@@ -52,10 +52,6 @@ find_pref <- function(longitude, latitude, geometry = NULL, ...) {
 #' Detect prefectures by coordinates
 #'
 #' @inheritParams find_city
-#' @importFrom jpmesh coords_to_mesh
-#' @importFrom dplyr filter inner_join select mutate
-#' @importFrom purrr pmap_chr set_names
-#' @importFrom tibble as_tibble
 #' @examples
 #' find_prefs(longitude = 122.940625, latitude = 24.4520833334)
 #' find_prefs(longitude = 140.1137418, latitude = 36.0533957)
@@ -98,7 +94,6 @@ find_prefs <- function(longitude, latitude, geometry = NULL) {
 #' @param latitude latitude
 #' @param geometry XY sfg object
 #' @param ... export parameter to other functions
-#' @importFrom dplyr select
 #' @note The `find_city` function was added in version 0.3.0
 #' @examples
 #' find_city(longitude = 140.1137418, latitude = 36.0533957)

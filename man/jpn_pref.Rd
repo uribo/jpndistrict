@@ -29,7 +29,7 @@ Prefecture polygon data.
 }
 \details{
 Collect unit of prefecture simple feature data.frame objects..
-If downalod argument is \emph{TRUE}, download administrative area data from
+If download argument is \emph{TRUE}, download administrative area data from
 the National Land Numeral Information Download Service (for law data).
 }
 \examples{
@@ -37,5 +37,4 @@ the National Land Numeral Information Download Service (for law data).
 jpn_pref(pref_code = 33, district = FALSE)
 jpn_pref(pref_code = 14, district = TRUE)
 }
-
 }

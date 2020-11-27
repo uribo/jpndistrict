@@ -1,9 +1,6 @@
 #' Collect administration office point datasets.
 #'
 #' @param path path to P34 shapefile (if already exist)
-#' @importFrom sf st_read
-#' @importFrom dplyr mutate if_else
-#' @importFrom purrr set_names
 collect_ksj_p34 <- function(path = NULL) {
   jis_code <- NULL
   code <- gsub(".+P34-14_|_GML|/", "", path)
@@ -22,8 +19,6 @@ collect_ksj_p34 <- function(path = NULL) {
 #' Intermediate function
 #'
 #' @param pref sf object (prefecture)
-#' @importFrom dplyr mutate
-#' @importFrom sf st_buffer st_sf st_union
 raw_bind_cityareas <- function(pref) {
   tmp_union <-
     suppressMessages(suppressWarnings(sf::st_buffer(pref, 0) %>%
@@ -67,8 +62,6 @@ read_ksj_cityarea <- function(code = NULL, path = NULL) {
 #'
 #' @param code prefecture code (JIS X 0402)
 #' @param path path to N03 shapefile (if already exist)
-#' @importFrom utils download.file
-#' @importFrom utils unzip
 path_ksj_cityarea <- function(code = NULL, path = NULL) {
   # nocov start
   if (missing(path)) {
@@ -111,8 +104,6 @@ path_ksj_cityarea <- function(code = NULL, path = NULL) {
 #' @description Get prefecture code from prefecture of name or number.
 #' @param code numeric
 #' @param admin_name prefecture code for Japanese (character)
-#' @importFrom dplyr filter mutate pull
-#' @importFrom purrr pmap_chr
 collect_prefcode <- function(code = NULL, admin_name = NULL) {
   jis_code <- prefecture <- NULL
   if (missing(admin_name)) {
@@ -131,8 +122,6 @@ collect_prefcode <- function(code = NULL, admin_name = NULL) {
 #' Collect administration area
 #'
 #' @param path path to N03 shapefile (if already exist)
-#' @import dplyr
-#' @import sf
 collect_cityarea <- function(path = NULL) {
   # nocov start
   . <- N03_001 <- N03_002 <- N03_003 <- N03_004 <- N03_007 <- tmp_var <- NULL # nolint
@@ -177,8 +166,6 @@ collect_cityarea <- function(path = NULL) {
 #'
 #' @param pref_code prefecture code (JIS X 0402)
 #' @param path path to P34 shapefile (if already exist)
-#' @importFrom utils download.file
-#' @importFrom utils unzip
 read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
   # nolint start
   if (missing(path)) {
@@ -246,7 +233,7 @@ which_pol_min <- function(longitude, latitude, ...) {
       ))
     if (length(which_row) > 1) {
       which_row <-
-        which.min(sf::st_distance(st_sfc(x, crs = 4326),
+        which.min(sf::st_distance(sf::st_sfc(x, crs = 4326),
                                   sp_polygon,
                                   by_element = TRUE))
       sp_polygon <-
@@ -299,13 +286,13 @@ export_pref_80km_mesh <- function(code, ...) {
 }
 
 mesh_intersect <- function(data, x) {
-  res_contains <- NULL
+  id <- res_contains <- NULL
   df_tmp <- tibble::tibble(
     res_contains = suppressMessages(
       rowSums(sf::st_intersects(data,
                                 x %>%
-                                  group_by() %>%
-                                  summarise(do_union = FALSE),
+                                  dplyr::group_by() %>%
+                                  dplyr::summarise(do_union = FALSE),
                                 sparse = FALSE))))
   df_tmp$id <-
     seq_len(nrow(df_tmp))
@@ -334,7 +321,7 @@ decode.sfencoded <- function(x, crs = 4326) { # nolint
 }
 
 decode.sf <- function(x) { # nolint
-  crs <- st_crs(x)
+  crs <- sf::st_crs(x)
   geometry <- NULL
   googlePolylines::encode(x) %>%
     googlePolylines::polyline_wkt() %>%
