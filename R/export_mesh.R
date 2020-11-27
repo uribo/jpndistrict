@@ -1,10 +1,8 @@
 #' Export district's mesh polygon
 #' @inheritParams code_validate
 #' @examples
-#' \dontrun{
-#' mesh_district(jis_code = "33101")
-#' mesh_distinct(jis_code = "05")
-#' }
+#' mesh_district(jis_code = "33101", to_mesh_size = 80)
+#' mesh_district(jis_code = "05", to_mesh_size = 80)
 #' @export
 mesh_district <- function(jis_code = NULL) {
   input_code <-

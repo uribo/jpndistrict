@@ -22,11 +22,9 @@ Detect city by coordinates
 The \code{find_city} function was added in version 0.3.0
 }
 \examples{
-\dontrun{
 find_city(longitude = 140.1137418, latitude = 36.0533957)
 
-# Refrenced by sf geometry
+# Referenced by sf geometry
 library(sf)
 find_city(geometry = st_point(c(136.6833, 35.05)))
-}
 }

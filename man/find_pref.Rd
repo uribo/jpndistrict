@@ -25,8 +25,8 @@ The \code{find_pref} function was added in version 0.3.0
 \dontrun{
 find_pref(longitude = 130.4412895, latitude = 30.2984335)
 
-# Refrenced by sf geometry
+# Referenced by sf geometry
 library(sf)
-find_pref(geometry = st_point(c(136.6833, 35.05)))
+find_pref(geometry = st_point(c(130.4412895, 30.2984335)))
 }
 }

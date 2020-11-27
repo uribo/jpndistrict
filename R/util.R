@@ -57,7 +57,8 @@ read_ksj_cityarea <- function(code = NULL, path = NULL) {
   if (missing(path)) {
     path <- path_ksj_cityarea(code)
   }
-  res <- collect_cityarea(path)
+  res <-
+    collect_cityarea(path)
   return(res)
   # nocov end
 }
@@ -193,11 +194,18 @@ read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
         handle = curl::new_handle(ssl_verifypeer = FALSE))
       utils::unzip(
         zipfile = paste(tempdir(), df_df_url$dest_file[pref_code], sep = "/"),
-        exdir   = paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]), sep = "/")
-      )
-      path <- paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]), sep = "/")
-    } else if (file.exists(paste(tempdir(), df_df_url$dest_file[pref_code], sep = "/")) == TRUE) {
-      path <- paste(tempdir(), gsub(".zip", "", df_df_url$dest_file[pref_code]), sep = "/") # nocov
+        exdir   = paste(tempdir(), gsub(".zip", "",
+                                        df_df_url$dest_file[pref_code]),
+                        sep = "/"))
+      path <- paste(tempdir(), gsub(".zip", "",
+                                    df_df_url$dest_file[pref_code]),
+                    sep = "/")
+    } else if (file.exists(paste(tempdir(),
+                                 df_df_url$dest_file[pref_code],
+                                 sep = "/")) == TRUE) {
+      path <- paste(tempdir(), gsub(".zip", "",
+                                    df_df_url$dest_file[pref_code]),
+                    sep = "/") # nocov
     }
     res <- collect_ksj_p34(path = path)
   } else {
@@ -212,8 +220,6 @@ read_ksj_p34 <- function(pref_code = NULL, path = NULL) {
 #' @param longitude longitude
 #' @param latitude latitude
 #' @param ... export parameter to other functions
-#' @importFrom purrr map reduce
-#' @importFrom sf st_contains st_point
 #' @name which_pol_min
 which_pol_min <- function(longitude, latitude, ...) {
   pref_code <- NULL
@@ -259,10 +265,12 @@ tweak_sf_output <- function(target) {
   target <-
     sf::st_sf(target)
   if (identical(sf::st_crs(target)$input, "EPSG:4326") != TRUE)
-      target <- sf::st_transform(target, crs = 4326)
+      target <-
+      sf::st_transform(target, crs = 4326)
   target %>%
     tibble::as_tibble() %>%
-    sf::st_sf()
+    sf::st_sf() %>%
+    sf::st_make_valid()
 }
 
 sfg_point_as_coords <- function(geometry) {
@@ -299,7 +307,8 @@ mesh_intersect <- function(data, x) {
                                   group_by() %>%
                                   summarise(do_union = FALSE),
                                 sparse = FALSE))))
-  df_tmp$id <- seq_len(nrow(df_tmp))
+  df_tmp$id <-
+    seq_len(nrow(df_tmp))
   data[df_tmp %>%
          dplyr::filter(res_contains != 0) %>%
          dplyr::pull(id) %>%
@@ -307,7 +316,7 @@ mesh_intersect <- function(data, x) {
 }
 
 mesh_intersect_filter <- function(data) {
-  . <- meshcode <- out <- NULL # nolint
+  meshcode <- NULL # nolint
   data %>%
     dplyr::pull(meshcode) %>%
     jpmesh::fine_separate() %>%

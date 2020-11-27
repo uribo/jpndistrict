@@ -17,12 +17,10 @@ find_prefs(longitude, latitude, geometry = NULL)
 Detect prefectures by coordinates
 }
 \examples{
-\dontrun{
 find_prefs(longitude = 122.940625, latitude = 24.4520833334)
 find_prefs(longitude = 140.1137418, latitude = 36.0533957)
 
-# Refrenced by sf geometry
+# Referenced by sf geometry
 library(sf)
 find_pref(geometry = st_point(c(136.6833, 35.05)))
-}
 }
