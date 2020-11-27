@@ -39,8 +39,6 @@ Suggests:
     lwgeom (>= 0.2-1),
     rvest (>= 0.3.5),
     testthat (>= 2.3.2)
-Remotes:
-    uribo/jpmesh
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

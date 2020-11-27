@@ -8,6 +8,8 @@ services:
     ports:
       - "8787:8787"
     volumes:
-      - ".:/home/rstudio/jpndistrict"
+      - .:/home/rstudio/jpndistrict
+      - ${RENV_PATHS_CACHE_HOST}:/home/rstudio/.local/share/renv
     environment:
-      PASSWORD: ${PASSWORD}
+      - PASSWORD=${PASSWORD}
+      - RENV_PATHS_CACHE=/home/rstudio/.local/share/renv/cache
