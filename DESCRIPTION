@@ -10,9 +10,9 @@ Authors@R: c(
     )
 Maintainer: Shinya Uryu <suika1127@gmail.com>
 Description: Utilizing the data that Japanese administration area provided 
-    by the National Land Numerical Information download service (<http://nlftp.mlit.go.jp/ksj/index.html>). 
+    by the National Land Numerical Information download service (<https://nlftp.mlit.go.jp/ksj/index.html>). 
     This package provide map data is based on the Digital Map 25000 (Map Image) published 
-    by Geospatial Information Authority of Japan (Approval No.603FY2017 information usage <http://www.gsi.go.jp>).
+    by Geospatial Information Authority of Japan (Approval No.603FY2017 information usage <https://www.gsi.go.jp>).
 License: MIT + file LICENSE
 URL: https://uribo.github.io/jpndistrict/
 BugReports: https://github.com/uribo/jpndistrict/issues/

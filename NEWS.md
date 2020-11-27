@@ -1,5 +1,7 @@
 # jpndistrict (development version)
 
+- Using memoise
+
 # jpndistrict 0.3.7 (2020-06-12)
 
 - Reviewing how to download files, use curl from now on.

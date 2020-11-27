@@ -4,5 +4,5 @@ citEntry(entry = "Misc",
          title = "jpndistirct: Create Japanese Administration Area and Office Maps",
          author = "Shinya Uryu",
          year = 2017,
-         url = "http://github.com/uribo/jpndistrict",
+         url = "https://github.com/uribo/jpndistrict",
          textVersion = "S. Uryu (2017). jpndistirct: Create Japanese Administration Area and Office Maps. This map is based on the Digital Map 25000 (Map Image) published by Geospatial Information Authority of Japan (Approval No.603FY2017 information usage <http://www.gsi.go.jp>).")
