@@ -1,17 +1,14 @@
-#' Find jis city code
+#' Find JIS city code
 #'
 #' @inheritParams jpn_pref
 #' @inheritParams jpn_cities
 #' @param strict matching patterns
 #' @return Identification code for cities, towns and villages (JIS X 0402:2010)
 #' @examples
-#' \dontrun{
-#' find_jis_code(33,
-#' intToUtf8(c(20489, 25975, 24066), multiple = FALSE))
-#' find_jis_code(33,
-#' enc2native(intToUtf8(c(20489, 25975, 24066), multiple = FALSE)),
-#' strict = FALSE)
-#'
+#' find_jis_code(33, intToUtf8(c(20489, 25975, 24066), multiple = FALSE))
+#' find_jis_code(33, enc2native(intToUtf8(c(20489, 25975, 24066),
+#'                                        multiple = FALSE)),
+#'                                        strict = FALSE)
 #' find_jis_code(14,
 #' c(enc2native(intToUtf8(c(37772, 20489, 24066), multiple = FALSE)),
 #'   enc2native(intToUtf8(c(23567, 30000, 21407, 24066), multiple = FALSE))), strict = FALSE) # nolint

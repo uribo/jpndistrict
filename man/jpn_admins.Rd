@@ -18,7 +18,5 @@ type, name, address, longitude and latitude.
 Name and geolocations for administration offices in prefecture.
 }
 \examples{
-\dontrun{
 jpn_admins(jis_code = 17)
-}
 }

@@ -120,9 +120,7 @@ jpn_cities <- function(jis_code, admin_name) {
 #' @return data.frame. contains follow columns jis_code,
 #' type, name, address, longitude and latitude.
 #' @examples
-#' \dontrun{
 #' jpn_admins(jis_code = 17)
-#' }
 #' @export
 jpn_admins <- function(jis_code) {
 
