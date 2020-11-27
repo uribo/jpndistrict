@@ -15,12 +15,14 @@ test_that("prefecture", {
   }
   test <- find_pref(geometry = sf::st_point(c(136.6833, 35.05)))
   expect_equal(test$pref_code, "24")
-  test <- find_prefs(longitude = NULL,
-                     latitude = NULL,
-                     geometry = sf::st_point(c(136.6833, 35.05)))
-  expect_equal(dim(test), c(6, 4))
+  test <-
+    find_prefs(longitude = NULL,
+               latitude = NULL,
+               geometry = sf::st_point(c(136.6833, 35.05)))
+  expect_equal(dim(test), c(6, 5))
   expect_named(test,
-               c("pref_code", "meshcode_80km", "prefecture", "region"))
+               c("pref_code", "meshcode_80km", "prefecture",
+                 "region", "geometry"))
 
   test <- find_pref(longitude = 140.1137418, latitude = 36.0533957)
   expect_named(test, c("pref_code", "prefecture", "geometry"))
@@ -37,7 +39,6 @@ test_that("Failed", {
   expect_message(
     find_pref(125.2468750000, 24.7145833333),
     "Specified coordinates are not included in the polygon.")
-
   expect_message(
     find_city(longitude = 140.639815, latitude = 36.108976),
     "Specified coordinates are not included in the polygon.")

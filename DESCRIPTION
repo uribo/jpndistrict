@@ -25,6 +25,7 @@ Imports:
     jpmesh (>= 1.2.0),
     leaflet (>= 2.0.3),
     magrittr (>= 1.5),
+    memoise (>= 1.1.0),
     miniUI (>= 0.1.1),
     purrr (>= 0.3.3),
     rlang (>= 0.4.5),

@@ -21,7 +21,8 @@ find_pref <- function(longitude, latitude, geometry = NULL, ...) {
       latitude <- coords$latitude
     }
   }
-  res <- find_city(longitude, latitude, ...)
+  res <-
+    find_city(longitude, latitude, ...)
   if (rlang::is_false(rlang::is_null(res))) {
     if (nrow(res) > 1) {
       res <-
@@ -40,11 +41,7 @@ find_pref <- function(longitude, latitude, geometry = NULL, ...) {
         dplyr::select(-dist)
     }
     res <-
-      jpn_pref(pref_code = res %>%
-                 dplyr::mutate(pref_code = substr(city_code, 1, 2)) %>%
-                 dplyr::select(pref_code, prefecture) %>%
-                 sf::st_drop_geometry() %>%
-                 pull(pref_code),
+      jpn_pref(pref_code = substr(res$city_code, 1, 2),
                     district = FALSE) %>%
       dplyr::mutate(pref_code = sprintf("%02d", as.numeric(pref_code))) %>%
       tweak_sf_output()
@@ -83,16 +80,15 @@ find_prefs <- function(longitude, latitude, geometry = NULL) {
     dplyr::select(jis_code, prefecture, region)
   res <-
     prefecture_mesh %>%
-    as.data.frame() %>%
     dplyr::select(prefcode, meshcode) %>%
-    dplyr::filter(meshcode == jpmesh::coords_to_mesh(longitude,
-                                                     latitude,
+    dplyr::filter(meshcode == jpmesh::coords_to_mesh(longitude = longitude,
+                                                     latitude = latitude,
                                                      mesh_size = 80)) %>%
     dplyr::inner_join(jpnprefs,
                       by = c("prefcode" = "jis_code")) %>%
+    dplyr::relocate(geometry, .after = region) %>%
     purrr::set_names(
-      c("pref_code", "meshcode_80km", "prefecture", "region")) %>%
-    tibble::as_tibble()
+      c("pref_code", "meshcode_80km", "prefecture", "region", "geometry"))
   return(res)
 }
 
@@ -134,3 +130,4 @@ find_city <- memoise::memoise(
       return(res)
     }
   }
+)

@@ -4,18 +4,18 @@
 \alias{mesh_district}
 \title{Export district's mesh polygon}
 \usage{
-mesh_district(jis_code = NULL)
+mesh_district(jis_code = NULL, to_mesh_size = NULL)
 }
 \arguments{
 \item{jis_code}{jis code for prefecture and city identifical number.
 If prefecture, must be from 1 to 47. If city, range of 5 digits.}
+
+\item{to_mesh_size}{target mesh type. From 80km to 1km as numeric.}
 }
 \description{
 Export district's mesh polygon
 }
 \examples{
-\dontrun{
-mesh_district(jis_code = "33101")
-mesh_distinct(jis_code = "05")
-}
+mesh_district(jis_code = "33101", to_mesh_size = 80)
+mesh_district(jis_code = "05", to_mesh_size = 80)
 }

@@ -18,48 +18,51 @@
 #' }
 #'
 #' @export
-jpn_pref <- function(pref_code,
+jpn_pref <- memoise::memoise(
+  function(pref_code,
                      admin_name,
                      district         = TRUE,
                      download         = FALSE,
                      drop_sinkyokyoku = TRUE) {
-  city_code <- city_name <- city_name_ <- city_name_full <- NULL # nolint
-  . <- geometry <- pref_name <- NULL # nolint
-
+    city_code <- city_name <- city_name_ <- city_name_full <- NULL # nolint
+    . <- geometry <- pref_name <- NULL # nolint
     if (missing(admin_name)) {
       pref_code <- collect_prefcode(code = pref_code)
     } else if (missing(pref_code)) {
       pref_code <- collect_prefcode(admin_name = admin_name)
     }
+    if (download == FALSE) {
+      d <-
+        readRDS(system.file(paste0("extdata/ksj_n03/pref_", pref_code, ".rds"),
+                               package = "jpndistrict")) %>%
+        decode.sfencoded()
+    } else {
+      d <-
+        read_ksj_cityarea(code = as.numeric(pref_code)) %>%  # nocov
+        dplyr::mutate(pref_code = as.character(pref_code),
+                      city_name_full = purrr::pmap_chr(.,
+                                                       ~ cityname_reform(..4))) %>% # nolint
+        dplyr::select(pref_code, pref_name,
+                      city_code, city = city_name_full,
+                      city_name_, city_name, geometry)
+    }
 
-  if (download == FALSE) {
-    d <- readRDS(system.file(paste0("extdata/ksj_n03/pref_", pref_code, ".rds"),
-                             package = "jpndistrict")) %>%
-      decode.sfencoded()
-  } else {
-    d <-
-      read_ksj_cityarea(code = as.numeric(pref_code)) %>%  # nocov
-      dplyr::mutate(pref_code = as.character(pref_code),
-                    city_name_full = purrr::pmap_chr(.,
-                                                     ~ cityname_reform(..4))) %>% # nolint
-      dplyr::select(pref_code, pref_name,
-                    city_code, city = city_name_full,
-                    city_name_, city_name, geometry)
-  }
+    if (drop_sinkyokyoku == TRUE) {
+      d <-
+        dplyr::select(d, -dplyr::matches("sichyo_sinkyokyoku"))
+    }
 
-  if (drop_sinkyokyoku == TRUE) {
-    d <- dplyr::select(d, -dplyr::matches("sichyo_sinkyokyoku"))
+    if (district == TRUE) {
+      res <- d
+    } else {
+      res <-
+        raw_bind_cityareas(d) %>%
+        dplyr::mutate(pref_code = as.character(pref_code))
+    }
+    res %>%
+      tweak_sf_output()
   }
-
-  if (district == TRUE) {
-    res <- d
-  } else {
-    res <- raw_bind_cityareas(d) %>%
-      dplyr::mutate(pref_code = as.character(pref_code))
-  }
-  res %>%
-    tweak_sf_output()
-}
+)
 
 
 #' Simple features for city area polygons
