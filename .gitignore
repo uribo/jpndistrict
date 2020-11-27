@@ -10,3 +10,4 @@ data-raw/mic_city_table/
 *.pdf
 *.zip
 .Rapp.history
+data-raw/N03-19_190101.geojson
