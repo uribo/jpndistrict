@@ -1,8 +1,9 @@
 Avoid testing in Latin-1 locale environment causing current errors.
 
 ## Test environments
-- local macOS (Catalina) install, R 4.0.0
-- Debian GNU/Linux 9 (on Docker)
+
+- local macOS (Catalina) install, R 4.0.3
+- Debian GNU/Linux 9 (on Docker), R 4.0.3
 
 ## R CMD check results
 
@@ -10,5 +11,4 @@ Avoid testing in Latin-1 locale environment causing current errors.
 
 ## Resubmission
 
-- Manually confirmed that the URLs marked as "(possibly) invalid URLs" in NOTE are valid and accessible via Web browsers.
-- Fix "Rd cross-references".
+- Update a Date field in DESCRIPTION.
