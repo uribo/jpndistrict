@@ -316,10 +316,10 @@
     },
     "gh": {
       "Package": "gh",
-      "Version": "1.1.0",
+      "Version": "1.2.0",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "89ea5998938d1ad55f035c8a86f96b74"
+      "Repository": "CRAN",
+      "Hash": "05129b4387282404780d2f8593636388"
     },
     "git2r": {
       "Package": "git2r",
@@ -327,6 +327,13 @@
       "Source": "Repository",
       "Repository": "RSPM",
       "Hash": "531a82d1beed1f545beb25f4f5945bf7"
+    },
+    "gitcreds": {
+      "Package": "gitcreds",
+      "Version": "0.1.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "f3aefccc1cc50de6338146b62f115de8"
     },
     "glue": {
       "Package": "glue",
@@ -414,10 +421,10 @@
     },
     "isoband": {
       "Package": "isoband",
-      "Version": "0.2.2",
+      "Version": "0.2.3",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "6e58bd3d6b3dd82a944cd6f05ade228f"
+      "Repository": "CRAN",
+      "Hash": "53647fb507373700028b2ce6cd30751a"
     },
     "jpmesh": {
       "Package": "jpmesh",
@@ -624,10 +631,10 @@
     },
     "processx": {
       "Package": "processx",
-      "Version": "3.4.4",
+      "Version": "3.4.5",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "03446ed0b8129916f73676726cb3c48f"
+      "Repository": "CRAN",
+      "Hash": "22aab6098cb14edd0a5973a8438b569b"
     },
     "progress": {
       "Package": "progress",
@@ -652,10 +659,10 @@
     },
     "ps": {
       "Package": "ps",
-      "Version": "1.4.0",
+      "Version": "1.5.0",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "f5d7d94cc097aa9dade988e3e6715067"
+      "Repository": "CRAN",
+      "Hash": "ebaed51a03411fd5cfc1e12d9079b353"
     },
     "purrr": {
       "Package": "purrr",

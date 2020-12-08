@@ -8,7 +8,3 @@ Avoid testing in Latin-1 locale environment causing current errors.
 ## R CMD check results
 
 0 errors ✔ | 0 warnings ✔ | 0 note ✔
-
-## Resubmission
-
-- Update a Date field in DESCRIPTION.
