@@ -19,3 +19,12 @@ Identification code for cities, towns and villages (JIS X 0402:2010)
 \description{
 Find JIS city code
 }
+\examples{
+find_jis_code(33, intToUtf8(c(20489, 25975, 24066), multiple = FALSE))
+find_jis_code(33, enc2native(intToUtf8(c(20489, 25975, 24066),
+                                       multiple = FALSE)),
+                                       strict = FALSE)
+find_jis_code(14,
+c(enc2native(intToUtf8(c(37772, 20489, 24066), multiple = FALSE)),
+  enc2native(intToUtf8(c(23567, 30000, 21407, 24066), multiple = FALSE))), strict = FALSE) # nolint
+}
