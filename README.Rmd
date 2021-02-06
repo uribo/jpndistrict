@@ -25,13 +25,15 @@ This package provide map data is based on the Digital Map 25000 (Map Image) publ
 
 ## Installation
 
-Install from CRAN.
+~~Install from CRAN.~~
+
+It is currently not available for installation. Please install the next development version.
 
 ```{r, eval = FALSE, echo = TRUE}
-install.packages("jpndistrict")
+# install.packages("jpndistrict")
 ```
 
-For developers, please use the **devtool** package to install via the GitHub repository.
+For developers, please use the **remotes** package to install via the GitHub repository.
 
 ```{r, echo = TRUE, eval = FALSE}
 install.packages("remotes")

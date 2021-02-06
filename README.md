@@ -21,13 +21,16 @@ No.603FY2017 information usage <https://www.gsi.go.jp>).
 
 ## Installation
 
-Install from CRAN.
+~~Install from CRAN.~~
+
+It is currently not available for installation. Please install the next
+development version.
 
 ``` r
-install.packages("jpndistrict")
+# install.packages("jpndistrict")
 ```
 
-For developers, please use the **devtool** package to install via the
+For developers, please use the **remotes** package to install via the
 GitHub repository.
 
 ``` r
